@@ -5,7 +5,7 @@
         <x-toast />
         <x-error-page
             code="404"
-            title="How did you get here?"
-            description="Sorry, we couldn't find the page you're looking for." />
+            :title="__('error.404_title')"
+            :description="__('error.404_desc')" />
     </body>
 @endsection

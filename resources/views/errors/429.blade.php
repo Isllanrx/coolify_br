@@ -5,7 +5,7 @@
         <x-toast />
         <x-error-page
             code="429"
-            title="Woah, slow down there!"
-            description="You're making too many requests. Please wait a few seconds before trying again." />
+            :title="__('error.429_title')"
+            :description="__('error.429_desc')" />
     </body>
 @endsection

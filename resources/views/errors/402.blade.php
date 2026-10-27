@@ -5,7 +5,7 @@
         <x-toast />
         <x-error-page
             code="402"
-            title="Payment required"
-            description="A valid subscription or payment is required to continue." />
+            :title="__('error.402_title')"
+            :description="__('error.402_desc')" />
     </body>
 @endsection

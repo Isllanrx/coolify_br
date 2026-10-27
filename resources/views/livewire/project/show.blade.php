@@ -1,6 +1,6 @@
 <div>
     <x-slot:title>
-        {{ data_get_str($project, 'name')->limit(10) }} > Environments | Coolify
+        {{ data_get_str($project, 'name')->limit(10) }} > {{ __('nav.environments') }} | Coolify
     </x-slot>
     <div x-data="projectEnvironments()" class="w-full">
         <header class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -11,7 +11,7 @@
                         <a href="{{ route('project.edit', ['project_uuid' => $project->uuid]) }}"
                             {{ wireNavigate() }}
                             class="flex size-7 shrink-0 items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-black dark:text-fg-faint dark:hover:bg-white/[0.06] dark:hover:text-fg"
-                            title="Project settings"
+                            title="{{ __('project.project_settings') }}"
                             aria-label="Open settings for {{ $project->name }}">
                             <x-reicon name="settings" class="size-4" />
                         </a>
@@ -19,19 +19,19 @@
                 </div>
                 <p class="mt-1 text-[13px] text-neutral-500 dark:text-fg-dim">
                     <span
-                        x-text="`${environments.length} ${environments.length === 1 ? 'environment' : 'environments'}`"></span>
-                    in this project
+                        x-text="`${environments.length} ${environments.length === 1 ? @js(__('project.environment')) : @js(__('project.environments'))}`"></span>
+                    {{ __('project.in_this_project') }}
                 </p>
             </div>
 
             @can('update', $project)
                 <div class="flex w-fit shrink-0 items-center gap-2">
-                    <x-modal-input title="New Environment">
+                    <x-modal-input :title="__('project.new_environment.title')">
                         <x-slot:content>
                             <button type="button"
                                 class="button button-highlighted">
                                 <x-reicon name="plus" class="size-3.5" />
-                                New environment
+                                {{ __('project.new_environment') }}
                             </button>
                         </x-slot:content>
 
@@ -42,8 +42,8 @@
         </header>
 
         @if ($project->environments->isEmpty())
-            <x-empty title="No environments yet"
-                description="Add an environment to start organizing this project's resources."
+            <x-empty :title="__('project.no_environments_yet')"
+                :description="__('project.no_environments_desc')"
                 icon-name="layers" />
         @else
             <div class="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

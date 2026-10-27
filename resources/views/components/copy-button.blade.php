@@ -1,14 +1,15 @@
 @props([
     'value' => null,
     'resolve' => null,
-    'label' => 'Copy to clipboard',
+    'label' => null,
 ])
 
 @php
     $valueExpression = $resolve ?? \Illuminate\Support\Js::from($value);
+    $resolvedLabel = $label ?? __('common.copy_to_clipboard');
 @endphp
 
-<button type="button" title="{{ $label }}" aria-label="{{ $label }}"
+<button type="button" title="{{ $resolvedLabel }}" aria-label="{{ $resolvedLabel }}"
     {{ $attributes->class(['icon-button group shrink-0']) }} @disabled($resolve === null && blank($value))
     x-data="copyButton" @click="copy(await ({{ $valueExpression }}))">
     <span class="inline-flex transition-transform duration-150 ease-out group-active:scale-75">

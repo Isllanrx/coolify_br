@@ -5,7 +5,7 @@
         <x-toast />
         <x-error-page
             code="403"
-            title="You shall not pass!"
-            description="You don't have permission to access this page." />
+            :title="__('error.403_title')"
+            :description="__('error.403_desc')" />
     </body>
 @endsection

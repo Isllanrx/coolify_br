@@ -1,16 +1,16 @@
 <div class="application-settings-form w-full">
     <x-slot:title>
-        Servers | Coolify
+        {{ __('nav.servers') }} | Coolify
     </x-slot>
 
     <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 class="min-w-0 text-[24px]! leading-7! font-semibold! tracking-tight!">Servers</h1>
+        <h1 class="min-w-0 text-[24px]! leading-7! font-semibold! tracking-tight!">{{ __('nav.servers') }}</h1>
         <div class="flex flex-wrap items-center gap-2">
             @can('createAnyResource')
                 <a href="{{ route('server.create') }}" {{ wireNavigate() }}
                     class="button w-fit shrink-0 whitespace-nowrap button-highlighted">
                     <x-reicon name="plus" class="size-3.5" />
-                    New server
+                    {{ __('server.new_server') }}
                 </a>
             @endcan
         </div>
@@ -28,11 +28,11 @@
             $sentinelNeedsAttention = $isReady && $server->isSentinelEnabled() && $server->sentinelStatus() === 'out_of_sync';
 
             $status = match (true) {
-                $isTransferredAway => 'Transferred away',
-                $server->settings->force_disabled => 'Disabled',
-                $proxyNeedsAttention || $sentinelNeedsAttention => 'Attention required',
-                $isReady => 'Ready',
-                default => 'Validation required',
+                $isTransferredAway => __('server.status_transferred_away'),
+                $server->settings->force_disabled => __('server.status_disabled'),
+                $proxyNeedsAttention || $sentinelNeedsAttention => __('server.status_attention_required'),
+                $isReady => __('server.status_ready'),
+                default => __('server.status_validation_required'),
             };
 
             $statusType = match (true) {

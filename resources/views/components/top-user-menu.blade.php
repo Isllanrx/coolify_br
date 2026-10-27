@@ -72,13 +72,13 @@
         <a href="{{ route('profile') }}" {{ wireNavigate() }} class="listbox-option">
             <span class="flex items-center gap-2">
                 <x-reicon name="profile" class="size-4 opacity-80" />
-                Profile
+                {{ __('profile.title') }}
             </span>
         </a>
         <a href="{{ route('profile.appearance') }}" {{ wireNavigate() }} class="listbox-option">
             <span class="flex items-center gap-2">
                 <x-reicon name="settings" class="size-4 opacity-80" />
-                Appearance
+                {{ __('profile.appearance') }}
             </span>
         </a>
 
@@ -88,7 +88,7 @@
         <a href="https://coolify.io/docs" target="_blank" rel="noopener noreferrer" class="listbox-option">
             <span class="flex items-center gap-2">
                 <x-reicon name="documentation" class="size-4 opacity-80" />
-                Documentation
+                {{ __('common.documentation') }}
             </span>
         </a>
         <x-modal-input title="How can we help?">
@@ -96,7 +96,7 @@
                 <div class="listbox-option cursor-pointer" @click="closePanel()">
                     <span class="flex items-center gap-2">
                         <x-reicon name="feedback" class="size-4 opacity-80" />
-                        Feedback
+                        {{ __('common.feedback') }}
                     </span>
                 </div>
             </x-slot:content>
@@ -119,7 +119,7 @@
             <button type="submit" class="listbox-option w-full text-left text-error dark:text-error">
                 <span class="flex items-center gap-2">
                     <x-reicon name="logout" class="size-4 opacity-90" />
-                    Log out
+                    {{ __('auth.log_out') }}
                 </span>
             </button>
         </form>

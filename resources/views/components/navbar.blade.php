@@ -96,7 +96,7 @@
                 class="menu-item menu-search justify-between !rounded-lg !bg-neutral-100 dark:!bg-white/[0.04] hover:!bg-neutral-200 dark:hover:!bg-white/[0.07] !text-fg-faint">
                 <span class="flex items-center gap-2.5 min-w-0">
                     <x-reicon name="search" class="menu-item-icon" />
-                    <span class="menu-item-label truncate" :class="collapsed && 'lg:hidden'">Search</span>
+                    <span class="menu-item-label truncate" :class="collapsed && 'lg:hidden'">{{ __('nav.search') }}</span>
                 </span>
                 <kbd class="px-1.5 py-0.5 text-[11px] font-medium text-fg-faint bg-neutral-200 dark:bg-white/[0.06] rounded-lg border border-transparent dark:border-white/5"
                     :class="collapsed && 'lg:hidden'" x-text="modKeyLabel + 'K'"></kbd>
@@ -109,63 +109,63 @@
             @php
                 // An entry with children opens a submenu in place of the main menu (back button + its pages).
                 $navSections = collect([
-                    'Workspace' => [
-                        ['label' => 'Dashboard', 'icon' => 'dashboard', 'href' => '/', 'active' => request()->is('/', 'dashboard/*', 'canvas')],
-                        ['label' => 'Projects', 'icon' => 'projects', 'href' => route('project.index'), 'active' => request()->is('projects', 'projects/*', 'project/*')],
-                        ['label' => 'Monitoring', 'icon' => 'graph', 'children' => [
-                            ['label' => 'Analytics', 'icon' => 'analytics', 'href' => route('analytics'), 'active' => request()->is('analytics')],
-                            ['label' => 'Metrics', 'icon' => 'graph', 'href' => route('metrics'), 'active' => request()->is('metrics')],
+                    __('nav.workspace') => [
+                        ['label' => __('nav.dashboard'), 'icon' => 'dashboard', 'href' => '/', 'active' => request()->is('/', 'dashboard/*', 'canvas')],
+                        ['label' => __('nav.projects'), 'icon' => 'projects', 'href' => route('project.index'), 'active' => request()->is('projects', 'projects/*', 'project/*')],
+                        ['label' => __('nav.monitoring'), 'icon' => 'graph', 'children' => [
+                            ['label' => __('nav.analytics'), 'icon' => 'analytics', 'href' => route('analytics'), 'active' => request()->is('analytics')],
+                            ['label' => __('nav.metrics'), 'icon' => 'graph', 'href' => route('metrics'), 'active' => request()->is('metrics')],
                         ]],
-                        ['label' => 'Terminal', 'icon' => 'browser-terminal', 'href' => route('terminal'), 'active' => request()->is('terminal*'), 'navigate' => false, 'visible' => auth()->user()?->can('canAccessTerminal')],
+                        ['label' => __('nav.terminal'), 'icon' => 'browser-terminal', 'href' => route('terminal'), 'active' => request()->is('terminal*'), 'navigate' => false, 'visible' => auth()->user()?->can('canAccessTerminal')],
                     ],
-                    'Infrastructure' => [
-                        ['label' => 'Servers', 'icon' => 'servers', 'href' => '/servers', 'active' => request()->is('server/*', 'servers', 'servers/*')],
-                        ['label' => 'Integrations', 'icon' => 'link', 'children' => [
-                            ['label' => 'Sources', 'icon' => 'sources', 'href' => route('source.all'), 'active' => request()->is('sources', 'source/*')],
-                            ['label' => 'Destinations', 'icon' => 'destinations', 'href' => route('destination.index'), 'active' => request()->is('destinations', 'destination/*')],
-                            ['label' => 'Registries', 'icon' => 'layers', 'href' => route('registries.index'), 'active' => request()->is('registries'), 'visible' => auth()->user()?->isAdmin()],
-                            ['label' => 'S3 Storage', 'icon' => 'storages', 'href' => route('storage.index'), 'active' => request()->is('storages', 'storages/*')],
+                    __('nav.infrastructure') => [
+                        ['label' => __('nav.servers'), 'icon' => 'servers', 'href' => '/servers', 'active' => request()->is('server/*', 'servers', 'servers/*')],
+                        ['label' => __('nav.integrations'), 'icon' => 'link', 'children' => [
+                            ['label' => __('nav.sources'), 'icon' => 'sources', 'href' => route('source.all'), 'active' => request()->is('sources', 'source/*')],
+                            ['label' => __('nav.destinations'), 'icon' => 'destinations', 'href' => route('destination.index'), 'active' => request()->is('destinations', 'destination/*')],
+                            ['label' => __('nav.registries'), 'icon' => 'layers', 'href' => route('registries.index'), 'active' => request()->is('registries'), 'visible' => auth()->user()?->isAdmin()],
+                            ['label' => __('nav.s3_storage'), 'icon' => 'storages', 'href' => route('storage.index'), 'active' => request()->is('storages', 'storages/*')],
                         ]],
-                        ['label' => 'Shared Variables', 'icon' => 'variables', 'children' => [
-                            ['label' => 'Overview', 'icon' => 'dashboard', 'href' => route('shared-variables.index'), 'active' => request()->is('shared-variables')],
-                            ['label' => 'Team', 'icon' => 'teams', 'href' => route('shared-variables.team.index'), 'active' => request()->is('shared-variables/team*')],
-                            ['label' => 'Projects', 'icon' => 'projects', 'href' => route('shared-variables.project.index'), 'active' => request()->is('shared-variables/projects', 'shared-variables/project/*')],
-                            ['label' => 'Environments', 'icon' => 'layers', 'href' => route('shared-variables.environment.index'), 'active' => request()->is('shared-variables/environments*')],
-                            ['label' => 'Servers', 'icon' => 'servers', 'href' => route('shared-variables.server.index'), 'active' => request()->is('shared-variables/servers', 'shared-variables/server/*')],
+                        ['label' => __('nav.shared_variables'), 'icon' => 'variables', 'children' => [
+                            ['label' => __('nav.overview'), 'icon' => 'dashboard', 'href' => route('shared-variables.index'), 'active' => request()->is('shared-variables')],
+                            ['label' => __('nav.team'), 'icon' => 'teams', 'href' => route('shared-variables.team.index'), 'active' => request()->is('shared-variables/team*')],
+                            ['label' => __('nav.projects'), 'icon' => 'projects', 'href' => route('shared-variables.project.index'), 'active' => request()->is('shared-variables/projects', 'shared-variables/project/*')],
+                            ['label' => __('nav.environments'), 'icon' => 'layers', 'href' => route('shared-variables.environment.index'), 'active' => request()->is('shared-variables/environments*')],
+                            ['label' => __('nav.servers'), 'icon' => 'servers', 'href' => route('shared-variables.server.index'), 'active' => request()->is('shared-variables/servers', 'shared-variables/server/*')],
                         ]],
                     ],
-                    'Manage' => [
-                        ['label' => 'Team', 'icon' => 'teams', 'children' => [
-                            ['label' => 'General', 'icon' => 'settings', 'href' => route('team.index'), 'active' => request()->is('team')],
-                            ['label' => 'Members', 'icon' => 'teams', 'href' => route('team.member.index'), 'active' => request()->is('team/members*')],
-                            ['label' => 'Audit log', 'icon' => 'time-back', 'href' => route('team.audit-log'), 'active' => request()->is('team/audit-log'), 'visible' => auth()->user()?->isAdminOfTeam(currentTeam()->id)],
-                            ['label' => 'Admin View', 'icon' => 'admin', 'href' => route('team.admin-view'), 'active' => request()->is('team/admin'), 'visible' => isInstanceAdmin()],
-                            ['label' => 'Danger Zone', 'icon' => 'danger', 'href' => route('team.danger-zone'), 'active' => request()->is('team/danger'), 'visible' => auth()->user()?->can('delete', currentTeam()), 'sectionStart' => true],
+                    __('nav.manage') => [
+                        ['label' => __('nav.team'), 'icon' => 'teams', 'children' => [
+                            ['label' => __('nav.general'), 'icon' => 'settings', 'href' => route('team.index'), 'active' => request()->is('team')],
+                            ['label' => __('nav.members'), 'icon' => 'teams', 'href' => route('team.member.index'), 'active' => request()->is('team/members*')],
+                            ['label' => __('nav.audit_log'), 'icon' => 'time-back', 'href' => route('team.audit-log'), 'active' => request()->is('team/audit-log'), 'visible' => auth()->user()?->isAdminOfTeam(currentTeam()->id)],
+                            ['label' => __('nav.admin_view'), 'icon' => 'admin', 'href' => route('team.admin-view'), 'active' => request()->is('team/admin'), 'visible' => isInstanceAdmin()],
+                            ['label' => __('nav.danger_zone'), 'icon' => 'danger', 'href' => route('team.danger-zone'), 'active' => request()->is('team/danger'), 'visible' => auth()->user()?->can('delete', currentTeam()), 'sectionStart' => true],
                         ]],
-                        ['label' => 'Notifications', 'icon' => 'notifications', 'children' => [
-                            ['label' => 'Email', 'icon' => 'mail', 'href' => route('notifications.email'), 'active' => request()->is('notifications/email')],
+                        ['label' => __('nav.notifications'), 'icon' => 'notifications', 'children' => [
+                            ['label' => __('nav.email'), 'icon' => 'mail', 'href' => route('notifications.email'), 'active' => request()->is('notifications/email')],
                             ['label' => 'Discord', 'brandIcon' => 'discord', 'href' => route('notifications.discord'), 'active' => request()->is('notifications/discord')],
                             ['label' => 'Telegram', 'brandIcon' => 'telegram', 'href' => route('notifications.telegram'), 'active' => request()->is('notifications/telegram')],
                             ['label' => 'Slack', 'brandIcon' => 'slack', 'href' => route('notifications.slack'), 'active' => request()->is('notifications/slack')],
                             ['label' => 'Pushover', 'brandIcon' => 'pushover', 'href' => route('notifications.pushover'), 'active' => request()->is('notifications/pushover')],
                             ['label' => 'Webhook', 'icon' => 'destinations', 'href' => route('notifications.webhook'), 'active' => request()->is('notifications/webhook')],
                         ]],
-                        ['label' => 'Keys & Tokens', 'icon' => 'keys', 'children' => [
-                            ['label' => 'Private Keys', 'icon' => 'keys', 'href' => route('security.private-key.index'), 'active' => request()->is('security/private-key*')],
-                            ['label' => 'Cloud Tokens', 'icon' => 'cloud', 'href' => route('security.cloud-tokens'), 'active' => request()->is('security/cloud-tokens*'), 'visible' => auth()->user()?->can('viewAny', App\Models\CloudProviderToken::class)],
-                            ['label' => 'Integration Tokens', 'icon' => 'network', 'href' => route('security.integration-tokens'), 'active' => request()->is('security/integration-tokens'), 'visible' => auth()->user()?->can('viewAny', App\Models\IntegrationToken::class)],
-                            ['label' => 'Cloud-Init Scripts', 'icon' => 'file-content', 'href' => route('security.cloud-init-scripts'), 'active' => request()->is('security/cloud-init-scripts*'), 'visible' => auth()->user()?->can('viewAny', App\Models\CloudInitScript::class)],
-                            ['label' => 'API Tokens', 'icon' => 'code', 'href' => route('security.api-tokens'), 'active' => request()->is('security/api-tokens')],
+                        ['label' => __('nav.keys_tokens'), 'icon' => 'keys', 'children' => [
+                            ['label' => __('nav.private_keys'), 'icon' => 'keys', 'href' => route('security.private-key.index'), 'active' => request()->is('security/private-key*')],
+                            ['label' => __('nav.cloud_tokens'), 'icon' => 'cloud', 'href' => route('security.cloud-tokens'), 'active' => request()->is('security/cloud-tokens*'), 'visible' => auth()->user()?->can('viewAny', App\Models\CloudProviderToken::class)],
+                            ['label' => __('nav.integration_tokens'), 'icon' => 'network', 'href' => route('security.integration-tokens'), 'active' => request()->is('security/integration-tokens'), 'visible' => auth()->user()?->can('viewAny', App\Models\IntegrationToken::class)],
+                            ['label' => __('nav.cloud_init_scripts'), 'icon' => 'file-content', 'href' => route('security.cloud-init-scripts'), 'active' => request()->is('security/cloud-init-scripts*'), 'visible' => auth()->user()?->can('viewAny', App\Models\CloudInitScript::class)],
+                            ['label' => __('nav.api_tokens'), 'icon' => 'code', 'href' => route('security.api-tokens'), 'active' => request()->is('security/api-tokens')],
                         ]],
-                        ['label' => 'Subscription', 'icon' => 'subscription', 'href' => isCloud() ? route('subscription.show') : '', 'active' => request()->is('subscription*'), 'visible' => isCloud() && auth()->user()->isAdmin()],
-                        ['label' => 'Tags', 'icon' => 'tags', 'href' => route('tags.show'), 'active' => request()->is('tags*', 'canvas/tags')],
-                        ['label' => 'Settings', 'icon' => 'settings', 'visible' => isInstanceAdmin(), 'children' => [
-                            ['label' => 'General', 'icon' => 'settings', 'href' => route('settings.index'), 'active' => request()->is('settings')],
-                            ['label' => 'Advanced', 'icon' => 'grid', 'href' => route('settings.advanced'), 'active' => request()->is('settings/advanced')],
-                            ['label' => 'Updates', 'icon' => 'refresh3', 'href' => route('settings.updates'), 'active' => request()->is('settings/updates')],
-                            ['label' => 'Authentication', 'icon' => 'keys', 'href' => route('settings.oauth'), 'active' => request()->is('settings/oauth*'), 'sectionStart' => true],
-                            ['label' => 'Email', 'icon' => 'mail', 'href' => route('settings.email'), 'active' => request()->is('settings/email')],
-                            ['label' => 'Backup', 'icon' => 'database', 'href' => route('settings.backup'), 'active' => request()->is('settings/backup')],
+                        ['label' => __('nav.subscription'), 'icon' => 'subscription', 'href' => isCloud() ? route('subscription.show') : '', 'active' => request()->is('subscription*'), 'visible' => isCloud() && auth()->user()->isAdmin()],
+                        ['label' => __('nav.tags'), 'icon' => 'tags', 'href' => route('tags.show'), 'active' => request()->is('tags*', 'canvas/tags')],
+                        ['label' => __('nav.settings'), 'icon' => 'settings', 'visible' => isInstanceAdmin(), 'children' => [
+                            ['label' => __('nav.general'), 'icon' => 'settings', 'href' => route('settings.index'), 'active' => request()->is('settings')],
+                            ['label' => __('nav.advanced'), 'icon' => 'grid', 'href' => route('settings.advanced'), 'active' => request()->is('settings/advanced')],
+                            ['label' => __('nav.updates'), 'icon' => 'refresh3', 'href' => route('settings.updates'), 'active' => request()->is('settings/updates')],
+                            ['label' => __('nav.authentication'), 'icon' => 'keys', 'href' => route('settings.oauth'), 'active' => request()->is('settings/oauth*'), 'sectionStart' => true],
+                            ['label' => __('nav.email'), 'icon' => 'mail', 'href' => route('settings.email'), 'active' => request()->is('settings/email')],
+                            ['label' => __('nav.backup'), 'icon' => 'database', 'href' => route('settings.backup'), 'active' => request()->is('settings/backup')],
                         ]],
                     ],
                 ])->map(fn (array $items) => collect($items)
