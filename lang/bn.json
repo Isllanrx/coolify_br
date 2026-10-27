@@ -46,5 +46,7 @@
     "resource.delete_connected_networks": "এই রিসোর্সের সাথে যুক্ত সমস্ত অপূর্বনির্ধারিত নেটওয়ার্ক স্থায়ীভাবে মুছে ফেলুন।",
     "resource.delete_configurations": "সার্ভার থেকে সমস্ত কনফিগারেশন ফাইল স্থায়ীভাবে মুছে ফেলুন।",
     "database.delete_backups_locally": "সমস্ত ব্যাকআপ লোকাল স্টোরেজ থেকে স্থায়ীভাবে মুছে ফেলা হবে।",
-    "warning.sslipdomain": "আপনার কনফিগারেশন সংরক্ষিত হয়েছে, কিন্তু https সহ sslip ডোমেইন ব্যবহার করা <span class='dark:text-red-500 text-red-500 font-bold'>সুপারিশ করা হয় না</span>, কারণ এই পাবলিক ডোমেইনের জন্য Let's Encrypt সার্ভারে রেট লিমিট আছে (SSL সার্টিফিকেট যাচাই ব্যর্থ হবে)। <br><br>এর পরিবর্তে আপনার নিজের ডোমেইন ব্যবহার করুন।"
+    "warning.sslipdomain": "আপনার কনফিগারেশন সংরক্ষিত হয়েছে, কিন্তু https সহ sslip ডোমেইন ব্যবহার করা <span class='dark:text-red-500 text-red-500 font-bold'>সুপারিশ করা হয় না</span>, কারণ এই পাবলিক ডোমেইনের জন্য Let's Encrypt সার্ভারে রেট লিমিট আছে (SSL সার্টিফিকেট যাচাই ব্যর্থ হবে)। <br><br>এর পরিবর্তে আপনার নিজের ডোমেইন ব্যবহার করুন।",
+    "profile.language": "ভাষা",
+    "profile.language.description": "Coolify ইন্টারফেসের ভাষা বেছে নিন।"
 }

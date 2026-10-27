@@ -46,5 +46,7 @@
     "resource.delete_connected_networks": "Bu resursla əlaqəli bütün əvvəlcədən təyin olunmamış şəbəkələr tamamilə silinəcək.",
     "resource.delete_configurations": "Serverdən bütün konfiqurasiya faylları tamamilə silinəcək.",
     "database.delete_backups_locally": "Bütün ehtiyat nüsxələr lokal yaddaşdan tamamilə silinəcək.",
-    "warning.sslipdomain": "Konfiqurasiya yadda saxlanıldı, lakin sslip domeni ilə https <span class='dark:text-red-500 text-red-500 font-bold'>TÖVSİYƏ EDİLMİR</span>, çünki Let's Encrypt serverləri bu ümumi domenlə məhdudlaşdırılır (SSL sertifikatının təsdiqlənməsi uğursuz olacaq). <br><br>Əvəzində öz domeninizdən istifadə edin."
+    "warning.sslipdomain": "Konfiqurasiya yadda saxlanıldı, lakin sslip domeni ilə https <span class='dark:text-red-500 text-red-500 font-bold'>TÖVSİYƏ EDİLMİR</span>, çünki Let's Encrypt serverləri bu ümumi domenlə məhdudlaşdırılır (SSL sertifikatının təsdiqlənməsi uğursuz olacaq). <br><br>Əvəzində öz domeninizdən istifadə edin.",
+    "profile.language": "Dil",
+    "profile.language.description": "Coolify interfeysinin dilini seçin."
 }

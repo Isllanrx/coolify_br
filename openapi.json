@@ -25898,6 +25898,11 @@
                     "marketing_emails": {
                         "type": "boolean",
                         "description": "The flag to receive marketing emails."
+                    },
+                    "locale": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The user interface language."
                     }
                 },
                 "type": "object"

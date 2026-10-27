@@ -46,5 +46,7 @@
     "resource.delete_connected_networks": "이 리소스와 연결된 미리 정의되지 않은 모든 네트워크를 영구적으로 삭제합니다.",
     "resource.delete_configurations": "서버에서 모든 설정 파일을 영구적으로 삭제합니다.",
     "database.delete_backups_locally": "모든 백업이 로컬 저장소에서 영구적으로 삭제됩니다.",
-    "warning.sslipdomain": "설정은 저장되었지만, https를 사용하는 sslip 도메인은 <span class='dark:text-red-500 text-red-500 font-bold'>권장되지 않습니다</span>. 이 공개 도메인에는 Let's Encrypt 서버의 요청 제한이 적용되어 SSL 인증서 검증이 실패합니다.<br><br>대신 직접 소유한 도메인을 사용하세요."
+    "warning.sslipdomain": "설정은 저장되었지만, https를 사용하는 sslip 도메인은 <span class='dark:text-red-500 text-red-500 font-bold'>권장되지 않습니다</span>. 이 공개 도메인에는 Let's Encrypt 서버의 요청 제한이 적용되어 SSL 인증서 검증이 실패합니다.<br><br>대신 직접 소유한 도메인을 사용하세요.",
+    "profile.language": "언어",
+    "profile.language.description": "Coolify 인터페이스의 언어를 선택하세요."
 }

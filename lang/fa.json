@@ -46,5 +46,7 @@
     "resource.delete_connected_networks": "همه شبکه‌های غیرپیش‌فرض مرتبط با این منبع برای همیشه حذف شوند.",
     "resource.delete_configurations": "همه فایل‌های پیکربندی از سرور برای همیشه حذف شوند.",
     "database.delete_backups_locally": "همه پشتیبان‌ها برای همیشه از فضای ذخیره‌سازی محلی حذف خواهند شد.",
-    "warning.sslipdomain": "پیکربندی شما ذخیره شد، اما استفاده از دامنه sslip با https <span class='dark:text-red-500 text-red-500 font-bold'>توصیه نمی‌شود</span>، زیرا سرورهای Let's Encrypt برای این دامنه عمومی محدودیت نرخ دارند (اعتبارسنجی گواهی SSL ناموفق خواهد بود). <br><br>به‌جای آن از دامنه خودتان استفاده کنید."
+    "warning.sslipdomain": "پیکربندی شما ذخیره شد، اما استفاده از دامنه sslip با https <span class='dark:text-red-500 text-red-500 font-bold'>توصیه نمی‌شود</span>، زیرا سرورهای Let's Encrypt برای این دامنه عمومی محدودیت نرخ دارند (اعتبارسنجی گواهی SSL ناموفق خواهد بود). <br><br>به‌جای آن از دامنه خودتان استفاده کنید.",
+    "profile.language": "زبان",
+    "profile.language.description": "زبان رابط کاربری Coolify را انتخاب کنید."
 }

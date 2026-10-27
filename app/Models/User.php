@@ -10,6 +10,7 @@ use App\Notifications\TransactionalEmails\ResetPassword as TransactionalEmailsRe
 use App\Services\ChangelogService;
 use App\Traits\DeletesUserSessions;
 use DateTimeInterface;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -41,9 +42,10 @@ use OpenApi\Attributes as OA;
         'two_factor_confirmed_at' => ['type' => 'string', 'description' => 'The date when the user two factor was confirmed.'],
         'force_password_reset' => ['type' => 'boolean', 'description' => 'The flag to force the user to reset the password.'],
         'marketing_emails' => ['type' => 'boolean', 'description' => 'The flag to receive marketing emails.'],
+        'locale' => ['type' => 'string', 'nullable' => true, 'description' => 'The user interface language.'],
     ],
 )]
-class User extends Authenticatable implements PasskeyUser, SendsEmail
+class User extends Authenticatable implements HasLocalePreference, PasskeyUser, SendsEmail
 {
     use DeletesUserSessions, HasApiTokens, HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
 
@@ -60,6 +62,7 @@ class User extends Authenticatable implements PasskeyUser, SendsEmail
         'avatar_path',
         'avatar_storage_type',
         'avatar_s3_storage_id',
+        'locale',
     ];
 
     protected $hidden = [
@@ -301,6 +304,11 @@ class User extends Authenticatable implements PasskeyUser, SendsEmail
     public function getRecipients(): array
     {
         return [$this->email];
+    }
+
+    public function preferredLocale(): ?string
+    {
+        return $this->locale;
     }
 
     public function sendVerificationEmail()

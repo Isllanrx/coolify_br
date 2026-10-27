@@ -46,5 +46,7 @@
     "resource.delete_connected_networks": "Eliminar permanentemente todas las redes no predefinidas asociadas a este recurso.",
     "resource.delete_configurations": "Eliminar permanentemente todos los archivos de configuración del servidor.",
     "database.delete_backups_locally": "Todas las copias de seguridad se eliminarán permanentemente del almacenamiento local.",
-    "warning.sslipdomain": "Tu configuración se ha guardado, pero un dominio sslip con https <span class='dark:text-red-500 text-red-500 font-bold'>NO</span> es recomendable, porque los servidores de Let's Encrypt tienen limitada la tasa de solicitudes para este dominio público (la validación del certificado SSL fallará). <br><br>Usa tu propio dominio en su lugar."
+    "warning.sslipdomain": "Tu configuración se ha guardado, pero un dominio sslip con https <span class='dark:text-red-500 text-red-500 font-bold'>NO</span> es recomendable, porque los servidores de Let's Encrypt tienen limitada la tasa de solicitudes para este dominio público (la validación del certificado SSL fallará). <br><br>Usa tu propio dominio en su lugar.",
+    "profile.language": "Idioma",
+    "profile.language.description": "Elige el idioma de la interfaz de Coolify."
 }

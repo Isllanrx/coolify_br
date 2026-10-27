@@ -46,5 +46,7 @@
     "resource.delete_connected_networks": "ลบเครือข่ายที่ไม่ใช่ค่าเริ่มต้นทั้งหมดที่เชื่อมโยงกับทรัพยากรนี้อย่างถาวร",
     "resource.delete_configurations": "ลบไฟล์การตั้งค่าทั้งหมดออกจากเซิร์ฟเวอร์อย่างถาวร",
     "database.delete_backups_locally": "ข้อมูลสำรองทั้งหมดจะถูกลบออกจากที่เก็บข้อมูลภายในเครื่องอย่างถาวร",
-    "warning.sslipdomain": "บันทึกการตั้งค่าของคุณแล้ว แต่<span class='dark:text-red-500 text-red-500 font-bold'>ไม่แนะนำ</span>ให้ใช้โดเมน sslip กับ https เนื่องจากเซิร์ฟเวอร์ Let's Encrypt จำกัดอัตราคำขอสำหรับโดเมนสาธารณะนี้ (การตรวจสอบใบรับรอง SSL จะล้มเหลว) <br><br>กรุณาใช้โดเมนของคุณเองแทน"
+    "warning.sslipdomain": "บันทึกการตั้งค่าของคุณแล้ว แต่<span class='dark:text-red-500 text-red-500 font-bold'>ไม่แนะนำ</span>ให้ใช้โดเมน sslip กับ https เนื่องจากเซิร์ฟเวอร์ Let's Encrypt จำกัดอัตราคำขอสำหรับโดเมนสาธารณะนี้ (การตรวจสอบใบรับรอง SSL จะล้มเหลว) <br><br>กรุณาใช้โดเมนของคุณเองแทน",
+    "profile.language": "ภาษา",
+    "profile.language.description": "เลือกภาษาของอินเทอร์เฟซ Coolify"
 }

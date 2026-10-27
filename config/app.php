@@ -152,6 +152,36 @@ return [
 
     'fallback_locale' => 'en',
 
+    'available_locales' => [
+        'ar' => 'العربية',
+        'az' => 'Azərbaycanca',
+        'bn' => 'বাংলা',
+        'cs' => 'Čeština',
+        'de' => 'Deutsch',
+        'en' => 'English',
+        'es' => 'Español',
+        'fa' => 'فارسی',
+        'fr' => 'Français',
+        'hi' => 'हिन्दी',
+        'id' => 'Bahasa Indonesia',
+        'it' => 'Italiano',
+        'ja' => '日本語',
+        'ko' => '한국어',
+        'nl' => 'Nederlands',
+        'no' => 'Norsk',
+        'pl' => 'Polski',
+        'pt' => 'Português',
+        'pt-br' => 'Português (Brasil)',
+        'ro' => 'Română',
+        'ru' => 'Русский',
+        'th' => 'ไทย',
+        'tr' => 'Türkçe',
+        'uk' => 'Українська',
+        'vi' => 'Tiếng Việt',
+        'zh-cn' => '简体中文',
+        'zh-tw' => '繁體中文',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Faker Locale

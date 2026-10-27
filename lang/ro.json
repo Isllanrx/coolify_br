@@ -46,5 +46,7 @@
     "resource.delete_connected_networks": "Ștergeți definitiv toate rețelele non-predefinite asociate cu această resursă.",
     "resource.delete_configurations": "Ștergeți definitiv toate fișierele de configurare de pe server.",
     "database.delete_backups_locally": "Toate copiile de rezervă vor fi șterse definitiv din stocarea locală.",
-    "warning.sslipdomain": "Configurația a fost salvată, dar un domeniu sslip cu https <span class='dark:text-red-500 text-red-500 font-bold'>NU</span> este recomandat, deoarece serverele Let's Encrypt limitează numărul de cereri pentru acest domeniu public (validarea certificatului SSL va eșua). <br><br>Folosiți în schimb propriul domeniu."
+    "warning.sslipdomain": "Configurația a fost salvată, dar un domeniu sslip cu https <span class='dark:text-red-500 text-red-500 font-bold'>NU</span> este recomandat, deoarece serverele Let's Encrypt limitează numărul de cereri pentru acest domeniu public (validarea certificatului SSL va eșua). <br><br>Folosiți în schimb propriul domeniu.",
+    "profile.language": "Limbă",
+    "profile.language.description": "Alegeți limba interfeței Coolify."
 }

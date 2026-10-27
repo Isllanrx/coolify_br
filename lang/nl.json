@@ -46,5 +46,7 @@
     "resource.delete_connected_networks": "Alle niet-vooraf gedefinieerde netwerken die aan deze resource zijn gekoppeld definitief verwijderen.",
     "resource.delete_configurations": "Alle configuratiebestanden definitief van de server verwijderen.",
     "database.delete_backups_locally": "Alle back-ups worden definitief uit de lokale opslag verwijderd.",
-    "warning.sslipdomain": "Je configuratie is opgeslagen, maar een sslip-domein met https wordt <span class='dark:text-red-500 text-red-500 font-bold'>NIET</span> aanbevolen, omdat de Let's Encrypt-servers voor dit openbare domein aan een limiet zijn gebonden (validatie van het SSL-certificaat mislukt). <br><br>Gebruik in plaats daarvan je eigen domein."
+    "warning.sslipdomain": "Je configuratie is opgeslagen, maar een sslip-domein met https wordt <span class='dark:text-red-500 text-red-500 font-bold'>NIET</span> aanbevolen, omdat de Let's Encrypt-servers voor dit openbare domein aan een limiet zijn gebonden (validatie van het SSL-certificaat mislukt). <br><br>Gebruik in plaats daarvan je eigen domein.",
+    "profile.language": "Taal",
+    "profile.language.description": "Kies de taal van de Coolify-interface."
 }

@@ -46,5 +46,7 @@
     "resource.delete_connected_networks": "Trvale smazat všechny nepředdefinované sítě přidružené k tomuto prostředku.",
     "resource.delete_configurations": "Trvale smazat všechny konfigurační soubory ze serveru.",
     "database.delete_backups_locally": "Všechny zálohy budou trvale smazány z lokálního úložiště.",
-    "warning.sslipdomain": "Vaše konfigurace je uložena, ale doména sslip s https se <span class='dark:text-red-500 text-red-500 font-bold'>NEDOPORUČUJE</span>, protože servery Let's Encrypt mají pro tuto veřejnou doménu omezený počet požadavků (ověření SSL certifikátu selže). <br><br>Použijte raději vlastní doménu."
+    "warning.sslipdomain": "Vaše konfigurace je uložena, ale doména sslip s https se <span class='dark:text-red-500 text-red-500 font-bold'>NEDOPORUČUJE</span>, protože servery Let's Encrypt mají pro tuto veřejnou doménu omezený počet požadavků (ověření SSL certifikátu selže). <br><br>Použijte raději vlastní doménu.",
+    "profile.language": "Jazyk",
+    "profile.language.description": "Vyberte jazyk rozhraní Coolify."
 }

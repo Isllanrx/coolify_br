@@ -46,5 +46,7 @@
     "resource.delete_connected_networks": "永久刪除與此資源關聯的所有非預先定義網路。",
     "resource.delete_configurations": "永久刪除伺服器上的所有設定檔。",
     "database.delete_backups_locally": "所有備份都將從本機儲存空間中永久刪除。",
-    "warning.sslipdomain": "您的設定已儲存，但<span class='dark:text-red-500 text-red-500 font-bold'>不建議</span>將 sslip 網域搭配 https 使用，因為 Let's Encrypt 伺服器對此公開網域有速率限制（SSL 憑證驗證將會失敗）。<br><br>請改用您自己的網域。"
+    "warning.sslipdomain": "您的設定已儲存，但<span class='dark:text-red-500 text-red-500 font-bold'>不建議</span>將 sslip 網域搭配 https 使用，因為 Let's Encrypt 伺服器對此公開網域有速率限制（SSL 憑證驗證將會失敗）。<br><br>請改用您自己的網域。",
+    "profile.language": "語言",
+    "profile.language.description": "選擇 Coolify 介面的語言。"
 }

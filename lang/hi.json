@@ -46,5 +46,7 @@
     "resource.delete_connected_networks": "इस रिसोर्स से जुड़े सभी गैर-पूर्वनिर्धारित नेटवर्क स्थायी रूप से हटाएँ।",
     "resource.delete_configurations": "सर्वर से सभी कॉन्फ़िगरेशन फ़ाइलें स्थायी रूप से हटाएँ।",
     "database.delete_backups_locally": "सभी बैकअप स्थानीय स्टोरेज से स्थायी रूप से हटा दिए जाएँगे।",
-    "warning.sslipdomain": "आपका कॉन्फ़िगरेशन सहेज लिया गया है, लेकिन https के साथ sslip डोमेन का उपयोग करना <span class='dark:text-red-500 text-red-500 font-bold'>अनुशंसित नहीं</span> है, क्योंकि इस सार्वजनिक डोमेन के लिए Let's Encrypt सर्वर पर दर सीमा लागू है (SSL प्रमाणपत्र सत्यापन विफल हो जाएगा)। <br><br>इसके बजाय अपने स्वयं के डोमेन का उपयोग करें।"
+    "warning.sslipdomain": "आपका कॉन्फ़िगरेशन सहेज लिया गया है, लेकिन https के साथ sslip डोमेन का उपयोग करना <span class='dark:text-red-500 text-red-500 font-bold'>अनुशंसित नहीं</span> है, क्योंकि इस सार्वजनिक डोमेन के लिए Let's Encrypt सर्वर पर दर सीमा लागू है (SSL प्रमाणपत्र सत्यापन विफल हो जाएगा)। <br><br>इसके बजाय अपने स्वयं के डोमेन का उपयोग करें।",
+    "profile.language": "भाषा",
+    "profile.language.description": "Coolify इंटरफ़ेस की भाषा चुनें।"
 }

@@ -46,5 +46,7 @@
     "resource.delete_connected_networks": "このリソースに関連付けられた、定義済み以外のネットワークをすべて完全に削除します。",
     "resource.delete_configurations": "サーバーからすべての設定ファイルを完全に削除します。",
     "database.delete_backups_locally": "すべてのバックアップがローカルストレージから完全に削除されます。",
-    "warning.sslipdomain": "設定は保存されましたが、https を使用した sslip ドメインは<span class='dark:text-red-500 text-red-500 font-bold'>推奨されません</span>。この公開ドメインでは Let's Encrypt サーバーにレート制限がかかっているため、SSL 証明書の検証に失敗します。<br><br>代わりにご自身のドメインを使用してください。"
+    "warning.sslipdomain": "設定は保存されましたが、https を使用した sslip ドメインは<span class='dark:text-red-500 text-red-500 font-bold'>推奨されません</span>。この公開ドメインでは Let's Encrypt サーバーにレート制限がかかっているため、SSL 証明書の検証に失敗します。<br><br>代わりにご自身のドメインを使用してください。",
+    "profile.language": "言語",
+    "profile.language.description": "Coolify インターフェースの言語を選択します。"
 }
