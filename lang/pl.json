@@ -16,6 +16,7 @@
     "auth.forgot_password_link": "Zapomniałeś hasło?",
     "auth.forgot_password_heading": "Odzyskiwanie hasła",
     "auth.forgot_password_send_email": "Wyślij email resetujący hasło",
+    "auth.forgot_password_disabled_tooltip": "Resetowanie hasła jest niedostępne, ponieważ na tej instancji nie skonfigurowano transakcyjnej poczty e-mail (SMTP lub Resend).",
     "auth.register_now": "Zarejestruj",
     "auth.logout": "Wyloguj",
     "auth.register": "Zarejestruj",

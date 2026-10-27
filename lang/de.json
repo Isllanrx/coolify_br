@@ -1,5 +1,6 @@
 {
     "auth.login": "Anmelden",
+    "auth.login.authentik": "Mit Authentik anmelden",
     "auth.login.azure": "Mit Microsoft anmelden",
     "auth.login.bitbucket": "Mit Bitbucket anmelden",
     "auth.login.clerk": "Mit Clerk anmelden",
@@ -15,6 +16,7 @@
     "auth.forgot_password_link": "Passwort vergessen?",
     "auth.forgot_password_heading": "Passwort-Wiederherstellung",
     "auth.forgot_password_send_email": "E-Mail zum Zurücksetzen des Passworts senden",
+    "auth.forgot_password_disabled_tooltip": "Das Zurücksetzen des Passworts ist nicht verfügbar, da auf dieser Instanz kein Transaktions-E-Mail-Dienst (SMTP oder Resend) konfiguriert ist.",
     "auth.register_now": "Registrieren",
     "auth.logout": "Abmelden",
     "auth.register": "Registrieren",
@@ -36,5 +38,13 @@
     "input.code": "Einmalcode",
     "input.recovery_code": "Wiederherstellungscode",
     "button.save": "Speichern",
-    "repository.url": "<span class='text-helper'>Beispiele</span><br>Für öffentliche Repositories benutze <span class='text-helper'>https://...</span>.<br>Für private Repositories benutze <span class='text-helper'>git@...</span>.<br><br>https://github.com/coollabsio/coolify-examples <span class='text-helper'>main</span> Branch wird ausgewählt<br>https://github.com/coollabsio/coolify-examples/tree/nodejs-fastify <span class='text-helper'>nodejs-fastify</span> Branch wird ausgewählt.<br>https://gitea.com/sedlav/expressjs.git <span class='text-helper'>main</span> Branch wird ausgewählt.<br>https://gitlab.com/andrasbacsai/nodejs-example.git <span class='text-helper'>main</span> Branch wird ausgewählt."
+    "repository.url": "<span class='text-helper'>Beispiele</span><br>Für öffentliche Repositories benutze <span class='text-helper'>https://...</span>.<br>Für private Repositories benutze <span class='text-helper'>git@...</span>.<br><br>https://github.com/coollabsio/coolify-examples <span class='text-helper'>main</span> Branch wird ausgewählt<br>https://github.com/coollabsio/coolify-examples/tree/nodejs-fastify <span class='text-helper'>nodejs-fastify</span> Branch wird ausgewählt.<br>https://gitea.com/sedlav/expressjs.git <span class='text-helper'>main</span> Branch wird ausgewählt.<br>https://gitlab.com/andrasbacsai/nodejs-example.git <span class='text-helper'>main</span> Branch wird ausgewählt.",
+    "service.stop": "Dieser Dienst wird gestoppt.",
+    "resource.docker_cleanup": "Docker-Bereinigung ausführen (nicht verwendete Images und Builder-Cache entfernen).",
+    "resource.non_persistent": "Alle nicht persistenten Daten werden gelöscht.",
+    "resource.delete_volumes": "Alle mit dieser Ressource verknüpften Volumes dauerhaft löschen.",
+    "resource.delete_connected_networks": "Alle nicht vordefinierten Netzwerke, die mit dieser Ressource verknüpft sind, dauerhaft löschen.",
+    "resource.delete_configurations": "Alle Konfigurationsdateien dauerhaft vom Server löschen.",
+    "database.delete_backups_locally": "Alle Backups werden dauerhaft aus dem lokalen Speicher gelöscht.",
+    "warning.sslipdomain": "Deine Konfiguration wurde gespeichert, aber eine sslip-Domain mit https wird <span class='dark:text-red-500 text-red-500 font-bold'>NICHT</span> empfohlen, da die Let's-Encrypt-Server für diese öffentliche Domain Ratenbegrenzungen unterliegen (die Validierung des SSL-Zertifikats schlägt fehl). <br><br>Verwende stattdessen deine eigene Domain."
 }

@@ -1,5 +1,6 @@
 {
     "auth.login": "ورود",
+    "auth.login.authentik": "ورود با Authentik",
     "auth.login.azure": "ورود با مایکروسافت",
     "auth.login.bitbucket": "ورود با Bitbucket",
     "auth.login.clerk": "ورود با Clerk",
@@ -7,12 +8,15 @@
     "auth.login.github": "ورود با گیت هاب",
     "auth.login.gitlab": "ورود با گیت لب",
     "auth.login.google": "ورود با گوگل",
+    "auth.login.oidc": "ورود با SSO",
     "auth.login.infomaniak": "ورود با Infomaniak",
+    "auth.login.zitadel": "ورود با Zitadel",
     "auth.already_registered": "قبلاً ثبت نام کرده‌اید؟",
     "auth.confirm_password": "تایید رمز عبور",
     "auth.forgot_password_link": "رمز عبور را فراموش کرده‌اید؟",
     "auth.forgot_password_heading": "بازیابی رمز عبور",
     "auth.forgot_password_send_email": "ارسال ایمیل بازیابی رمز عبور",
+    "auth.forgot_password_disabled_tooltip": "بازیابی رمز عبور در دسترس نیست، زیرا ایمیل تراکنشی (SMTP یا Resend) روی این نمونه پیکربندی نشده است.",
     "auth.register_now": "ثبت نام",
     "auth.logout": "خروج",
     "auth.register": "ثبت نام",
@@ -34,5 +38,13 @@
     "input.code": "کد یک‌ بار مصرف",
     "input.recovery_code": "کد بازیابی",
     "button.save": "ذخیره",
-    "repository.url": "<span class='text-helper'>مثال‌ها</span><br>برای مخازن عمومی، از <span class='text-helper'>https://...</span> استفاده کنید.<br>برای مخازن خصوصی، از <span class='text-helper'>git@...</span> استفاده کنید.<br><br>شاخه <span class='text-helper'>main</span> انتخاب خواهد شد.<br>https://github.com/coollabsio/coolify-examples/tree/nodejs-fastify شاخه <span class='text-helper'>nodejs-fastify</span> انتخاب خواهد شد.<br>https://gitea.com/sedlav/expressjs.git شاخه <span class='text-helper'>main</span> انتخاب خواهد شد.<br>https://gitlab.com/andrasbacsai/nodejs-example.git شاخه <span class='text-helper'>main</span> انتخاب خواهد شد."
+    "repository.url": "<span class='text-helper'>مثال‌ها</span><br>برای مخازن عمومی، از <span class='text-helper'>https://...</span> استفاده کنید.<br>برای مخازن خصوصی، از <span class='text-helper'>git@...</span> استفاده کنید.<br><br>شاخه <span class='text-helper'>main</span> انتخاب خواهد شد.<br>https://github.com/coollabsio/coolify-examples/tree/nodejs-fastify شاخه <span class='text-helper'>nodejs-fastify</span> انتخاب خواهد شد.<br>https://gitea.com/sedlav/expressjs.git شاخه <span class='text-helper'>main</span> انتخاب خواهد شد.<br>https://gitlab.com/andrasbacsai/nodejs-example.git شاخه <span class='text-helper'>main</span> انتخاب خواهد شد.",
+    "service.stop": "این سرویس متوقف خواهد شد.",
+    "resource.docker_cleanup": "اجرای Docker Cleanup (حذف ایمیج‌های استفاده‌نشده و کش ساخت).",
+    "resource.non_persistent": "همه داده‌های غیرپایدار حذف خواهند شد.",
+    "resource.delete_volumes": "همه ولوم‌های مرتبط با این منبع برای همیشه حذف شوند.",
+    "resource.delete_connected_networks": "همه شبکه‌های غیرپیش‌فرض مرتبط با این منبع برای همیشه حذف شوند.",
+    "resource.delete_configurations": "همه فایل‌های پیکربندی از سرور برای همیشه حذف شوند.",
+    "database.delete_backups_locally": "همه پشتیبان‌ها برای همیشه از فضای ذخیره‌سازی محلی حذف خواهند شد.",
+    "warning.sslipdomain": "پیکربندی شما ذخیره شد، اما استفاده از دامنه sslip با https <span class='dark:text-red-500 text-red-500 font-bold'>توصیه نمی‌شود</span>، زیرا سرورهای Let's Encrypt برای این دامنه عمومی محدودیت نرخ دارند (اعتبارسنجی گواهی SSL ناموفق خواهد بود). <br><br>به‌جای آن از دامنه خودتان استفاده کنید."
 }
