@@ -6209,5 +6209,6 @@
     "Use path-style URLs": "Path tarzı URL'ler kullan",
     "What is copied": "Neler kopyalanır",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "bir değişken satırının hemen üstüne koyun. Bu satır olmadan değişkenin bayrakları değişmez.",
-    "directly above its line. Without this line, the flag does not change.": "satırının hemen üstüne koyun. Bu satır olmadan bayrak değişmez."
+    "directly above its line. Without this line, the flag does not change.": "satırının hemen üstüne koyun. Bu satır olmadan bayrak değişmez.",
+    "Search…": "Ara…"
 }

@@ -6209,5 +6209,6 @@
     "Use path-style URLs": "使用 path 风格 URL",
     "What is copied": "复制的内容",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "放在变量所在行的正上方。没有这一行，变量的标志不会改变。",
-    "directly above its line. Without this line, the flag does not change.": "放在其所在行的正上方。没有这一行，标志不会改变。"
+    "directly above its line. Without this line, the flag does not change.": "放在其所在行的正上方。没有这一行，标志不会改变。",
+    "Search…": "搜索…"
 }

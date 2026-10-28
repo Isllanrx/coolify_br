@@ -6209,5 +6209,6 @@
     "Use path-style URLs": "path-স্টাইল URL ব্যবহার করুন",
     "What is copied": "কী কপি করা হয়",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "ভেরিয়েবলের লাইনের ঠিক উপরে রাখুন। এই লাইন ছাড়া ভেরিয়েবলের ফ্ল্যাগ বদলায় না।",
-    "directly above its line. Without this line, the flag does not change.": "এর লাইনের ঠিক উপরে রাখুন। এই লাইন ছাড়া ফ্ল্যাগ বদলায় না।"
+    "directly above its line. Without this line, the flag does not change.": "এর লাইনের ঠিক উপরে রাখুন। এই লাইন ছাড়া ফ্ল্যাগ বদলায় না।",
+    "Search…": "অনুসন্ধান…"
 }

@@ -6209,5 +6209,6 @@
     "Use path-style URLs": "Path-Style-URLs verwenden",
     "What is copied": "Was kopiert wird",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "direkt über die Zeile einer Variable. Ohne diese Zeile ändern sich die Flags einer Variable nicht.",
-    "directly above its line. Without this line, the flag does not change.": "direkt über ihre Zeile. Ohne diese Zeile ändert sich das Flag nicht."
+    "directly above its line. Without this line, the flag does not change.": "direkt über ihre Zeile. Ohne diese Zeile ändert sich das Flag nicht.",
+    "Search…": "Suchen…"
 }

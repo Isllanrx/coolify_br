@@ -21,7 +21,7 @@
     'autoDisable' => true,
     'multiple' => false, // true = the bound value is an array of option values
     'searchable' => false, // true = a search field filters the options
-    'searchPlaceholder' => 'Search…',
+    'searchPlaceholder' => __('Search…'),
     'searchEmptyText' => __('No matching options'),
     'allowCustom' => false, // true (with searchable) = the search text can be chosen as a custom value
 ])

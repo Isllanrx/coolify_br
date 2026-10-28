@@ -6209,5 +6209,6 @@
     "Use path-style URLs": "استفاده از URLهای سبک path",
     "What is copied": "چه چیزی کپی می‌شود",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "درست بالای خط متغیر قرار دهید. بدون این خط، پرچم‌های متغیر تغییر نمی‌کنند.",
-    "directly above its line. Without this line, the flag does not change.": "درست بالای خط آن قرار دهید. بدون این خط، پرچم تغییر نمی‌کند."
+    "directly above its line. Without this line, the flag does not change.": "درست بالای خط آن قرار دهید. بدون این خط، پرچم تغییر نمی‌کند.",
+    "Search…": "جستجو…"
 }

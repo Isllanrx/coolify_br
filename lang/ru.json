@@ -6209,5 +6209,6 @@
     "Use path-style URLs": "Использовать URL в стиле path",
     "What is copied": "Что копируется",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "прямо над строкой переменной. Без этой строки флаги переменной не меняются.",
-    "directly above its line. Without this line, the flag does not change.": "прямо над её строкой. Без этой строки флаг не меняется."
+    "directly above its line. Without this line, the flag does not change.": "прямо над её строкой. Без этой строки флаг не меняется.",
+    "Search…": "Поиск…"
 }

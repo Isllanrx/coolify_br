@@ -6209,5 +6209,6 @@
     "Use path-style URLs": "path 방식 URL 사용",
     "What is copied": "복사되는 항목",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "을(를) 변수 줄 바로 위에 두세요. 이 줄이 없으면 변수의 플래그는 바뀌지 않습니다.",
-    "directly above its line. Without this line, the flag does not change.": "을(를) 해당 줄 바로 위에 두세요. 이 줄이 없으면 플래그는 바뀌지 않습니다."
+    "directly above its line. Without this line, the flag does not change.": "을(를) 해당 줄 바로 위에 두세요. 이 줄이 없으면 플래그는 바뀌지 않습니다.",
+    "Search…": "검색…"
 }

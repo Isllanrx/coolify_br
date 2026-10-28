@@ -6209,5 +6209,6 @@
     "Use path-style URLs": "path 形式の URL を使用",
     "What is copied": "コピーされる内容",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "を変数の行のすぐ上に置きます。この行がない場合、変数のフラグは変わりません。",
-    "directly above its line. Without this line, the flag does not change.": "をその行のすぐ上に置きます。この行がない場合、フラグは変わりません。"
+    "directly above its line. Without this line, the flag does not change.": "をその行のすぐ上に置きます。この行がない場合、フラグは変わりません。",
+    "Search…": "検索…"
 }

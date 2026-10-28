@@ -6209,5 +6209,6 @@
     "Use path-style URLs": "استخدام عناوين URL بنمط path",
     "What is copied": "ما الذي يتم نسخه",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "مباشرة فوق سطر المتغير. بدون هذا السطر، لا تتغير علامات المتغير.",
-    "directly above its line. Without this line, the flag does not change.": "مباشرة فوق سطره. بدون هذا السطر، لا تتغير العلامة."
+    "directly above its line. Without this line, the flag does not change.": "مباشرة فوق سطره. بدون هذا السطر، لا تتغير العلامة.",
+    "Search…": "بحث…"
 }
