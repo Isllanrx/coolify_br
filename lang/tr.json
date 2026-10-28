@@ -6210,5 +6210,7 @@
     "What is copied": "Neler kopyalanır",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "bir değişken satırının hemen üstüne koyun. Bu satır olmadan değişkenin bayrakları değişmez.",
     "directly above its line. Without this line, the flag does not change.": "satırının hemen üstüne koyun. Bu satır olmadan bayrak değişmez.",
-    "Search…": "Ara…"
+    "Search…": "Ara…",
+    "The machine running Coolify. Not recommended for production workloads due to resource contention.": "Coolify'ı çalıştıran makine. Kaynak çekişmesi nedeniyle üretim iş yükleri için önerilmez.",
+    "Any SSH-accessible server, including cloud VPS, bare metal, and self-hosted infrastructure.": "Bulut VPS, fiziksel sunucu ve kendi barındırdığınız altyapı dahil, SSH ile erişilebilen herhangi bir sunucu."
 }

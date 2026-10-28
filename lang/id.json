@@ -6210,5 +6210,7 @@
     "What is copied": "Apa yang disalin",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "tepat di atas baris variabel. Tanpa baris ini, flag variabel tidak berubah.",
     "directly above its line. Without this line, the flag does not change.": "tepat di atas barisnya. Tanpa baris ini, flag tidak berubah.",
-    "Search…": "Cari…"
+    "Search…": "Cari…",
+    "The machine running Coolify. Not recommended for production workloads due to resource contention.": "Mesin yang menjalankan Coolify. Tidak disarankan untuk beban kerja produksi karena perebutan sumber daya.",
+    "Any SSH-accessible server, including cloud VPS, bare metal, and self-hosted infrastructure.": "Server apa pun yang dapat diakses melalui SSH, termasuk VPS cloud, bare metal, dan infrastruktur self-hosted."
 }

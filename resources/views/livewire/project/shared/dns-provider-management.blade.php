@@ -29,11 +29,12 @@
                                         <x-status-badge status="Managed by Coolify" type="success" />
                                     @elseif (isset($dnsProviderConflicts[$key]))
                                         @php($conflict = $dnsProviderConflicts[$key])
+                                        @php($replaceActions = [__('Replace :hostname value :current with :proposed', ['hostname' => $proposal['hostname'], 'current' => $conflict['current'], 'proposed' => $conflict['proposed']]), __('Coolify will manage the replaced record.')])
                                         <div class="flex flex-col items-end gap-2 text-xs"><span class="text-red-600 dark:text-red-400">{{ __('Currently') }} {{ $conflict['current'] }}</span>
                                             <x-modal-confirmation :title="__('Replace conflicting DNS record?')" isErrorButton :buttonTitle="__('Replace record')"
                                                 submitAction="replaceManagedDnsRecord({{ $proposal['hostname'] }}, {{ $proposal['zone_id'] }})"
-                                                :actions="[__('Replace :hostname value :current with :proposed', ['hostname' => $proposal['hostname'], 'current' => $conflict['current'], 'proposed' => $conflict['proposed']]), __('Coolify will manage the replaced record.')]"
-                                                :confirmWithPassword="false" :confirmWithText="false" step2ButtonText="Replace record"
+                                                :actions="$replaceActions"
+                                                :confirmWithPassword="false" :confirmWithText="false" :step2ButtonText="__('Replace record')"
                                                 canGate="update" :canResource="$dnsAuthResource" />
                                         </div>
                                     @elseif (blank($proposal['target']))

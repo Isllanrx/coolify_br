@@ -6210,5 +6210,7 @@
     "What is copied": "ما الذي يتم نسخه",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "مباشرة فوق سطر المتغير. بدون هذا السطر، لا تتغير علامات المتغير.",
     "directly above its line. Without this line, the flag does not change.": "مباشرة فوق سطره. بدون هذا السطر، لا تتغير العلامة.",
-    "Search…": "بحث…"
+    "Search…": "بحث…",
+    "The machine running Coolify. Not recommended for production workloads due to resource contention.": "الجهاز الذي يشغّل Coolify. لا يُنصح به لأحمال الإنتاج بسبب التنافس على الموارد.",
+    "Any SSH-accessible server, including cloud VPS, bare metal, and self-hosted infrastructure.": "أي خادم يمكن الوصول إليه عبر SSH، بما في ذلك VPS السحابية والخوادم المادية والبنية التحتية المستضافة ذاتيًا."
 }

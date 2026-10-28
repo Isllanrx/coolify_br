@@ -6210,5 +6210,7 @@
     "What is copied": "Что копируется",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "прямо над строкой переменной. Без этой строки флаги переменной не меняются.",
     "directly above its line. Without this line, the flag does not change.": "прямо над её строкой. Без этой строки флаг не меняется.",
-    "Search…": "Поиск…"
+    "Search…": "Поиск…",
+    "The machine running Coolify. Not recommended for production workloads due to resource contention.": "Машина, на которой работает Coolify. Не рекомендуется для продакшен-нагрузок из-за конкуренции за ресурсы.",
+    "Any SSH-accessible server, including cloud VPS, bare metal, and self-hosted infrastructure.": "Любой сервер с доступом по SSH, включая облачные VPS, выделенные серверы и собственную инфраструктуру."
 }

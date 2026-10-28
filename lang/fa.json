@@ -6210,5 +6210,7 @@
     "What is copied": "چه چیزی کپی می‌شود",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "درست بالای خط متغیر قرار دهید. بدون این خط، پرچم‌های متغیر تغییر نمی‌کنند.",
     "directly above its line. Without this line, the flag does not change.": "درست بالای خط آن قرار دهید. بدون این خط، پرچم تغییر نمی‌کند.",
-    "Search…": "جستجو…"
+    "Search…": "جستجو…",
+    "The machine running Coolify. Not recommended for production workloads due to resource contention.": "دستگاهی که Coolify را اجرا می‌کند. به دلیل رقابت بر سر منابع برای بارهای کاری تولیدی توصیه نمی‌شود.",
+    "Any SSH-accessible server, including cloud VPS, bare metal, and self-hosted infrastructure.": "هر سروری که با SSH در دسترس باشد، از جمله VPS ابری، سرور فیزیکی و زیرساخت خودمیزبان."
 }

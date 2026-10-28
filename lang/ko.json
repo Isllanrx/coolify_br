@@ -6210,5 +6210,7 @@
     "What is copied": "복사되는 항목",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "을(를) 변수 줄 바로 위에 두세요. 이 줄이 없으면 변수의 플래그는 바뀌지 않습니다.",
     "directly above its line. Without this line, the flag does not change.": "을(를) 해당 줄 바로 위에 두세요. 이 줄이 없으면 플래그는 바뀌지 않습니다.",
-    "Search…": "검색…"
+    "Search…": "검색…",
+    "The machine running Coolify. Not recommended for production workloads due to resource contention.": "Coolify가 실행 중인 머신입니다. 리소스 경합 때문에 프로덕션 워크로드에는 권장되지 않습니다.",
+    "Any SSH-accessible server, including cloud VPS, bare metal, and self-hosted infrastructure.": "클라우드 VPS, 베어 메탈, 자체 호스팅 인프라를 포함해 SSH로 접근 가능한 모든 서버입니다."
 }

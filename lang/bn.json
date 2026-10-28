@@ -6210,5 +6210,7 @@
     "What is copied": "কী কপি করা হয়",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "ভেরিয়েবলের লাইনের ঠিক উপরে রাখুন। এই লাইন ছাড়া ভেরিয়েবলের ফ্ল্যাগ বদলায় না।",
     "directly above its line. Without this line, the flag does not change.": "এর লাইনের ঠিক উপরে রাখুন। এই লাইন ছাড়া ফ্ল্যাগ বদলায় না।",
-    "Search…": "অনুসন্ধান…"
+    "Search…": "অনুসন্ধান…",
+    "The machine running Coolify. Not recommended for production workloads due to resource contention.": "যে মেশিনে Coolify চলছে। রিসোর্স নিয়ে প্রতিযোগিতার কারণে প্রোডাকশন ওয়ার্কলোডের জন্য সুপারিশ করা হয় না।",
+    "Any SSH-accessible server, including cloud VPS, bare metal, and self-hosted infrastructure.": "SSH দিয়ে অ্যাক্সেসযোগ্য যেকোনো সার্ভার, যেমন ক্লাউড VPS, বেয়ার মেটাল এবং সেলফ-হোস্টেড অবকাঠামো।"
 }

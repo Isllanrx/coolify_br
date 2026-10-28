@@ -99,7 +99,7 @@
                                 class="group relative cursor-pointer min-h-36 rounded-[10px] border border-neutral-200 bg-white p-4 text-left shadow-sm transition-all hover:-translate-y-px hover:border-neutral-300 hover:shadow-md dark:border-white/[0.08] dark:bg-white/[0.05] dark:hover:border-white/[0.14]"
                                 wire:target="setServerType('localhost')" wire:click="setServerType('localhost')">
                                 <span role="button" tabindex="0" aria-label="{{ __('About this machine') }}"
-                                    data-tooltip="The machine running Coolify. Not recommended for production workloads due to resource contention."
+                                    data-tooltip="{{ __('The machine running Coolify. Not recommended for production workloads due to resource contention.') }}"
                                     @click.stop @keydown.enter.stop @keydown.space.prevent.stop
                                     class="absolute top-3 right-3 flex size-6 items-center justify-center rounded-full border border-neutral-200 text-[11px] font-semibold text-neutral-500 hover:border-coollabs/35 hover:text-coollabs dark:border-white/[0.1] dark:text-fg-dim dark:hover:border-brand-light/30 dark:hover:text-brand-light">i</span>
                                 <div class="flex flex-col gap-4 text-left">
@@ -123,7 +123,7 @@
                                 class="group relative cursor-pointer min-h-36 rounded-[10px] border border-neutral-200 bg-white p-4 text-left shadow-sm transition-all hover:-translate-y-px hover:border-neutral-300 hover:shadow-md dark:border-white/[0.08] dark:bg-white/[0.05] dark:hover:border-white/[0.14]"
                                 wire:target="setServerType('remote')" wire:click="setServerType('remote')">
                                 <span role="button" tabindex="0" aria-label="{{ __('About remote servers') }}"
-                                    data-tooltip="Any SSH-accessible server, including cloud VPS, bare metal, and self-hosted infrastructure."
+                                    data-tooltip="{{ __('Any SSH-accessible server, including cloud VPS, bare metal, and self-hosted infrastructure.') }}"
                                     @click.stop @keydown.enter.stop @keydown.space.prevent.stop
                                     class="absolute top-3 right-3 flex size-6 items-center justify-center rounded-full border border-neutral-200 text-[11px] font-semibold text-neutral-500 hover:border-coollabs/35 hover:text-coollabs dark:border-white/[0.1] dark:text-fg-dim dark:hover:border-brand-light/30 dark:hover:text-brand-light">i</span>
                                 <div class="flex flex-col gap-4 text-left">

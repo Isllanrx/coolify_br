@@ -6210,5 +6210,7 @@
     "What is copied": "复制的内容",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "放在变量所在行的正上方。没有这一行，变量的标志不会改变。",
     "directly above its line. Without this line, the flag does not change.": "放在其所在行的正上方。没有这一行，标志不会改变。",
-    "Search…": "搜索…"
+    "Search…": "搜索…",
+    "The machine running Coolify. Not recommended for production workloads due to resource contention.": "运行 Coolify 的机器。由于资源争用，不建议用于生产工作负载。",
+    "Any SSH-accessible server, including cloud VPS, bare metal, and self-hosted infrastructure.": "任何可通过 SSH 访问的服务器，包括云 VPS、裸金属和自托管基础设施。"
 }

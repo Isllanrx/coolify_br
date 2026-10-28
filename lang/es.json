@@ -6210,5 +6210,7 @@
     "What is copied": "Qué se copia",
     "directly above a variable line. Without this line, the flags of a variable do not change.": "justo encima de la línea de una variable. Sin esta línea, los indicadores de la variable no cambian.",
     "directly above its line. Without this line, the flag does not change.": "justo encima de su línea. Sin esta línea, el indicador no cambia.",
-    "Search…": "Buscar…"
+    "Search…": "Buscar…",
+    "The machine running Coolify. Not recommended for production workloads due to resource contention.": "La máquina que ejecuta Coolify. No se recomienda para cargas de producción por la competencia de recursos.",
+    "Any SSH-accessible server, including cloud VPS, bare metal, and self-hosted infrastructure.": "Cualquier servidor accesible por SSH, incluidos VPS en la nube, bare metal e infraestructura autoalojada."
 }
