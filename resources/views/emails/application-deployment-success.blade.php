@@ -1,12 +1,11 @@
 <x-emails.layout>
 @if ($pull_request_id === 0)
-A new version of {{ $name }} is available at [{{ $fqdn }}]({{ $fqdn }}) .
+{{ __('A new version of :name is available at [:fqdn](:fqdn) .', ['name' => $name, 'fqdn' => $fqdn]) }}
 @else
-Pull request #{{ $pull_request_id }} of {{ $name }} deployed successfully
-[{{ $fqdn }}]({{ $fqdn }}).
+{{ __('Pull request #:id of :name deployed successfully [:fqdn](:fqdn).', ['id' => $pull_request_id, 'name' => $name, 'fqdn' => $fqdn]) }}
 @endif
 
 <x-emails.deployment-commit :commit="$commit ?? null" />
-[View Deployment Logs]({{ $deployment_url }})
+[{{ __('View Deployment Logs') }}]({{ $deployment_url }})
 
 </x-emails.layout>

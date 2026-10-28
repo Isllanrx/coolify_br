@@ -1,13 +1,13 @@
 <x-emails.layout>
-Failed to check for package updates on your server {{ $name }}.
+{{ __('Failed to check for package updates on your server :name.', ['name' => $name]) }}
 
-## Error Details
+## {{ __('Error Details') }}
 
-- Operating System: {{ ucfirst($osId) }}
-- Package Manager: {{ $package_manager }}
-- Error: {{ $error }}
+- {{ __('Operating System: :value', ['value' => ucfirst($osId)]) }}
+- {{ __('Package Manager: :value', ['value' => $package_manager]) }}
+- {{ __('Error: :value', ['value' => $error]) }}
 
 ---
 
-You can manage your server and view more details in your [Coolify Dashboard]({{ $server_url }}).
+{{ __('You can manage your server and view more details in your [Coolify Dashboard](:url).', ['url' => $server_url]) }}
 </x-emails.layout>

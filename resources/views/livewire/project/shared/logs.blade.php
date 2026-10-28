@@ -1,6 +1,6 @@
 <div class="runtime-logs-page">
     <x-slot:title>
-        {{ data_get_str($resource, 'name')->limit(10) }} > Logs | Coolify
+        {{ data_get_str($resource, 'name')->limit(10) }} > {{ __('Logs') }} | Coolify
     </x-slot>
 
     @if ($type === 'application')
@@ -10,7 +10,7 @@
         <livewire:project.database.heading :database="$resource" />
     @elseif ($type === 'service')
         <livewire:project.service.heading :service="$resource" :parameters="$parameters" :query="$query"
-            title="Logs" />
+            title="{{ __('Logs') }}" />
     @endif
 
     @php
@@ -52,31 +52,31 @@
             <x-skeleton.logs />
         @elseif ($logsUnavailable)
             @if ($servers->isEmpty())
-                <x-empty size="lg" title="Runtime logs unavailable"
-                    description="Connect and validate a server before viewing resource logs."
+                <x-empty size="lg" :title="__('Runtime logs unavailable')"
+                    :description="__('Connect and validate a server before viewing resource logs.')"
                     icon-name="file-content" />
             @elseif ($functionalServers->isEmpty())
-                <x-empty size="lg" title="Runtime logs unavailable"
-                    description="No functional servers are available, so container logs cannot be loaded."
+                <x-empty size="lg" :title="__('Runtime logs unavailable')"
+                    :description="__('No functional servers are available, so container logs cannot be loaded.')"
                     icon-name="file-content" />
             @elseif (count($serverErrors) > 0)
-                <x-empty size="lg" title="Runtime logs unavailable"
-                    description="Could not load containers: {{ collect($serverErrors)->first() }}"
+                <x-empty size="lg" :title="__('Runtime logs unavailable')"
+                    :description="__('Could not load containers: :first', ['first' => collect($serverErrors)->first()])"
                     icon-name="file-content" />
             @else
-                <x-empty size="lg" title="Runtime logs unavailable"
-                    description="No containers are running, so there are no runtime logs to show."
+                <x-empty size="lg" :title="__('Runtime logs unavailable')"
+                    :description="__('No containers are running, so there are no runtime logs to show.')"
                     icon-name="file-content" />
             @endif
         @else
             <div class="runtime-logs-workspace">
                 @foreach ($servers as $serverModel)
                     @if (! $serverModel->isFunctional())
-                        <x-callout type="warning" title="Server unavailable">
-                            {{ $serverModel->name }} is not functional, so its container logs cannot be loaded.
+                        <x-callout type="warning" :title="__('Server unavailable')">
+                            {{ $serverModel->name }} {{ __('is not functional, so its container logs cannot be loaded.') }}
                         </x-callout>
                     @elseif (isset($serverErrors[$serverModel->id]))
-                        <x-callout type="warning" title="Could not load containers">
+                        <x-callout type="warning" :title="__('Could not load containers')">
                             {{ $serverModel->name }}: {{ $serverErrors[$serverModel->id] }}
                         </x-callout>
                     @endif
@@ -87,14 +87,14 @@
                         <div class="flex shrink-0 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
                             @if (count($logTargets['deployments']) > 1)
                                 <div class="w-full sm:w-60" wire:key="runtime-logs-deployments">
-                                    <x-forms.listbox id="pullRequestId" label="Deployment" live searchable portal
-                                        searchPlaceholder="Search deployments" :options="$logTargets['deployments']" />
+                                    <x-forms.listbox id="pullRequestId" :label="__('Deployment')" live searchable portal
+                                        :searchPlaceholder="__('Search deployments')" :options="$logTargets['deployments']" />
                                 </div>
                             @endif
                             @if (count($logTargets['services']) > 1)
                                 <div class="w-full sm:w-60" wire:key="runtime-logs-services">
-                                    <x-forms.listbox id="service" label="Service" live searchable portal
-                                        searchPlaceholder="Search services" :options="$logTargets['services']" />
+                                    <x-forms.listbox id="service" :label="__('Service')" live searchable portal
+                                        :searchPlaceholder="__('Search services')" :options="$logTargets['services']" />
                                 </div>
                             @endif
                         </div>
@@ -109,8 +109,8 @@
                         :collapsible="false"
                         :fill="true" />
                 @else
-                    <x-empty size="lg" title="Runtime logs unavailable"
-                        description="No containers are running, so there are no runtime logs to show."
+                    <x-empty size="lg" :title="__('Runtime logs unavailable')"
+                        :description="__('No containers are running, so there are no runtime logs to show.')"
                         icon-name="file-content" />
                 @endif
             </div>

@@ -14,7 +14,7 @@
             @if ($serviceName)
                 <span class="table-badge shrink-0">{{ $serviceName }}</span>
             @endif
-            <span class="table-badge shrink-0">{{ $composeType === 'derived' ? 'Derived in Compose' : 'Defined in Compose' }}</span>
+            <span class="table-badge shrink-0">{{ $composeType === 'derived' ? __('Derived in Compose') : __('Defined in Compose') }}</span>
         </div>
         <span class="env-managed-desktop data-table-cell-check">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -23,7 +23,7 @@
             </svg>
         </span>
         @if ($showEnvironmentType)
-            <div class="env-type-desktop text-[13px] text-neutral-500 dark:text-fg-dim">{{ $isPreview ? 'Preview' : 'Production' }}</div>
+            <div class="env-type-desktop text-[13px] text-neutral-500 dark:text-fg-dim">{{ $isPreview ? __('Preview') : __('Production') }}</div>
         @endif
         <span class="data-table-cell-dash">-</span>
         <span class="data-table-cell-dash">-</span>
@@ -31,41 +31,41 @@
         <span class="data-table-cell-dash">-</span>
         <div class="flex items-center gap-0.5 justify-self-end">
             @unless ($isValueHidden)
-                <x-copy-button resolve="$wire.copyValue()" label="Copy value" />
+                <x-copy-button resolve="$wire.copyValue()" :label="__('Copy value')" />
             @endunless
-            <x-modal-input title="Environment variable details" :closeOutside="false">
+            <x-modal-input :title="__('Environment variable details')" :closeOutside="false">
                 <x-slot:content>
                     <button type="button" data-env-settings-trigger class="icon-button shrink-0"
-                        title="View environment variable" aria-label="View environment variable">
+                        title="{{ __('View environment variable') }}" aria-label="{{ __('View environment variable') }}">
                         <x-reicon name="settings" class="size-3.5" />
                     </button>
                 </x-slot:content>
                 <div class="flex w-full flex-col gap-4">
-                    <x-forms.input label="Name" :value="$key" readonly />
+                    <x-forms.input :label="__('Name')" :value="$key" readonly />
                     @if ($isValueHidden)
                         <div class="w-full">
-                            <label class="mb-1 flex items-center gap-1 text-sm font-medium">Value</label>
+                            <label class="mb-1 flex items-center gap-1 text-sm font-medium">{{ __('Value') }}</label>
                             <input disabled type="text" value="Hidden (only admins can view)"
                                 class="input w-full italic !text-neutral-500 dark:!text-neutral-500" />
                         </div>
                     @else
-                        <x-forms.input label="Value" :value="$value ?? ''" readonly />
+                        <x-forms.input :label="__('Value')" :value="$value ?? ''" readonly />
                     @endif
                     @if (filled($comment))
-                        <x-forms.input label="Comment" :value="$comment" readonly />
+                        <x-forms.input :label="__('Comment')" :value="$comment" readonly />
                     @endif
-                    <x-callout type="info" :title="$composeType === 'derived' ? 'Derived in Compose' : 'Defined in Compose'">
+                    <x-callout type="info" :title="$composeType === 'derived' ? __('Derived in Compose') : __('Defined in Compose')">
                         @if ($composeType === 'derived')
-                            This value is derived from
+                            {{ __('This value is derived from') }}
                             @foreach ($references as $reference)
                                 <button type="button" data-compose-reference
                                     class="font-mono underline underline-offset-2"
                                     @click="$dispatch('focus-compose-environment-variable', { key: @js($reference) }); modalOpen = false">
                                     {{ $reference }}</button>{{ $loop->last ? '' : ',' }}
                             @endforeach.
-                            Edit those variables or update the Compose file.
+                            {{ __('Edit those variables or update the Compose file.') }}
                         @else
-                            This value is defined directly in Docker Compose. Update it in the Compose file.
+                            {{ __('This value is defined directly in Docker Compose. Update it in the Compose file.') }}
                         @endif
                     </x-callout>
                 </div>

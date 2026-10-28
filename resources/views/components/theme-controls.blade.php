@@ -3,16 +3,16 @@
     <section class="application-settings-section">
         <div class="application-settings-section-header">
             <div>
-                <h2>Color theme</h2>
-                <p>Choose the color scheme used in this browser.</p>
+                <h2>{{ __('Color theme') }}</h2>
+                <p>{{ __('Choose the color scheme used in this browser.') }}</p>
             </div>
         </div>
         <div class="application-settings-section-body grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             @foreach ([
-                ['value' => 'light', 'label' => 'Light', 'description' => 'Bright surfaces and dark text.', 'preview' => 'bg-white'],
-                ['value' => 'system', 'label' => 'System', 'description' => 'Follow your operating system.', 'preview' => 'bg-gradient-to-r from-white via-neutral-400 to-[#050505]'],
-                ['value' => 'dark', 'label' => 'Dark', 'description' => 'Dark surfaces and soft contrast.', 'preview' => 'bg-[#181818]'],
-                ['value' => 'custom', 'label' => 'Custom', 'description' => 'Pick a preset or your own colors.', 'preview' => ''],
+                ['value' => 'light', 'label' => __('Light'), 'description' => __('Bright surfaces and dark text.'), 'preview' => 'bg-white'],
+                ['value' => 'system', 'label' => __('System'), 'description' => __('Follow your operating system.'), 'preview' => 'bg-gradient-to-r from-white via-neutral-400 to-[#050505]'],
+                ['value' => 'dark', 'label' => __('Dark'), 'description' => __('Dark surfaces and soft contrast.'), 'preview' => 'bg-[#181818]'],
+                ['value' => 'custom', 'label' => __('Custom'), 'description' => __('Pick a preset or your own colors.'), 'preview' => ''],
             ] as $option)
                 @if ($option['value'] === 'custom')
                     <div role="button" tabindex="0" @click="openCustomDialog()" @keydown.enter.prevent="openCustomDialog()"
@@ -71,14 +71,14 @@
     <section class="application-settings-section">
         <div class="application-settings-section-header">
             <div>
-                <h2>Page width</h2>
-                <p>Choose how content uses the available browser width.</p>
+                <h2>{{ __('Page width') }}</h2>
+                <p>{{ __('Choose how content uses the available browser width.') }}</p>
             </div>
         </div>
         <div class="application-settings-section-body grid gap-3 sm:grid-cols-2">
             @foreach ([
-                ['value' => 'full', 'label' => 'Full width', 'description' => 'Use all available space for page content.'],
-                ['value' => 'centered', 'label' => 'Centered', 'description' => 'Keep content centered at a comfortable maximum width.'],
+                ['value' => 'full', 'label' => __('Full width'), 'description' => __('Use all available space for page content.')],
+                ['value' => 'centered', 'label' => __('Centered'), 'description' => __('Keep content centered at a comfortable maximum width.')],
             ] as $option)
                 <button type="button" @click="setWidth('{{ $option['value'] }}')"
                     class="group overflow-hidden rounded-[10px] border border-neutral-200 bg-white text-left transition-[border-color,box-shadow] hover:border-neutral-300 hover:shadow-sm dark:border-white/[0.07] dark:bg-white/[0.05] dark:hover:border-white/[0.12]"
@@ -111,14 +111,14 @@
     <section class="application-settings-section">
         <div class="application-settings-section-header">
             <div>
-                <h2>Navigation style</h2>
-                <p>Choose how the top bar and sidebars sit on the page.</p>
+                <h2>{{ __('Navigation style') }}</h2>
+                <p>{{ __('Choose how the top bar and sidebars sit on the page.') }}</p>
             </div>
         </div>
         <div class="application-settings-section-body grid gap-3 sm:grid-cols-2">
             @foreach ([
-                ['value' => 'default', 'label' => 'Default', 'description' => 'Top bar and sidebars run edge to edge.'],
-                ['value' => 'floating', 'label' => 'Floating', 'description' => 'Framed panels float on a dotted backdrop, like the canvas.'],
+                ['value' => 'default', 'label' => __('Default'), 'description' => __('Top bar and sidebars run edge to edge.')],
+                ['value' => 'floating', 'label' => __('Floating'), 'description' => __('Framed panels float on a dotted backdrop, like the canvas.')],
             ] as $option)
                 <button type="button" @click="setNavStyle('{{ $option['value'] }}')"
                     class="group overflow-hidden rounded-[10px] border border-neutral-200 bg-white text-left transition-[border-color,box-shadow] hover:border-neutral-300 hover:shadow-sm dark:border-white/[0.07] dark:bg-white/[0.05] dark:hover:border-white/[0.12]"
@@ -163,14 +163,14 @@
     <section class="application-settings-section">
         <div class="application-settings-section-header">
             <div>
-                <h2>Style</h2>
-                <p>Choose how buttons and sidebar items look.</p>
+                <h2>{{ __('Style') }}</h2>
+                <p>{{ __('Choose how buttons and sidebar items look.') }}</p>
             </div>
         </div>
         <div class="application-settings-section-body grid gap-3 sm:grid-cols-2">
             @foreach ([
-                ['value' => '3d', 'label' => '3D', 'description' => 'Buttons and sidebar icons sit on a raised edge that lifts on hover.'],
-                ['value' => 'flat', 'label' => 'Flat', 'description' => 'No raised edges. Sidebar items are plain rows with a highlight for the current page.'],
+                ['value' => '3d', 'label' => '3D', 'description' => __('Buttons and sidebar icons sit on a raised edge that lifts on hover.')],
+                ['value' => 'flat', 'label' => __('Flat'), 'description' => __('No raised edges. Sidebar items are plain rows with a highlight for the current page.')],
             ] as $option)
                 <button type="button" @click="setNavItems('{{ $option['value'] }}')"
                     class="group overflow-hidden rounded-[10px] border border-neutral-200 bg-white text-left transition-[border-color,box-shadow] hover:border-neutral-300 hover:shadow-sm dark:border-white/[0.07] dark:bg-white/[0.05] dark:hover:border-white/[0.12]"
@@ -211,14 +211,14 @@
     <section class="application-settings-section">
         <div class="application-settings-section-header">
             <div>
-                <h2>Chart times</h2>
-                <p>Choose which times chart tooltips show.</p>
+                <h2>{{ __('Chart times') }}</h2>
+                <p>{{ __('Choose which times chart tooltips show.') }}</p>
             </div>
         </div>
         <div class="application-settings-section-body grid gap-3 sm:grid-cols-2">
             @foreach ([
-                ['value' => 'local', 'label' => 'Your time', 'description' => 'Show the time in the time zone of this browser.', 'lines' => ['Oct 24, 12:30:33']],
-                ['value' => 'utc', 'label' => 'Your time and UTC', 'description' => 'Also show the UTC time. Use it to compare with server logs.', 'lines' => ['Your time: Oct 24, 12:30:33 GMT+2', 'UTC: Oct 24, 10:30:33 UTC']],
+                ['value' => 'local', 'label' => __('Your time'), 'description' => __('Show the time in the time zone of this browser.'), 'lines' => ['Oct 24, 12:30:33']],
+                ['value' => 'utc', 'label' => __('Your time and UTC'), 'description' => __('Also show the UTC time. Use it to compare with server logs.'), 'lines' => [__('Your time:').' Oct 24, 12:30:33 GMT+2', 'UTC: Oct 24, 10:30:33 UTC']],
             ] as $option)
                 <button type="button" @click="setChartTimes('{{ $option['value'] }}')"
                     class="group overflow-hidden rounded-[10px] border border-neutral-200 bg-white text-left transition-[border-color,box-shadow] hover:border-neutral-300 hover:shadow-sm dark:border-white/[0.07] dark:bg-white/[0.05] dark:hover:border-white/[0.12]"
@@ -264,21 +264,21 @@
                     style="box-shadow: 0 0 0 1px var(--coollabs-hairline), var(--shadow-modal)">
                     <header class="shrink-0">
                         <div class="min-w-0 flex-1 py-0.5">
-                            <h3 id="custom-theme-title" class="truncate">Custom theme</h3>
+                            <h3 id="custom-theme-title" class="truncate">{{ __('Custom theme') }}</h3>
                             <p class="mt-0.5 text-xs text-neutral-500 dark:text-fg-dim">
-                                Colors of Coolify in this browser. Text stays readable on every color.
+                                {{ __('Colors of Coolify in this browser. Text stays readable on every color.') }}
                             </p>
                         </div>
                         <button type="button" @click="dialogOpen = false"
                             class="flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-neutral-500 outline-0 transition-colors hover:bg-neutral-100 hover:text-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent dark:text-fg-faint dark:hover:bg-white/[0.06] dark:hover:text-fg">
                             <x-reicon name="x" class="size-4" />
-                            <span class="sr-only">Close</span>
+                            <span class="sr-only">{{ __('Close') }}</span>
                         </button>
                     </header>
                     <template x-if="dialogOpen">
                         <div class="application-settings-section-body grid min-h-0 flex-1 gap-6 overflow-y-auto lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
                             <div>
-                                <div class="mb-2 text-xs font-medium text-neutral-500 dark:text-fg-dim">Presets</div>
+                                <div class="mb-2 text-xs font-medium text-neutral-500 dark:text-fg-dim">{{ __('Presets') }}</div>
                                 <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
                                     <template x-for="preset in presets" :key="preset.name">
                                         <button type="button" @click="setDraft(preset.theme && { ...preset.theme })"
@@ -301,14 +301,14 @@
                                         :style="`background: ${draftColors.sidebar}; color: ${textOn(draftColors.sidebar)}`">
                                         <div class="mb-2 px-2 text-sm font-semibold">Coolify</div>
                                         <div class="flex items-center gap-2 rounded-md px-2 py-1.5 opacity-75">
-                                            <x-reicon name="dashboard" class="size-3.5" /> Dashboard
+                                            <x-reicon name="dashboard" class="size-3.5" /> {{ __('Dashboard') }}
                                         </div>
                                         <div class="flex items-center gap-2 rounded-md px-2 py-1.5 font-medium"
                                             :style="`background: ${draftColors.selected}; color: ${textOn(draftColors.selected)}`">
-                                            <x-reicon name="projects" class="size-3.5" /> Projects
+                                            <x-reicon name="projects" class="size-3.5" /> {{ __('Projects') }}
                                         </div>
                                         <div class="flex items-center gap-2 rounded-md px-2 py-1.5 opacity-75">
-                                            <x-reicon name="servers" class="size-3.5" /> Servers
+                                            <x-reicon name="servers" class="size-3.5" /> {{ __('Servers') }}
                                             <span class="ml-auto rounded-full px-1.5 text-[10px] font-semibold"
                                                 :style="`background: ${draftColors.accent}; color: ${accentTextOn(draftColors.accent)}`">3</span>
                                         </div>
@@ -316,31 +316,31 @@
                                     <div class="flex min-w-0 flex-1 flex-col gap-2 p-3"
                                         :style="`background: ${draftColors.background}; color: ${textOn(draftColors.background)}`">
                                         <div class="flex items-center justify-between gap-2">
-                                            <span class="text-sm font-semibold">Projects</span>
+                                            <span class="text-sm font-semibold">{{ __('Projects') }}</span>
                                             <span class="rounded-md px-2 py-1 text-[11px] font-medium"
-                                                :style="`background: ${draftColors.accent}; color: ${accentTextOn(draftColors.accent)}`">+ New</span>
+                                                :style="`background: ${draftColors.accent}; color: ${accentTextOn(draftColors.accent)}`">{{ __('+ New') }}</span>
                                         </div>
                                         <div class="rounded-md border p-2.5"
                                             :style="`background: color-mix(in oklab, ${textOn(draftColors.background)} 4%, ${draftColors.background}); border-color: color-mix(in oklab, ${textOn(draftColors.background)} 14%, ${draftColors.background})`">
-                                            <div class="font-medium">My first project</div>
+                                            <div class="font-medium">{{ __('My first project') }}</div>
                                             <div class="mt-0.5 opacity-60">production</div>
                                         </div>
                                         <div class="rounded-md border p-2.5"
                                             :style="`background: color-mix(in oklab, ${textOn(draftColors.background)} 4%, ${draftColors.background}); border-color: color-mix(in oklab, ${textOn(draftColors.background)} 14%, ${draftColors.background})`">
-                                            <div class="font-medium">Website</div>
+                                            <div class="font-medium">{{ __('Website') }}</div>
                                             <div class="mt-0.5 opacity-60">staging</div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <div class="mb-2 text-xs font-medium text-neutral-500 dark:text-fg-dim">Colors</div>
+                                    <div class="mb-2 text-xs font-medium text-neutral-500 dark:text-fg-dim">{{ __('Colors') }}</div>
                                     <div class="flex flex-col gap-2.5">
                                         @foreach ([
-                                            'sidebar' => ['Sidebar', 'The navigation on the left'],
-                                            'selected' => ['Selected', 'The current page in the sidebar'],
-                                            'accent' => ['Accent', 'Buttons, links, and highlights'],
-                                            'background' => ['Background', 'Pages, cards, and panels'],
+                                            'sidebar' => [__('Sidebar'), __('The navigation on the left')],
+                                            'selected' => [__('Selected'), __('The current page in the sidebar')],
+                                            'accent' => [__('Accent'), __('Buttons, links, and highlights')],
+                                            'background' => [__('Background'), __('Pages, cards, and panels')],
                                         ] as $key => [$label, $description])
                                             <div class="flex items-center gap-3">
                                                 <label class="relative size-9 shrink-0 cursor-pointer overflow-hidden rounded-md border border-black/10 shadow-sm dark:border-white/15">
@@ -348,7 +348,7 @@
                                                     {{-- autocomplete="off": Firefox session restore otherwise replays the value (#11813). --}}
                                                     <input type="color" autocomplete="off" :value="draftColors.{{ $key }}"
                                                         @input="setDraftColor('{{ $key }}', $event.target.value)"
-                                                        aria-label="{{ $label }} color"
+                                                        aria-label="{{ __(':name color', ['name' => $label]) }}"
                                                         class="absolute inset-0 h-full w-full cursor-pointer opacity-0" />
                                                 </label>
                                                 <div class="min-w-0 flex-1">
@@ -358,7 +358,7 @@
                                                 <input type="text" autocomplete="off" spellcheck="false" maxlength="7"
                                                     :value="draftColors.{{ $key }}"
                                                     @change="setDraftColor('{{ $key }}', $event.target.value); $event.target.value = draftColors.{{ $key }}"
-                                                    aria-label="{{ $label }} hex color"
+                                                    aria-label="{{ __(':name hex color', ['name' => $label]) }}"
                                                     class="input w-28! shrink-0 font-mono text-sm" />
                                             </div>
                                         @endforeach
@@ -367,7 +367,7 @@
 
                                 <div>
                                     <label for="custom-theme-share-code"
-                                        class="mb-2 block text-xs font-medium text-neutral-500 dark:text-fg-dim">Share code</label>
+                                        class="mb-2 block text-xs font-medium text-neutral-500 dark:text-fg-dim">{{ __('Share code') }}</label>
                                     <div class="flex gap-2">
                                         <input id="custom-theme-share-code" x-ref="shareCode" type="text" autocomplete="off"
                                             spellcheck="false" :value="shareCode"
@@ -376,7 +376,7 @@
                                             :aria-invalid="shareCodeInvalid"
                                             class="input min-w-0 flex-1 font-mono text-sm"
                                             :class="shareCodeInvalid && 'border-error! ring-error!'" />
-                                        <button type="button" @click="copyShareCode()" aria-label="Copy share code"
+                                        <button type="button" @click="copyShareCode()" aria-label="{{ __('Copy share code') }}"
                                             class="button shrink-0 px-2.5">
                                             <x-reicon name="copy" x-show="!shareCodeCopied" class="size-4" />
                                             <x-reicon name="check" x-show="shareCodeCopied" x-cloak class="size-4 text-success" />
@@ -385,16 +385,16 @@
                                     <p class="mt-1.5 text-xs"
                                         :class="shareCodeInvalid ? 'text-error' : 'text-neutral-500 dark:text-fg-dim'"
                                         x-text="shareCodeInvalid
-                                            ? 'Enter four hex colors, separated by commas.'
-                                            : 'Paste a code that someone shared, or copy yours.'"></p>
+                                            ? @js(__('Enter four hex colors, separated by commas.'))
+                                            : @js(__('Paste a code that someone shared, or copy yours.'))"></p>
                                 </div>
                             </div>
                         </div>
                     </template>
                     <footer
                         class="flex shrink-0 flex-wrap items-center justify-end gap-2 border-t border-neutral-200 px-4 py-3 dark:border-white/[0.08]">
-                        <x-forms.button @click="dialogOpen = false">Cancel</x-forms.button>
-                        <x-forms.button isHighlighted @click="saveCustomTheme()">Save theme</x-forms.button>
+                        <x-forms.button @click="dialogOpen = false">{{ __('Cancel') }}</x-forms.button>
+                        <x-forms.button isHighlighted @click="saveCustomTheme()">{{ __('Save theme') }}</x-forms.button>
                     </footer>
                 </div>
             </div>

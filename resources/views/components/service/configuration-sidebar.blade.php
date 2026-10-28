@@ -8,21 +8,21 @@
     ];
 
     $configurationItems = collect([
-        ['label' => 'General', 'route' => 'project.service.configuration', 'icon' => 'settings'],
-        ['label' => 'Domains', 'route' => 'project.service.domains', 'icon' => 'globe'],
-        ['label' => 'Environment Variables', 'route' => 'project.service.environment-variables', 'icon' => 'variables', 'hasWarning' => ! $service->isDeployable],
-        ['label' => 'Persistent Storage', 'route' => 'project.service.storages', 'icon' => 'storages'],
-        ['label' => 'Backups', 'route' => 'project.service.volume-backups.index', 'icon' => 'database'],
-        ['label' => 'Import Backup', 'route' => 'project.service.import-backup', 'icon' => 'upload', 'navigate' => false],
-        ['label' => 'Runtime Logs', 'route' => 'project.service.logs', 'icon' => 'unordered-list', 'navigate' => false],
-        ['label' => 'Terminal', 'route' => 'project.service.command', 'icon' => 'browser-terminal', 'navigate' => false, 'visible' => auth()->user()?->can('canAccessTerminal')],
-        ['label' => 'Files', 'route' => 'project.service.files', 'icon' => 'folder', 'visible' => auth()->user()?->can('canAccessTerminal')],
-        ['label' => 'Analytics', 'route' => 'project.service.analytics', 'icon' => 'analytics'],
-        ['label' => 'Scheduled Tasks', 'route' => 'project.service.scheduled-tasks.show', 'icon' => 'calendar'],
-        ['label' => 'Webhooks', 'route' => 'project.service.webhooks', 'icon' => 'webhook'],
-        ['label' => 'Resource Operations', 'route' => 'project.service.resource-operations', 'icon' => 'server-update'],
-        ['label' => 'Tags', 'route' => 'project.service.tags', 'icon' => 'tags'],
-        ['label' => 'Danger Zone', 'route' => 'project.service.danger', 'icon' => 'danger'],
+        ['label' => __('General'), 'route' => 'project.service.configuration', 'icon' => 'settings'],
+        ['label' => __('Domains'), 'route' => 'project.service.domains', 'icon' => 'globe'],
+        ['label' => __('Environment Variables'), 'route' => 'project.service.environment-variables', 'icon' => 'variables', 'hasWarning' => ! $service->isDeployable],
+        ['label' => __('Persistent Storage'), 'route' => 'project.service.storages', 'icon' => 'storages'],
+        ['label' => __('Backups'), 'route' => 'project.service.volume-backups.index', 'icon' => 'database'],
+        ['label' => __('Import Backup'), 'route' => 'project.service.import-backup', 'icon' => 'upload', 'navigate' => false],
+        ['label' => __('Runtime Logs'), 'route' => 'project.service.logs', 'icon' => 'unordered-list', 'navigate' => false],
+        ['label' => __('Terminal'), 'route' => 'project.service.command', 'icon' => 'browser-terminal', 'navigate' => false, 'visible' => auth()->user()?->can('canAccessTerminal')],
+        ['label' => __('Files'), 'route' => 'project.service.files', 'icon' => 'folder', 'visible' => auth()->user()?->can('canAccessTerminal')],
+        ['label' => __('Analytics'), 'route' => 'project.service.analytics', 'icon' => 'analytics'],
+        ['label' => __('Scheduled Tasks'), 'route' => 'project.service.scheduled-tasks.show', 'icon' => 'calendar'],
+        ['label' => __('Webhooks'), 'route' => 'project.service.webhooks', 'icon' => 'webhook'],
+        ['label' => __('Resource Operations'), 'route' => 'project.service.resource-operations', 'icon' => 'server-update'],
+        ['label' => __('Tags'), 'route' => 'project.service.tags', 'icon' => 'tags'],
+        ['label' => __('Danger Zone'), 'route' => 'project.service.danger', 'icon' => 'danger'],
     ])->filter(fn (array $item): bool => $item['visible'] ?? true)
         ->map(fn (array $item): array => [
             ...$item,
@@ -36,11 +36,11 @@
         ]);
 
     $menuGroups = [
-        'Settings' => ['General', 'Domains', 'Environment Variables', 'Persistent Storage'],
-        'Observe & troubleshoot' => ['Runtime Logs', 'Terminal', 'Files', 'Analytics'],
-        'Automation' => ['Scheduled Tasks', 'Webhooks', 'Backups', 'Import Backup'],
-        'Operations' => ['Resource Operations', 'Tags'],
-        'Danger Zone' => ['Danger Zone'],
+        __('Settings') => [__('General'), __('Domains'), __('Environment Variables'), __('Persistent Storage')],
+        __('Observe & troubleshoot') => [__('Runtime Logs'), __('Terminal'), __('Files'), __('Analytics')],
+        __('Automation') => [__('Scheduled Tasks'), __('Webhooks'), __('Backups'), __('Import Backup')],
+        __('Operations') => [__('Resource Operations'), __('Tags')],
+        __('Danger Zone') => [__('Danger Zone')],
     ];
 
     $groupedItems = collect($menuGroups)
@@ -51,9 +51,9 @@
         ->filter(fn ($items) => $items->isNotEmpty());
 @endphp
 
-<x-main-nav-menu back-label="Dashboard" :nav-only="$navOnly"
+<x-main-nav-menu :back-label="__('Dashboard')" :nav-only="$navOnly"
     data-settings-search-items="{{ json_encode(settingsSearchItems($groupedItems, $serviceRouteParameters)) }}">
-    <nav aria-label="Service settings"
+    <nav aria-label="{{ __('Service settings') }}"
         class="grid grid-cols-1 gap-0.5">
         @foreach ($groupedItems as $groupLabel => $groupItems)
             @unless ($loop->first)
@@ -65,11 +65,11 @@
                     href="{{ route($menuItem['route'], $serviceRouteParameters) }}">
                     <x-reicon :name="$menuItem['icon']" class="menu-item-icon" />
                     <span class="menu-item-label">{{ $menuItem['label'] }}</span>
-                    @if ($menuItem['label'] === 'Files')
+                    @if ($menuItem['label'] === __('Files'))
                         <x-beta-badge class="ml-auto shrink-0" />
                     @endif
                     @if ($menuItem['hasWarning'] ?? false)
-                        <span class="ml-auto size-2 shrink-0 rounded-full bg-error" title="Required environment variables missing"></span>
+                        <span class="ml-auto size-2 shrink-0 rounded-full bg-error" title="{{ __('Required environment variables missing') }}"></span>
                     @endif
                 </a>
                 @if ($menuItem['active'] && $menuItem['route'] === 'project.service.storages' && $storageSections->isNotEmpty())

@@ -1,7 +1,7 @@
 <x-emails.layout>
-{{ $count }} server(s) are running outdated Traefik proxy. Update recommended for security and features.
+{{ __(':count server(s) are running outdated Traefik proxy. Update recommended for security and features.', ['count' => $count]) }}
 
-## Affected Servers
+## {{ __('Affected Servers') }}
 
 @foreach ($servers as $server)
 @php
@@ -37,30 +37,30 @@
     }
 @endphp
 @if ($isPatch && $hasNewerBranch)
-- [**{{ $serverName }}**]({{ $serverUrl }}): {{ $current }} → {{ $upgradeTarget }} (patch update available) | Also available: {{ $newerBranchTarget }} (latest patch: {{ $newerBranchLatest }}) - new minor version
+- {{ __('[**:name**](:url): :current → :target (patch update available) | Also available: :branch (latest patch: :branchLatest) - new minor version', ['name' => $serverName, 'url' => $serverUrl, 'current' => $current, 'target' => $upgradeTarget, 'branch' => $newerBranchTarget, 'branchLatest' => $newerBranchLatest]) }}
 @elseif ($isPatch)
-- [**{{ $serverName }}**]({{ $serverUrl }}): {{ $current }} → {{ $upgradeTarget }} (patch update available)
+- {{ __('[**:name**](:url): :current → :target (patch update available)', ['name' => $serverName, 'url' => $serverUrl, 'current' => $current, 'target' => $upgradeTarget]) }}
 @else
-- [**{{ $serverName }}**]({{ $serverUrl }}): {{ $current }} (latest patch: {{ $latest }}) → {{ $upgradeTarget }} (new minor version available)
+- {{ __('[**:name**](:url): :current (latest patch: :latest) → :target (new minor version available)', ['name' => $serverName, 'url' => $serverUrl, 'current' => $current, 'latest' => $latest, 'target' => $upgradeTarget]) }}
 @endif
 @endforeach
 
-## Recommendation
+## {{ __('Recommendation') }}
 
-It is recommended to test the new Traefik version before switching it in production environments. You can update your proxy configuration by clicking on any server name above.
+{{ __('It is recommended to test the new Traefik version before switching it in production environments. You can update your proxy configuration by clicking on any server name above.') }}
 
 @if ($hasUpgrades ?? false)
-**Important for minor version upgrades:** Before upgrading to a new minor version, please read the [Traefik changelog](https://github.com/traefik/traefik/releases) to understand breaking changes and new features.
+{{ __('**Important for minor version upgrades:** Before upgrading to a new minor version, please read the [Traefik changelog](https://github.com/traefik/traefik/releases) to understand breaking changes and new features.') }}
 @endif
 
-## Next Steps
+## {{ __('Next Steps') }}
 
-1. Review the [Traefik release notes](https://github.com/traefik/traefik/releases) for changes
-2. Test the new version in a non-production environment
-3. Update your proxy configuration when ready ([how to update Traefik](https://coolify.io/docs/core/networking/proxy/traefik/update))
-4. Monitor services after the update
+1. {{ __('Review the [Traefik release notes](https://github.com/traefik/traefik/releases) for changes') }}
+2. {{ __('Test the new version in a non-production environment') }}
+3. {{ __('Update your proxy configuration when ready ([how to update Traefik](https://coolify.io/docs/core/networking/proxy/traefik/update))') }}
+4. {{ __('Monitor services after the update') }}
 
 ---
 
-Click on any server name above to manage its proxy settings.
+{{ __('Click on any server name above to manage its proxy settings.') }}
 </x-emails.layout>

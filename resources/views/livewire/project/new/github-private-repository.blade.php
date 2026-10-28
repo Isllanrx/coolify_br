@@ -3,15 +3,15 @@
         <section class="application-settings-section">
             <div class="application-settings-section-header">
                 <div>
-                    <h2>GitHub App</h2>
-                    <p>Connect a GitHub App before selecting a private repository.</p>
+                    <h2>{{ __('GitHub App') }}</h2>
+                    <p>{{ __('Connect a GitHub App before selecting a private repository.') }}</p>
                 </div>
             </div>
-            <x-empty title="No GitHub Apps"
-                description="Create an app to grant Coolify access to selected repositories."
+            <x-empty :title="__('No GitHub Apps')"
+                :description="__('Create an app to grant Coolify access to selected repositories.')"
                 icon-name="sources">
                 <x-slot:contents>
-                    <x-modal-input buttonTitle="+ Add GitHub App" title="New GitHub App" closeOutside="false">
+                    <x-modal-input :buttonTitle="__('+ Add GitHub App')" :title="__('New GitHub App')" closeOutside="false">
                         <livewire:source.github.create />
                     </x-modal-input>
                 </x-slot:contents>
@@ -21,10 +21,10 @@
         <section class="application-settings-section">
             <div class="application-settings-section-header">
                 <div>
-                    <h2>Choose GitHub App</h2>
-                    <p>Select the installation that can access the repository you want to deploy.</p>
+                    <h2>{{ __('Choose GitHub App') }}</h2>
+                    <p>{{ __('Select the installation that can access the repository you want to deploy.') }}</p>
                 </div>
-                <x-modal-input buttonTitle="+ Add GitHub App" title="New GitHub App" closeOutside="false">
+                <x-modal-input :buttonTitle="__('+ Add GitHub App')" :title="__('New GitHub App')" closeOutside="false">
                     <livewire:source.github.create />
                 </x-modal-input>
             </div>
@@ -56,15 +56,15 @@
         <section class="application-settings-section">
             <div class="application-settings-section-header">
                 <div>
-                    <h2>Choose repository</h2>
-                    <p>Search repositories available through {{ $github_app->name }}.</p>
+                    <h2>{{ __('Choose repository') }}</h2>
+                    <p>{{ __('Search repositories available through') }} {{ $github_app->name }}.</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <x-forms.button wire:click.prevent="loadRepositories({{ $github_app->id }})">
-                        Refresh
+                        {{ __('Refresh') }}
                     </x-forms.button>
                     <a target="_blank" class="button" href="{{ getInstallationPath($github_app) }}">
-                        GitHub access
+                        {{ __('GitHub access') }}
                         <x-reicon name="arrow-right" class="size-3.5 -rotate-45" />
                     </a>
                 </div>
@@ -72,8 +72,8 @@
             <div class="application-settings-section-body">
                 @if ($repositories->isNotEmpty())
                     <div class="flex items-end gap-2">
-                        <x-forms.listbox searchable id="selected_repository_id" label="Repository" required live
-                            searchPlaceholder="Search repositories…"
+                        <x-forms.listbox searchable id="selected_repository_id" :label="__('Repository')" required live
+                            :searchPlaceholder="__('Search repositories…')"
                             :options="$repositories->map(fn ($repository) => [
                                 'value' => data_get($repository, 'id'),
                                 'label' => data_get($repository, 'full_name', data_get($repository, 'name')),
@@ -83,12 +83,12 @@
                             wire:target="loadBranches,selected_repository_id">
                             <x-loading-on-button wire:loading.delay
                                 wire:target="loadBranches,selected_repository_id" />
-                            Load repository
+                            {{ __('Load repository') }}
                         </x-forms.button>
                     </div>
                 @else
-                    <x-empty size="sm" title="No repositories available"
-                        description="Review this GitHub App installation and grant access to a repository." />
+                    <x-empty size="sm" :title="__('No repositories available')"
+                        :description="__('Review this GitHub App installation and grant access to a repository.')" />
                 @endif
             </div>
         </section>
@@ -98,41 +98,41 @@
                 <section class="application-settings-section">
                     <div class="application-settings-section-header">
                         <div>
-                            <h2>Build configuration</h2>
-                            <p>Choose the branch and build strategy for this application.</p>
+                            <h2>{{ __('Build configuration') }}</h2>
+                            <p>{{ __('Choose the branch and build strategy for this application.') }}</p>
                         </div>
-                        <x-forms.button type="submit" wire:target="submit" isHighlighted>Continue</x-forms.button>
+                        <x-forms.button type="submit" wire:target="submit" isHighlighted>{{ __('Continue') }}</x-forms.button>
                     </div>
                     <div class="application-settings-section-body space-y-5">
                         @include('livewire.project.new.partials.smart-scan-summary')
 
                         <div class="grid gap-4 sm:grid-cols-2">
-                            <x-forms.listbox searchable id="selected_branch_name" label="Branch" required
-                                searchPlaceholder="Search branches…"
+                            <x-forms.listbox searchable id="selected_branch_name" :label="__('Branch')" required
+                                :searchPlaceholder="__('Search branches…')"
                                 :options="$branches->map(fn ($branch) => [
                                     'value' => data_get($branch, 'name'),
                                     'label' => data_get($branch, 'name'),
                                 ])->values()->all()" />
-                            <x-forms.listbox id="build_pack" label="Build pack" required live :options="[
+                            <x-forms.listbox id="build_pack" :label="__('Build pack')" required live :options="[
                                 ['value' => 'railpack', 'label' => 'Railpack'],
-                                ['value' => 'nixpacks', 'label' => 'Nixpacks (deprecated)'],
-                                ['value' => 'static', 'label' => 'Static'],
+                                ['value' => 'nixpacks', 'label' => __('Nixpacks (deprecated)')],
+                                ['value' => 'static', 'label' => __('Static')],
                                 ['value' => 'dockerfile', 'label' => 'Dockerfile'],
                                 ['value' => 'dockercompose', 'label' => 'Docker Compose'],
                             ]" />
                             @if ($show_is_static)
-                                <x-forms.listbox id="is_static" label="Output type" onChange="instantSave"
+                                <x-forms.listbox id="is_static" :label="__('Output type')" onChange="instantSave"
                                     :options="[
-                                        ['value' => false, 'label' => 'Web application'],
-                                        ['value' => true, 'label' => 'Static site'],
+                                        ['value' => false, 'label' => __('Web application')],
+                                        ['value' => true, 'label' => __('Static site')],
                                     ]" />
-                                <x-forms.input type="number" id="port" label="Port"
+                                <x-forms.input type="number" id="port" :label="__('Port')"
                                     :readonly="$is_static || $build_pack === 'static'"
-                                    helper="Port the application listens on." />
+                                    :helper="__('Port the application listens on.')" />
                             @endif
                             @if ($is_static)
-                                <x-forms.input id="publish_directory" label="Publish directory"
-                                    helper="Directory containing the generated static assets." />
+                                <x-forms.input id="publish_directory" :label="__('Publish directory')"
+                                    :helper="__('Directory containing the generated static assets.')" />
                             @endif
                         </div>
 
@@ -143,17 +143,17 @@
                         {{-- Dockerfile: pick a detected file or type a path --}}
                         @if ($build_pack === 'dockerfile')
                             <x-forms.listbox id="selectedDockerfile" label="Dockerfile" live searchable allowCustom placeholder="/Dockerfile"
-                                emptyText="No Dockerfiles detected. Type a path in the search field."
-                                searchPlaceholder="Search or type a path…"
-                                helper="Select a detected Dockerfile, or type a path relative to the base directory."
+                                :emptyText="__('No Dockerfiles detected. Type a path in the search field.')"
+                                :searchPlaceholder="__('Search or type a path…')"
+                                :helper="__('Select a detected Dockerfile, or type a path relative to the base directory.')"
                                 :options="collect($detectedDockerfiles)->map(fn ($file) => ['value' => $file, 'label' => $file])->all()" />
                         @endif
 
                         {{-- Docker Compose file selector: pick a detected file or type a path --}}
                         @if ($build_pack === 'dockercompose' && count($detectedDockerComposeFiles) > 0)
-                            <x-forms.listbox id="selectedDockerComposeFile" label="Docker Compose File" live searchable allowCustom
-                                searchPlaceholder="Search or type a path…"
-                                helper="Select a detected Docker Compose file, or type a path relative to the base directory."
+                            <x-forms.listbox id="selectedDockerComposeFile" :label="__('Docker Compose File')" live searchable allowCustom
+                                :searchPlaceholder="__('Search or type a path…')"
+                                :helper="__('Select a detected Docker Compose file, or type a path relative to the base directory.')"
                                 :options="collect($detectedDockerComposeFiles)->map(fn ($file) => ['value' => $file, 'label' => $file])->all()" />
                         @endif
 
@@ -162,8 +162,8 @@
                                 file="docker_compose_location" fileLabel="Compose file"
                                 defaultFile="/docker-compose.yaml" />
                         @else
-                            <x-forms.input wire:model="base_directory" label="Base directory"
-                                helper="Repository directory used as the build root." />
+                            <x-forms.input wire:model="base_directory" :label="__('Base directory')"
+                                :helper="__('Repository directory used as the build root.')" />
                         @endif
                     </div>
                 </section>

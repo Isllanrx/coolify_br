@@ -1,3 +1,3 @@
 <x-emails.layout>
-Your server ({{ $name }}) is enabled again!
+{{ __('Your server (:name) is enabled again!', ['name' => $name]) }}
 </x-emails.layout>

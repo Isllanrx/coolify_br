@@ -1,6 +1,6 @@
 <div>
     <x-slot:title>
-        {{ data_get_str($server, 'name')->limit(10) }} > Transfer | Coolify
+        {{ data_get_str($server, 'name')->limit(10) }} > {{ __('Transfer') }} | Coolify
     </x-slot>
 
     <livewire:server.navbar :server="$server" />
@@ -11,120 +11,108 @@
 
         <div class="application-settings-form flex w-full flex-col gap-6">
             @if ($this->isLocalhost)
-                <x-application.settings-section id="server-transfer-section" title="Transfer server"
-                    helper="Move this server’s control-plane config to another Coolify instance (same physical host).">
-                    <x-callout type="warning" title="Localhost cannot be transferred">
-                        The Coolify host (localhost) cannot be transferred between instances.
+                <x-application.settings-section id="server-transfer-section" :title="__('Transfer server')"
+                    :helper="__('Move this server’s control-plane config to another Coolify instance (same physical host).')">
+                    <x-callout type="warning" :title="__('Localhost cannot be transferred')">
+                        {{ __('The Coolify host (localhost) cannot be transferred between instances.') }}
                     </x-callout>
                 </x-application.settings-section>
             @else
-                <x-application.settings-section id="server-transfer-section" title="Transfer server"
-                    helper="Move this server’s control-plane config to another Coolify instance (same physical host).">
+                <x-application.settings-section id="server-transfer-section" :title="__('Transfer server')"
+                    :helper="__('Move this server’s control-plane config to another Coolify instance (same physical host).')">
                     <x-slot:actions>
                         @php
                             $exportTooltip = $exportId ? "Export ID: {$exportId}" : null;
                         @endphp
                         @if (data_get($this->migration, 'status') === 'running')
-                            <x-status-badge label="Transferring" type="warning" :data-tooltip="$exportTooltip" />
+                            <x-status-badge :label="__('Transferring')" type="warning" :data-tooltip="$exportTooltip" />
                         @elseif ($server->isTransferredAway())
-                            <x-status-badge label="Transferred away" type="warning" :data-tooltip="$exportTooltip" />
+                            <x-status-badge :label="__('Transferred away')" type="warning" :data-tooltip="$exportTooltip" />
                         @else
-                            <x-status-badge label="Managed here" type="success" :data-tooltip="$exportTooltip" />
+                            <x-status-badge :label="__('Managed here')" type="success" :data-tooltip="$exportTooltip" />
                         @endif
                     </x-slot:actions>
 
                     <div class="flex flex-col gap-4">
                         @if (! $server->isTransferredAway() && ($markerConflict = data_get($server->server_metadata, 'transfer.owner_marker_conflict')))
-                            <x-callout type="warning" title="Another instance may claim this server" data-testid="owner-marker-conflict">
-                                The owner file on the server names a claim of
-                                {{ data_get($markerConflict, 'instance_url') ?: 'an unknown instance' }}, but it is older than the
-                                claim of this instance or its URL is not valid, so this instance keeps managing the server.
-                                If you did not transfer the server, check who can write files on it.
+                            <x-callout type="warning" :title="__('Another instance may claim this server')" data-testid="owner-marker-conflict">
+                                {{ __('The owner file on the server names a claim of :instance, but it is older than the claim of this instance or its URL is not valid, so this instance keeps managing the server. If you did not transfer the server, check who can write files on it.', ['instance' => data_get($markerConflict, 'instance_url') ?: __('an unknown instance')]) }}
                             </x-callout>
                         @endif
                         @if ($server->isTransferredAway())
                             <div>
-                                <h3 class="text-sm font-semibold text-neutral-950 dark:text-fg">Transfer back</h3>
+                                <h3 class="text-sm font-semibold text-neutral-950 dark:text-fg">{{ __('Transfer back') }}</h3>
                                 <p class="mt-1 text-xs leading-5 text-neutral-500 dark:text-fg-dim">
-                                    Undo the transfer. The instance that manages the server now transfers it back here,
-                                    with all changes made there. This archive is replaced only when the import here
-                                    succeeds. If the other instance is lost, use Enable management on the server page.
+                                    {{ __('Undo the transfer. The instance that manages the server now transfers it back here, with all changes made there. This archive is replaced only when the import here succeeds. If the other instance is lost, use Enable management on the server page.') }}
                                 </p>
                             </div>
                             <div class="flex flex-col gap-3 md:max-w-xl">
-                                <x-forms.input id="managerUrl" label="Instance that manages the server now" required
+                                <x-forms.input id="managerUrl" :label="__('Instance that manages the server now')" required
                                     placeholder="https://coolify.example.com"
-                                    helper="The Coolify instance that this server was transferred to." />
-                                <x-forms.input id="managerToken" type="password" label="API token of that instance" required
-                                    placeholder="Paste token from that instance" autocomplete="off"
-                                    helper="A token with root, or with read:sensitive and write, from an admin or owner of that instance." />
-                                <x-forms.input id="thisInstanceUrl" label="URL of this instance" required
-                                    helper="The URL at which the other instance reaches this instance. This instance gives it a token that expires in 1 hour." />
+                                    :helper="__('The Coolify instance that this server was transferred to.')" />
+                                <x-forms.input id="managerToken" type="password" :label="__('API token of that instance')" required
+                                    :placeholder="__('Paste token from that instance')" autocomplete="off"
+                                    :helper="__('A token with root, or with read:sensitive and write, from an admin or owner of that instance.')" />
+                                <x-forms.input id="thisInstanceUrl" :label="__('URL of this instance')" required
+                                    :helper="__('The URL at which the other instance reaches this instance. This instance gives it a token that expires in 1 hour.')" />
                             </div>
                             <div>
                                 @php
                                     // A static string: x-text shows the typed host as text, also after the modal was rendered.
-                                    $transferBackWarning = 'This instance sends a new API token of your team to '
-                                        .'<strong data-testid="transfer-back-host" x-text="(() => { try { return new URL($wire.managerUrl).host } catch (e) { return \'an invalid URL\' } })()"></strong>. '
-                                        .'Continue only if you trust that instance.';
+                                    $transferBackWarning = __('This instance sends a new API token of your team to :host. Continue only if you trust that instance.', ['host' => '<strong data-testid="transfer-back-host" x-text="(() => { try { return new URL($wire.managerUrl).host } catch (e) { return '.Js::from(__('an invalid URL')).' } })()"></strong>']);
                                 @endphp
-                                <x-modal-confirmation title="Transfer this server back?" submitAction="transferBack"
-                                    :confirmWithText="false" :confirmWithPassword="false" step2ButtonText="Transfer back"
+                                <x-modal-confirmation :title="__('Transfer this server back?')" submitAction="transferBack"
+                                    :confirmWithText="false" :confirmWithPassword="false" :step2ButtonText="__('Transfer back')"
                                     :warningMessage="$transferBackWarning"
                                     :actions="[
-                                        'The other instance checks the server, this instance, and the tokens. If a check fails, nothing changes.',
-                                        'The other instance transfers the server, its resources, and its credentials back here.',
-                                        'This archive is replaced by the transferred server, and the other instance keeps an archive.',
+                                        __('The other instance checks the server, this instance, and the tokens. If a check fails, nothing changes.'),
+                                        __('The other instance transfers the server, its resources, and its credentials back here.'),
+                                        __('This archive is replaced by the transferred server, and the other instance keeps an archive.'),
                                     ]">
                                     <x-slot:trigger>
                                         <x-forms.button canGate="update" :canResource="$server" wire:loading.attr="disabled"
                                             wire:target="transferBack">
-                                            <span wire:loading.remove wire:target="transferBack">Transfer back</span>
-                                            <span wire:loading wire:target="transferBack">Running checks…</span>
+                                            <span wire:loading.remove wire:target="transferBack">{{ __('Transfer back') }}</span>
+                                            <span wire:loading wire:target="transferBack">{{ __('Running checks…') }}</span>
                                         </x-forms.button>
                                     </x-slot:trigger>
                                 </x-modal-confirmation>
                             </div>
                             @if ($transferBackAt = data_get($server->server_metadata, 'transfer.transfer_back.requested_at'))
-                                <x-callout type="info" title="Transfer back started">
-                                    {{ data_get($server->server_metadata, 'transfer.transfer_back.from') }} started the transfer back at
-                                    {{ \Illuminate\Support\Carbon::parse($transferBackAt)->format('H:i') }}. Reload this page in a minute.
-                                    When the transfer finishes, this instance manages the server again. If it does not, read
-                                    the transfer log of the server on the other instance.
+                                <x-callout type="info" :title="__('Transfer back started')">
+                                    {{ __(':from started the transfer back at :time. Reload this page in a minute. When the transfer finishes, this instance manages the server again. If it does not, read the transfer log of the server on the other instance.', ['from' => data_get($server->server_metadata, 'transfer.transfer_back.from'), 'time' => \Illuminate\Support\Carbon::parse($transferBackAt)->format('H:i')]) }}
                                 </x-callout>
                             @endif
                         @else
                         <div>
-                            <h3 class="text-sm font-semibold text-neutral-950 dark:text-fg">Transfer to another instance
+                            <h3 class="text-sm font-semibold text-neutral-950 dark:text-fg">{{ __('Transfer to another instance') }}
                             </h3>
                             <p class="mt-1 text-xs leading-5 text-neutral-500 dark:text-fg-dim">
-                                Enter the target Coolify URL and an API token from that instance (root recommended).
-                                This exports the server and imports it on the target, which then manages it. Management
-                                is then disabled here.
+                                {{ __('Enter the target Coolify URL and an API token from that instance (root recommended). This exports the server and imports it on the target, which then manages it. Management is then disabled here.') }}
                             </p>
                         </div>
                         <div class="flex flex-col gap-3 md:max-w-xl">
-                            <x-forms.input id="targetUrl" label="Target instance URL" required
+                            <x-forms.input id="targetUrl" :label="__('Target instance URL')" required
                                 placeholder="https://coolify.example.com"
-                                helper="Base URL of the other Coolify instance (no trailing path). It must use https." />
-                            <x-forms.input id="targetToken" type="password" label="Target API token" required
-                                placeholder="Paste token from target instance" autocomplete="off"
-                                helper="Create a token on the target with root (or write + deploy). It is only used for this request." />
+                                :helper="__('Base URL of the other Coolify instance (no trailing path). It must use https.')" />
+                            <x-forms.input id="targetToken" type="password" :label="__('Target API token')" required
+                                :placeholder="__('Paste token from target instance')" autocomplete="off"
+                                :helper="__('Create a token on the target with root (or write + deploy). It is only used for this request.')" />
                         </div>
                         <div>
-                            <x-modal-confirmation title="Transfer this server?" submitAction="migrateServer"
-                                :confirmWithText="false" :confirmWithPassword="false" step2ButtonText="Transfer server"
-                                warningMessage="All secrets of this server and its resources are sent to the target instance: private keys, credentials, and every environment variable value, also locked ones. Continue only if you trust that instance."
+                            <x-modal-confirmation :title="__('Transfer this server?')" submitAction="migrateServer"
+                                :confirmWithText="false" :confirmWithPassword="false" :step2ButtonText="__('Transfer server')"
+                                :warningMessage="__('All secrets of this server and its resources are sent to the target instance: private keys, credentials, and every environment variable value, also locked ones. Continue only if you trust that instance.')"
                                 :actions="[
-                                    'Coolify first checks this server, the target instance, and the token. If a check fails, nothing is changed.',
-                                    'The server will be transferred to the target instance.',
-                                    'Automations for this server will be disabled on this instance.',
+                                    __('Coolify first checks this server, the target instance, and the token. If a check fails, nothing is changed.'),
+                                    __('The server will be transferred to the target instance.'),
+                                    __('Automations for this server will be disabled on this instance.'),
                                 ]">
                                 <x-slot:trigger>
                                     <x-forms.button canGate="transfer" :canResource="$server" wire:loading.attr="disabled"
                                         wire:target="migrateServer">
-                                        <span wire:loading.remove wire:target="migrateServer">Transfer server</span>
-                                        <span wire:loading wire:target="migrateServer">Running checks…</span>
+                                        <span wire:loading.remove wire:target="migrateServer">{{ __('Transfer server') }}</span>
+                                        <span wire:loading wire:target="migrateServer">{{ __('Running checks…') }}</span>
                                     </x-forms.button>
                                 </x-slot:trigger>
                             </x-modal-confirmation>
@@ -133,42 +121,37 @@
                         @php $migration = $this->migration; @endphp
                         @if (data_get($migration, 'status') === 'running')
                             <div wire:poll.5s="refreshMigration">
-                                <x-callout type="info" title="Transfer in progress">
-                                    The server is being transferred to {{ data_get($migration, 'target_url') }}. You can
+                                <x-callout type="info" :title="__('Transfer in progress')">
+                                    {{ __('The server is being transferred to') }} {{ data_get($migration, 'target_url') }}. You can
                                     leave this page; the transfer continues in the background.
                                 </x-callout>
                             </div>
                         @elseif (data_get($migration, 'status') === 'failed')
                             <x-callout type="danger"
-                                :title="data_get($migration, 'phase') === 'checks' ? 'A check failed. The transfer did not start.' : 'Transfer failed'">
+                                :title="data_get($migration, 'phase') === 'checks' ? 'A check failed. The transfer did not start.' : __('Transfer failed')">
                                 @if (count((array) data_get($migration, 'log', [])) > 0)
-                                    See the transfer log below for details.
+                                    {{ __('See the transfer log below for details.') }}
                                 @else
                                     {{ data_get($migration, 'error') }}
                                 @endif
                             </x-callout>
                         @elseif (data_get($migration, 'status') === 'unknown')
-                            <x-callout type="warning" title="Transfer result unknown">
-                                The transfer stopped before this instance could confirm the result. Check whether
-                                {{ data_get($migration, 'target_url') }} manages this server. If it does, call
-                                <code>POST /api/v1/servers/{{ $server->uuid }}/transfer/complete</code> on this instance.
-                                If it does not, transfer again.
+                            <x-callout type="warning" :title="__('Transfer result unknown')">
+                                {!! __('The transfer stopped before this instance could confirm the result. Check whether :url manages this server. If it does, call :command on this instance. If it does not, transfer again.', ['url' => e(data_get($migration, 'target_url')), 'command' => '<code>POST /api/v1/servers/'.e($server->uuid).'/transfer/complete</code>']) !!}
                             </x-callout>
                         @elseif (data_get($migration, 'status') === 'succeeded')
-                            <x-callout type="success" title="Transfer finished">
-                                {{ data_get($migration, 'target_url') }} now manages this server. Automations are
-                                disabled on this instance.
+                            <x-callout type="success" :title="__('Transfer finished')">
+                                {{ data_get($migration, 'target_url') }} {{ __('now manages this server. Automations are disabled on this instance.') }}
                             </x-callout>
                             @php $checklist = $this->postTransferChecklist; @endphp
                             @if (count($checklist) > 0 || data_get($migration, 'target_server_url'))
                                 <div data-testid="post-transfer-checklist">
-                                    <h3 class="text-sm font-semibold text-neutral-950 dark:text-fg">Finish the transfer on the target</h3>
+                                    <h3 class="text-sm font-semibold text-neutral-950 dark:text-fg">{{ __('Finish the transfer on the target') }}</h3>
                                     <p class="mt-1 text-xs leading-5 text-neutral-500 dark:text-fg-dim">
-                                        The target shows these steps on the server page, checks them where it can, and keeps
-                                        their state.
+                                        {{ __('The target shows these steps on the server page, checks them where it can, and keeps their state.') }}
                                         @if ($targetServerUrl = $this->targetServerUrl)
                                             <a href="{{ $targetServerUrl }}" target="_blank" rel="noopener noreferrer"
-                                                class="underline">Open the server on the target</a>.
+                                                class="underline">{{ __('Open the server on the target') }}</a>.
                                         @endif
                                     </p>
                                     @if (count($checklist) > 0)
@@ -183,7 +166,7 @@
                         @endif
                         @if (count((array) data_get($migration, 'log', [])) > 0)
                             <div>
-                                <h3 class="text-sm font-semibold text-neutral-950 dark:text-fg">Transfer log</h3>
+                                <h3 class="text-sm font-semibold text-neutral-950 dark:text-fg">{{ __('Transfer log') }}</h3>
                                 <ol class="mt-2 flex flex-col gap-1 rounded-lg border border-neutral-200 bg-neutral-50 p-3 font-mono text-xs dark:border-coolgray-300 dark:bg-coolgray-100"
                                     data-testid="transfer-log">
                                     @foreach ((array) data_get($migration, 'log', []) as $entry)
@@ -202,7 +185,7 @@
                             </div>
                         @endif
                         @if (count($lastWarnings) > 0)
-                            <x-callout type="warning" title="Warnings">
+                            <x-callout type="warning" :title="__('Warnings')">
                                 <ul class="mt-2 list-disc space-y-1 pl-5 text-sm">
                                     @foreach ($lastWarnings as $warning)
                                         <li>{{ $warning }}</li>

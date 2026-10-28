@@ -4,7 +4,7 @@
 
 <div @class(['relative', 'w-full' => $fullWidth]) x-data="{ open: false }"
     x-effect="$dispatch('resource-actions-toggled', { open })" @keydown.escape.window="open = false">
-    <button type="button" x-ref="trigger" @click="open = !open" @click.outside="open = false" title="Open service links"
+    <button type="button" x-ref="trigger" @click="open = !open" @click.outside="open = false" title="{{ __('Open service links') }}"
         @class([
             'app-tab shrink-0 gap-1' => !$fullWidth && !$compact,
             'button w-full justify-between' => $fullWidth,
@@ -14,7 +14,7 @@
             @unless ($compact)
                 <x-reicon name="external-link" class="size-3.5 shrink-0 opacity-70" />
             @endunless
-            Links
+            {{ __('Links') }}
         </span>
         <span class="inline-flex transition-transform" :class="open && 'rotate-180'">
             <x-reicon name="chevron-down" class="size-3 opacity-55" />
@@ -34,7 +34,7 @@
                 <span class="min-w-0 truncate">{{ $link }}</span>
             </a>
         @empty
-            <div class="listbox-option justify-start! cursor-default!">No links available</div>
+            <div class="listbox-option justify-start! cursor-default!">{{ __('No links available') }}</div>
         @endforelse
     </div>
 </div>

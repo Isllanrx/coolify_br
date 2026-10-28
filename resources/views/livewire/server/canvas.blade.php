@@ -1,6 +1,6 @@
 <div class="flex h-full flex-col">
     <x-slot:title>
-        {{ $server ? $server->name.' > Canvas' : 'Servers > Canvas' }} | Coolify
+        {{ $server ? $server->name.' > '.__('Canvas') : __('Servers').' > '.__('Canvas') }} | Coolify
     </x-slot>
     @if ($server)
         {{-- Status, proxy actions and the server name dock in the top bar. --}}
@@ -13,7 +13,7 @@
         data-team="{{ $teamId }}" data-user="{{ auth()->id() }}"
         class="relative min-h-0 flex-1" wire:ignore>
         @if ($server)
-            <x-canvas-view-toggle data-ec-views on-canvas :views="['list' => ['List view', 'unordered-list']]"
+            <x-canvas-view-toggle data-ec-views on-canvas :views="['list' => [__('List view'), 'unordered-list']]"
                 :list-url="route('server.resources', ['server_uuid' => $server->uuid])"
                 :canvas-url="route('server.canvas', ['server_uuid' => $server->uuid])" />
         @else
@@ -25,7 +25,7 @@
                     <a href="{{ route('server.create') }}" {{ wireNavigate() }}
                         class="button button-highlighted whitespace-nowrap">
                         <x-reicon name="plus" class="size-3.5" />
-                        New server
+                        {{ __('New server') }}
                     </a>
                 @endcan
             </div>

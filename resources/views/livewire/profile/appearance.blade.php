@@ -1,5 +1,5 @@
 <div>
-    <x-slot:title>Appearance | Coolify</x-slot>
+    <x-slot:title>{{ __('Appearance') }} | Coolify</x-slot>
     <x-theme-controls />
     <section class="application-settings-section mt-6">
         <div class="application-settings-section-header">

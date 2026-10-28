@@ -1,6 +1,6 @@
 <div>
     <x-slot:title>
-        Settings | Coolify
+        {{ __('Settings') }} | Coolify
     </x-slot>
 
     <x-settings.layout>
@@ -9,37 +9,37 @@
                  the bar does not flash while the snapshot catches up. --}}
             <x-unsaved-bar action="submit"
                 targets="fqdn,instance_name,public_ipv4,public_ipv6,dev_helper_version" />
-            <x-application.settings-section title="General">
+            <x-application.settings-section :title="__('General')">
                 <div class="grid gap-4 lg:grid-cols-2">
                     <div @class([
                         'lg:col-span-2' => !str_starts_with(strtolower($fqdn ?? ''), 'https://'),
                     ])>
-                        <x-forms.input canGate="update" :canResource="$settings" id="fqdn" label="URL"
-                            helper="Enter the full URL of the instance (for example, https://dashboard.example.com).<br><br><span class='text-coollabs dark:text-brand-light'>Important:</span> Include <b>https://</b> to secure the dashboard with HTTPS.<br><br>Passkeys are tied to this domain. If you change it, users must add their passkeys again."
+                        <x-forms.input canGate="update" :canResource="$settings" id="fqdn" :label="__('URL')"
+                            :helper="__('Enter the full URL of the instance (for example, https://dashboard.example.com).<br><br><span class=\'text-coollabs dark:text-brand-light\'>Important:</span> Include <b>https://</b> to secure the dashboard with HTTPS.<br><br>Passkeys are tied to this domain. If you change it, users must add their passkeys again.')"
                             placeholder="https://coolify.yourdomain.com" />
                     </div>
 
                     @if (str_starts_with(strtolower($fqdn ?? ''), 'https://'))
                         <div>
                             <x-forms.listbox canGate="update" :canResource="$settings"
-                                id="is_dashboard_force_https_enabled" label="Redirect HTTP to HTTPS"
+                                id="is_dashboard_force_https_enabled" :label="__('Redirect HTTP to HTTPS')"
                                 onChange="submit"
-                                helper="Disable only when Cloudflare Tunnel or another proxy connects to Coolify over HTTP. Keep enabled when Cloudflare uses Full or Full (Strict) SSL."
+                                :helper="__('Disable only when Cloudflare Tunnel or another proxy connects to Coolify over HTTP. Keep enabled when Cloudflare uses Full or Full (Strict) SSL.')"
                                 :options="[
-                                    ['value' => true, 'label' => 'Enabled'],
-                                    ['value' => false, 'label' => 'Disabled'],
+                                    ['value' => true, 'label' => __('Enabled')],
+                                    ['value' => false, 'label' => __('Disabled')],
                                 ]" />
                         </div>
                     @endif
 
-                    <x-forms.input canGate="update" :canResource="$settings" id="instance_name" label="Name"
-                        placeholder="Coolify" helper="Custom name for this Coolify instance." />
+                    <x-forms.input canGate="update" :canResource="$settings" id="instance_name" :label="__('Name')"
+                        placeholder="Coolify" :helper="__('Custom name for this Coolify instance.')" />
 
                     {{-- Use a searchable listbox so the label row (h-4) and control height match
                          sibling x-forms.input fields (Name). onChange auto-saves like before. --}}
-                    <x-forms.listbox searchable id="instance_timezone" label="Instance timezone"
-                        helper="Timezone used for update checks and the automatic update schedule."
-                        searchPlaceholder="Search timezones" searchEmptyText="No matching timezone"
+                    <x-forms.listbox searchable id="instance_timezone" :label="__('Instance timezone')"
+                        :helper="__('Timezone used for update checks and the automatic update schedule.')"
+                        :searchPlaceholder="__('Search timezones')" :searchEmptyText="__('No matching timezone')"
                         onChange="submit" :options="collect($this->timezones)->map(fn ($timezone) => [
                             'value' => $timezone,
                             'label' => $timezone,
@@ -47,30 +47,30 @@
                 </div>
             </x-application.settings-section>
 
-            <x-application.settings-section title="Network addresses">
+            <x-application.settings-section :title="__('Network addresses')">
                 <x-slot:actions>
                     <x-forms.button canGate="update" :canResource="$settings" type="button"
                         wire:click="detectPublicIps">
-                        Detect
+                        {{ __('Detect') }}
                     </x-forms.button>
                 </x-slot:actions>
                 <div class="grid gap-4 lg:grid-cols-2">
                     <x-forms.input canGate="update" :canResource="$settings" id="public_ipv4" type="password"
-                        label="Instance public IPv4"
-                        helper="Coolify detects this address on start only when the field is empty. Set it when the detected address is wrong. Detect looks it up again and saves it."
+                        :label="__('Instance public IPv4')"
+                        :helper="__('Coolify detects this address on start only when the field is empty. Set it when the detected address is wrong. Detect looks it up again and saves it.')"
                         placeholder="1.2.3.4" autocomplete="new-password" />
                     <x-forms.input canGate="update" :canResource="$settings" id="public_ipv6" type="password"
-                        label="Instance public IPv6"
-                        helper="Coolify detects this address on start only when the field is empty. Set it when the detected address is wrong. Detect looks it up again and saves it."
+                        :label="__('Instance public IPv6')"
+                        :helper="__('Coolify detects this address on start only when the field is empty. Set it when the detected address is wrong. Detect looks it up again and saves it.')"
                         placeholder="2001:db8::1" autocomplete="new-password" />
                 </div>
             </x-application.settings-section>
 
             @if (isDev())
-                <x-application.settings-section title="Development helper">
+                <x-application.settings-section :title="__('Development helper')">
                     <x-forms.input canGate="update" :canResource="$settings" id="dev_helper_version"
-                        label="Version override"
-                        helper="Override the default coolify-helper image version. Leave empty to use {{ config('constants.coolify.helper_version') }}."
+                        :label="__('Version override')"
+                        :helper="__('Override the default coolify-helper image version. Leave empty to use :version.', ['version' => config('constants.coolify.helper_version')])"
                         placeholder="{{ config('constants.coolify.helper_version') }}" />
                 </x-application.settings-section>
             @endif
@@ -80,10 +80,10 @@
         confirmAction="confirmDomainUsage">
         <x-slot:consequences>
             <ul class="mt-2 ml-4 list-disc">
-                <li>The Coolify instance domain will conflict with existing resources.</li>
-                <li>SSL certificates might not work correctly.</li>
-                <li>Routing behavior will be unpredictable.</li>
-                <li>You may not be able to access the Coolify dashboard properly.</li>
+                <li>{{ __('The Coolify instance domain will conflict with existing resources.') }}</li>
+                <li>{{ __('SSL certificates might not work correctly.') }}</li>
+                <li>{{ __('Routing behavior will be unpredictable.') }}</li>
+                <li>{{ __('You may not be able to access the Coolify dashboard properly.') }}</li>
             </ul>
         </x-slot:consequences>
     </x-domain-conflict-modal>

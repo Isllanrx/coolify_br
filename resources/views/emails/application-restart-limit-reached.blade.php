@@ -1,7 +1,7 @@
 <x-emails.layout>
-{{ $name }} has been automatically stopped after {{ $restart_count }} restarts (limit: {{ $max_restart_count }}).
+{{ __(':name has been automatically stopped after :count restarts (limit: :max).', ['name' => $name, 'count' => $restart_count, 'max' => $max_restart_count]) }}
 
-The application appears to be in a restart loop. Please investigate the issue and redeploy when ready.
+{{ __('The application appears to be in a restart loop. Please investigate the issue and redeploy when ready.') }}
 
-[Check what is going on]({{ $resource_url }}).
+{{ __('[Check what is going on](:url).', ['url' => $resource_url]) }}
 </x-emails.layout>

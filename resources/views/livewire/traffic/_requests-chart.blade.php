@@ -19,8 +19,8 @@
          chart's listener survives live/range re-renders). --}}
     <div id="{{ $chartId }}-requests-empty" style="display: {{ $this->hasRequestSeries() ? 'none' : 'flex' }}"
         class="absolute inset-0 items-center justify-center bg-white dark:bg-base">
-        <x-empty size="sm" title="No requests in this range"
-            description="No request traffic was recorded for the selected filters and range. Try a wider range or check back later."
+        <x-empty size="sm" :title="__('No requests in this range')"
+            :description="__('No request traffic was recorded for the selected filters and range. Try a wider range or check back later.')"
             icon-name="analytics" />
     </div>
 </div>

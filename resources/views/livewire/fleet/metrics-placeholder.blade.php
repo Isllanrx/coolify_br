@@ -2,9 +2,9 @@
     {{-- Header (real chrome; only the data below is a skeleton) --}}
     <div class="flex flex-col gap-4">
         <div class="min-w-0">
-            <h1 class="min-w-0 text-[24px]! leading-7! font-semibold! tracking-tight!">Metrics</h1>
+            <h1 class="min-w-0 text-[24px]! leading-7! font-semibold! tracking-tight!">{{ __('Metrics') }}</h1>
             <p class="mt-1 text-[13px] text-neutral-500 dark:text-fg-dim">
-                Resource usage across every server, reported by Sentinel.
+                {{ __('Resource usage across every server, reported by Sentinel.') }}
             </p>
         </div>
 
@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <x-application.settings-section id="metrics-overview-section" title="Overview">
+    <x-application.settings-section id="metrics-overview-section" :title="__('Overview')">
         <x-skeleton.tiles :count="6" grid="grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
             :labels="['Servers online', 'Fleet CPU', 'Fleet memory', 'Fleet disk', 'Fleet network', 'Containers']" />
     </x-application.settings-section>
@@ -28,11 +28,11 @@
         @endforeach
     </div>
 
-    <x-application.settings-section title="Servers" flush>
+    <x-application.settings-section :title="__('Servers')" flush>
         <x-skeleton.table :rows="4" flush />
     </x-application.settings-section>
 
-    <x-application.settings-section title="Hottest containers" flush>
+    <x-application.settings-section :title="__('Hottest containers')" flush>
         <x-skeleton.table :rows="6" flush />
     </x-application.settings-section>
 </div>

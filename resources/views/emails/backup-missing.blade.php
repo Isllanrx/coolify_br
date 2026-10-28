@@ -1,7 +1,7 @@
-The enabled backup schedule for {{ $database_name }} has produced no executions in the last {{ $days }} day(s).
+{{ __('The enabled backup schedule for :name has produced no executions in the last :days day(s).', ['name' => $database_name, 'days' => $days]) }}
 
 @if ($last_execution_at)
-The last execution was at {{ $last_execution_at }}.
+{{ __('The last execution was at :time.', ['time' => $last_execution_at]) }}
 @else
-This schedule has never produced an execution.
+{{ __('This schedule has never produced an execution.') }}
 @endif

@@ -1,6 +1,6 @@
 @props([
     'count' => 6,
-    'label' => 'Loading',
+    'label' => __('Loading'),
 ])
 
 {{-- Card grid skeleton: an icon tile, a title, and two description lines per card. --}}

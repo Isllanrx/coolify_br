@@ -1,6 +1,6 @@
 <div>
     <x-slot:title>
-        {{ data_get_str($server, 'name')->limit(10) }} > Registries | Coolify
+        {{ data_get_str($server, 'name')->limit(10) }} > {{ __('Registries') }} | Coolify
     </x-slot>
 
     <livewire:server.navbar :server="$server" />
@@ -13,8 +13,7 @@
             <livewire:server.docker-registries.server-registries :server="$server"
                 :key="'server-registries-'.$server->uuid" />
             <p class="text-[12px] text-neutral-500 dark:text-fg-dim">
-                Registry logins are read from the Docker config that deployments use. Use <b>Log in</b>, or run
-                <code>docker login &lt;registry&gt;</code> on the server.
+                {!! __('Registry logins are read from the Docker config that deployments use. Use :login, or run :command on the server.', ['login' => '<b>'.e(__('Log in')).'</b>', 'command' => '<code>docker login &lt;registry&gt;</code>']) !!}
             </p>
         </div>
     </div>

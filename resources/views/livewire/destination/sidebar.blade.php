@@ -2,19 +2,19 @@
     $destinationRouteParameters = ['destination_uuid' => $destination->uuid];
     $destinationMenuItems = collect([
         [
-            'label' => 'General',
+            'label' => __('General'),
             'route' => 'destination.show',
             'active' => request()->routeIs('destination.show'),
             'icon' => 'settings',
         ],
         $destination->getMorphClass() === 'App\\Models\\StandaloneDocker' ? [
-            'label' => 'Resources',
+            'label' => __('Resources'),
             'route' => 'destination.resources',
             'active' => request()->routeIs('destination.resources'),
             'icon' => 'grid',
         ] : null,
         [
-            'label' => 'Danger Zone',
+            'label' => __('Danger Zone'),
             'route' => 'destination.danger',
             'active' => request()->routeIs('destination.danger'),
             'icon' => 'danger',
@@ -22,12 +22,12 @@
     ])->filter();
 @endphp
 
-<x-main-nav-menu back-label="Destinations" back-title="Back to Integrations"
-    data-settings-search-items="{{ json_encode(settingsSearchItems(['Destination' => $destinationMenuItems], $destinationRouteParameters)) }}">
-    <nav aria-label="Destination settings"
+<x-main-nav-menu :back-label="__('Destinations')" :back-title="__('Back to Integrations')"
+    data-settings-search-items="{{ json_encode(settingsSearchItems([__('Destination') => $destinationMenuItems], $destinationRouteParameters)) }}">
+    <nav aria-label="{{ __('Destination settings') }}"
         class="grid grid-cols-1 gap-0.5">
         @foreach ($destinationMenuItems as $menuItem)
-            @if ($menuItem['label'] === 'Danger Zone')
+            @if ($menuItem['route'] === 'destination.danger')
                 <div class="col-span-full my-2 border-t border-neutral-200 dark:border-white/[0.06]" aria-hidden="true"></div>
             @endif
             <a wire:key="destination-settings-{{ str($menuItem['label'])->slug() }}"

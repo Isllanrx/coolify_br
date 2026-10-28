@@ -1,7 +1,7 @@
 <x-emails.layout>
-{{ $name }} has been stopped.
+{{ __(':name has been stopped.', ['name' => $name]) }}
 
-If it was your intention to stop this application, you can ignore this email.
+{{ __('If it was your intention to stop this application, you can ignore this email.') }}
 
-If not, [check what is going on]({{ $application_url }}).
+{{ __('If not, [check what is going on](:url).', ['url' => $application_url]) }}
 </x-emails.layout>

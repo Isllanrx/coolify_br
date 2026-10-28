@@ -1,6 +1,6 @@
 <div>
     <x-slot:title>
-        {{ data_get_str($service, 'name')->limit(10) }} > Configuration | Coolify
+        {{ data_get_str($service, 'name')->limit(10) }} > {{ __('Configuration') }} | Coolify
     </x-slot>
 
     <livewire:project.service.heading :service="$service" :parameters="$parameters" :query="$query" />
@@ -30,14 +30,14 @@
                             localStorage.setItem('service-compose-resources-view', mode);
                         }
                     }">
-                        <x-application.settings-section id="compose-resources-section" title="Compose resources"
-                            description="Applications and databases defined in this service." flush>
+                        <x-application.settings-section id="compose-resources-section" :title="__('Compose resources')"
+                            :description="__('Applications and databases defined in this service.')" flush>
                             <x-slot:actions>
                                 @if ($applications->isNotEmpty() || $databases->isNotEmpty())
                                     <x-canvas-view-toggle />
                                 @endif
                                 <a class="button" target="_blank" href="{{ $service->documentation() }}">
-                                    Documentation
+                                    {{ __('Documentation') }}
                                     <x-reicon name="external-link" class="size-4" />
                                 </a>
                             </x-slot:actions>
@@ -48,17 +48,17 @@
                                 @if ($applications->isNotEmpty() || $databases->isNotEmpty())
                                     <div x-cloak x-show="viewMode === 'table'"
                                         class="grid min-w-[48rem] grid-cols-[minmax(14rem,1fr)_minmax(12rem,1fr)_12rem_5rem] gap-3 border-b border-neutral-200 bg-neutral-50 px-4 py-2.5 text-[11px] font-medium text-neutral-500 dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-fg-faint">
-                                        <div>Resource</div>
-                                        <div>Image</div>
-                                        <div class="justify-self-start">Status</div>
+                                        <div>{{ __('Resource') }}</div>
+                                        <div>{{ __('Image') }}</div>
+                                        <div class="justify-self-start">{{ __('Status') }}</div>
                                         <div></div>
                                     </div>
                                 @endif
 
                                 @if ($applications->isEmpty() && $databases->isEmpty())
                                     <div class="p-4 sm:col-span-2">
-                                        <x-empty title="No compose resources"
-                                            description="No applications or databases are defined in this Docker Compose file."
+                                        <x-empty :title="__('No compose resources')"
+                                            :description="__('No applications or databases are defined in this Docker Compose file.')"
                                             icon-name="grid" />
                                     </div>
                                 @endif
@@ -89,7 +89,7 @@
                     <div class="space-y-6">
                         <div
                             class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] leading-5 text-amber-800 dark:border-warning/15 dark:bg-warning/[0.07] dark:text-amber-300/90">
-                            Service volume mounts are read-only here. Edit the Docker Compose file and reload it to change volumes.
+                            {{ __('Service volume mounts are read-only here. Edit the Docker Compose file and reload it to change volumes.') }}
                         </div>
                         @foreach ($applications as $application)
                             <livewire:project.service.storage wire:key="application-{{ $application->id }}"

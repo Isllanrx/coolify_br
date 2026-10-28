@@ -6,9 +6,9 @@
     <div class="application-settings-form w-full">
         <header class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div class="min-w-0">
-                <h1 class="truncate text-[24px]! leading-7! font-semibold! tracking-tight!">Sources</h1>
+                <h1 class="truncate text-[24px]! leading-7! font-semibold! tracking-tight!">{{ __('Sources') }}</h1>
                 <p class="mt-1 text-[13px] text-neutral-500 dark:text-fg-dim">
-                    {{ $sources->count() }} {{ Str::plural('Git source', $sources->count()) }} connected to your team
+                    {{ $sources->count() }} {{ Str::plural('Git source', $sources->count()) }} {{ __('connected to your team') }}
                 </p>
             </div>
             @can('createAnyResource')
@@ -18,38 +18,38 @@
                         class="button button-highlighted"
                         aria-haspopup="menu" :aria-expanded="dropdownOpen">
                         <x-reicon name="plus" class="size-3.5" />
-                        New source
+                        {{ __('New source') }}
                         <x-reicon name="chevron-down" class="size-3 opacity-55" />
                     </button>
 
                     <div x-cloak x-show="dropdownOpen" x-transition.origin.top.right role="menu"
                         class="listbox-panel left-auto! right-0! z-[90]! w-52! min-w-52!">
-                        <x-modal-input title="New GitHub App" :closeOutside="false">
+                        <x-modal-input :title="__('New GitHub App')" :closeOutside="false">
                             <x-slot:content>
                                 <button type="button" @click="dropdownOpen = false"
                                     class="listbox-option justify-start! gap-2.5!" role="menuitem">
                                     <x-git-icon class="size-3.5 shrink-0 opacity-70" git="App\Models\GithubApp" />
-                                    GitHub App
+                                    {{ __('GitHub App') }}
                                 </button>
                             </x-slot:content>
                             <livewire:source.github.create />
                         </x-modal-input>
-                        <x-modal-input title="New GitLab App" :closeOutside="false">
+                        <x-modal-input :title="__('New GitLab App')" :closeOutside="false">
                             <x-slot:content>
                                 <button type="button" @click="dropdownOpen = false"
                                     class="listbox-option justify-start! gap-2.5!" role="menuitem">
                                     <x-git-icon class="size-3.5 shrink-0 opacity-70" git="App\Models\GitlabApp" />
-                                    GitLab App
+                                    {{ __('GitLab App') }}
                                 </button>
                             </x-slot:content>
                             <livewire:source.gitlab.create />
                         </x-modal-input>
-                        <x-modal-input title="New Gitea App" :closeOutside="false">
+                        <x-modal-input :title="__('New Gitea App')" :closeOutside="false">
                             <x-slot:content>
                                 <button type="button" @click="dropdownOpen = false"
                                     class="listbox-option justify-start! gap-2.5!" role="menuitem">
                                     <x-git-icon class="size-3.5 shrink-0 opacity-70" git="App\Models\GiteaApp" />
-                                    Gitea App
+                                    {{ __('Gitea App') }}
                                 </button>
                             </x-slot:content>
                             <livewire:source.gitea.create />
@@ -60,8 +60,8 @@
         </header>
 
         @if ($sources->isEmpty())
-            <x-empty title="No sources yet"
-                description="Connect a Git provider to deploy applications directly from your repositories."
+            <x-empty :title="__('No sources yet')"
+                :description="__('Connect a Git provider to deploy applications directly from your repositories.')"
                 icon-name="sources" />
         @else
             @php
@@ -109,9 +109,9 @@
 
                             <div class="mt-auto pt-4">
                                 @if ($source->isConnected())
-                                    <x-status-badge label="Connected" type="success" />
+                                    <x-status-badge :label="__('Connected')" type="success" />
                                 @else
-                                    <x-status-badge label="Setup incomplete" type="warning" />
+                                    <x-status-badge :label="__('Setup incomplete')" type="warning" />
                                 @endif
                             </div>
                         </a>
@@ -136,9 +136,9 @@
 
                             <div class="mt-auto pt-4">
                                 @if ($source->isConnected())
-                                    <x-status-badge label="Connected" type="success" />
+                                    <x-status-badge :label="__('Connected')" type="success" />
                                 @else
-                                    <x-status-badge label="Setup required" type="warning" />
+                                    <x-status-badge :label="__('Setup required')" type="warning" />
                                 @endif
                             </div>
                         </a>
@@ -163,9 +163,9 @@
 
                             <div class="mt-auto pt-4">
                                 @if ($source->isConnected())
-                                    <x-status-badge label="Connected" type="success" />
+                                    <x-status-badge :label="__('Connected')" type="success" />
                                 @else
-                                    <x-status-badge label="Setup required" type="warning" />
+                                    <x-status-badge :label="__('Setup required')" type="warning" />
                                 @endif
                             </div>
                         </a>
@@ -173,7 +173,7 @@
                 @endforeach
             </div>
             <div x-show="viewMode === 'table'" class="overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm dark:border-white/[0.08] dark:bg-white/[0.05]">
-                <div class="grid min-w-[620px] grid-cols-[minmax(0,1fr)_minmax(10rem,.7fr)_9rem] border-b border-neutral-200 bg-neutral-50 px-4 py-2.5 text-[11px] font-medium text-neutral-500 dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-fg-faint"><div>Source</div><div>Provider</div><div>Status</div></div>
+                <div class="grid min-w-[620px] grid-cols-[minmax(0,1fr)_minmax(10rem,.7fr)_9rem] border-b border-neutral-200 bg-neutral-50 px-4 py-2.5 text-[11px] font-medium text-neutral-500 dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-fg-faint"><div>{{ __('Source') }}</div><div>{{ __('Provider') }}</div><div>{{ __('Status') }}</div></div>
                 @foreach ($sources as $source)
                     @php
                         [$provider, $organization, $href] = match ($source->getMorphClass()) {

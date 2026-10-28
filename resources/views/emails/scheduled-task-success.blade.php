@@ -1,9 +1,9 @@
 <x-emails.layout>
-Scheduled task ({{ $task->name }}) completed successfully with the following output:
+{{ __('Scheduled task (:name) completed successfully with the following output:', ['name' => $task->name]) }}
 
 <pre>
 {{ $output }}
 </pre>
 
-Click [here]({{ $url }}) to view the task.
+{{ __('Click [here](:url) to view the task.', ['url' => $url]) }}
 </x-emails.layout>

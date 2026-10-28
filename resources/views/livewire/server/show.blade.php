@@ -1,7 +1,7 @@
 <div x-data
     x-init="@if ($server->hetzner_server_id && $server->cloudProviderToken && !$hetznerServerStatus) $wire.checkHetznerServerStatus(); @endif @if ($server->vultr_instance_id && $server->cloudProviderToken) $wire.checkVultrInstanceStatus(); @endif @if ($server->digitalocean_droplet_id && $server->cloudProviderToken && !$digitalOceanDropletStatus) $wire.checkDigitalOceanDropletStatus(); @endif @if ($server->hostinger_virtual_machine_id && $server->cloudProviderToken && !$hostingerVirtualMachineStatus) $wire.checkHostingerVirtualMachineStatus(); @endif">
     <x-slot:title>
-        {{ data_get_str($server, 'name')->limit(24) }} | Server | Coolify
+        {{ data_get_str($server, 'name')->limit(24) }} | {{ __('Server') }} | Coolify
     </x-slot>
 
     <livewire:server.navbar :server="$server" />
@@ -40,7 +40,7 @@
                         || (!$server->hostinger_virtual_machine_id && $availableHostingerTokens->isNotEmpty());
                     $hetznerMatch = $matchedHetznerServer
                         ? [
-                            'name' => $matchedHetznerServer['name'] ?? 'Hetzner server',
+                            'name' => $matchedHetznerServer['name'] ?? __('Hetzner server'),
                             'id' => $matchedHetznerServer['id'] ?? null,
                             'status' => $matchedHetznerServer['status'] ?? null,
                         ]
@@ -54,14 +54,14 @@
                         : null;
                     $vultrMatch = $matchedVultrInstance
                         ? [
-                            'name' => $matchedVultrInstance['label'] ?? $matchedVultrInstance['hostname'] ?? 'Vultr instance',
+                            'name' => $matchedVultrInstance['label'] ?? $matchedVultrInstance['hostname'] ?? __('Vultr instance'),
                             'id' => $matchedVultrInstance['id'] ?? null,
                             'status' => $matchedVultrInstance['status'] ?? null,
                         ]
                         : null;
                     $hostingerMatch = $matchedHostingerVirtualMachine
                         ? [
-                            'name' => $matchedHostingerVirtualMachine['hostname'] ?? 'Hostinger VPS',
+                            'name' => $matchedHostingerVirtualMachine['hostname'] ?? __('Hostinger VPS'),
                             'id' => $matchedHostingerVirtualMachine['id'] ?? null,
                             'status' => $matchedHostingerVirtualMachine['state'] ?? null,
                         ]
@@ -73,13 +73,13 @@
                     <x-unsaved-bar action="submit"
                         targets="name,description,ip,user,port,connectionTimeout,serverTimezone,wildcardDomain" />
 
-                    <x-application.settings-section id="server-connection-section" title="Connection"
-                        helper="Configure how Coolify identifies, reaches, and validates this server.">
+                    <x-application.settings-section id="server-connection-section" :title="__('Connection')"
+                        :helper="__('Configure how Coolify identifies, reaches, and validates this server.')">
                         <x-slot:badges>
                             @if ($server->isTransferredAway())
-                                <x-status-badge label="Transferred away" type="warning" />
+                                <x-status-badge :label="__('Transferred away')" type="warning" />
                             @else
-                                <x-status-badge :label="$server->isFunctional() ? 'Ready' : 'Validation required'"
+                                <x-status-badge :label="$server->isFunctional() ? __('Ready') : __('Validation required')"
                                     :type="$server->isFunctional() ? 'success' : 'warning'" />
                             @endif
                         </x-slot:badges>
@@ -88,7 +88,7 @@
                                 <div x-data="{ open: false }" class="relative" @click.outside="open = false">
                                     <button type="button" class="button" @click="open = !open">
                                         <x-reicon name="plus" class="size-3.5" />
-                                        Link provider
+                                        {{ __('Link provider') }}
                                     </button>
                                     <div x-cloak x-show="open" x-transition.origin.top.right
                                         class="absolute top-9 right-0 z-50 w-56 rounded-lg border border-neutral-200 bg-white p-1 shadow-dropdown dark:border-white/[0.1] dark:bg-raised">
@@ -96,7 +96,7 @@
                                             <x-server.provider-link-modal :server="$server" provider="hetzner"
                                                 providerLabel="Hetzner" tokenModel="selectedHetznerTokenId"
                                                 :tokens="$availableHetznerTokens" manualModel="manualHetznerServerId"
-                                                manualLabel="Server ID" manualPlaceholder="12345678"
+                                                :manualLabel="__('Server ID')" manualPlaceholder="12345678"
                                                 searchByIdMethod="searchHetznerServerById"
                                                 searchByIpMethod="searchHetznerServer" linkMethod="linkToHetzner"
                                                 :searchError="$hetznerSearchError" :noMatch="$hetznerNoMatchFound"
@@ -108,7 +108,7 @@
                                                 tokenModel="selectedDigitalOceanTokenId"
                                                 :tokens="$availableDigitalOceanTokens"
                                                 manualModel="manualDigitalOceanDropletId"
-                                                manualLabel="Droplet ID" manualPlaceholder="12345678"
+                                                :manualLabel="__('Droplet ID')" manualPlaceholder="12345678"
                                                 searchByIdMethod="searchDigitalOceanDropletById"
                                                 searchByIpMethod="searchDigitalOceanDroplet"
                                                 linkMethod="linkToDigitalOcean"
@@ -119,7 +119,7 @@
                                             <x-server.provider-link-modal :server="$server" provider="vultr"
                                                 providerLabel="Vultr" tokenModel="selectedVultrTokenId"
                                                 :tokens="$availableVultrTokens" manualModel="manualVultrInstanceId"
-                                                manualLabel="Instance ID" manualPlaceholder="6d4b…"
+                                                :manualLabel="__('Instance ID')" manualPlaceholder="6d4b…"
                                                 searchByIdMethod="searchVultrInstanceById"
                                                 searchByIpMethod="searchVultrInstance" linkMethod="linkToVultr"
                                                 :searchError="$vultrSearchError" :noMatch="$vultrNoMatchFound"
@@ -130,7 +130,7 @@
                                                 providerLabel="Hostinger" tokenModel="selectedHostingerTokenId"
                                                 :tokens="$availableHostingerTokens"
                                                 manualModel="manualHostingerVirtualMachineId"
-                                                manualLabel="Virtual Machine ID" manualPlaceholder="17923"
+                                                :manualLabel="__('Virtual Machine ID')" manualPlaceholder="17923"
                                                 searchByIdMethod="searchHostingerVirtualMachineById"
                                                 searchByIpMethod="searchHostingerVirtualMachine"
                                                 linkMethod="linkToHostinger"
@@ -143,7 +143,7 @@
 
                             @if ($server->canBeValidated())
                                 <x-process-dialog closeWithX mobileFullscreen size="xl" :open="$isValidating">
-                                    <x-slot:title>Validate and configure</x-slot:title>
+                                    <x-slot:title>{{ __('Validate and configure') }}</x-slot:title>
                                     <x-slot:content>
                                         <livewire:server.validate-and-install :server="$server"
                                             :ask="$server->isFunctional() && ! $isValidating" />
@@ -151,7 +151,7 @@
                                     <x-forms.button type="button" :isHighlighted="! $server->isFunctional()"
                                         @click="processDialogOpen = true" wire:click.prevent="validateServer">
                                         <x-reicon :name="$server->isFunctional() ? 'refresh' : 'alert-circle'" class="size-3.5" />
-                                        {{ $server->isFunctional() ? 'Revalidate connection' : 'Validate connection' }}
+                                        {{ $server->isFunctional() ? __('Revalidate connection') : __('Validate connection') }}
                                     </x-forms.button>
                                 </x-process-dialog>
                             @endif
@@ -161,24 +161,24 @@
                                     $transferredAt = data_get($server->server_metadata, 'transfer.transferred_at');
                                     $transferredAt = $transferredAt ? \Illuminate\Support\Carbon::parse($transferredAt)->toDayDateTimeString().' UTC' : 'the transfer';
                                 @endphp
-                                <x-modal-confirmation title="Take back a transferred server?"
+                                <x-modal-confirmation :title="__('Take back a transferred server?')"
                                     submitAction="enableManagement" :confirmWithPassword="false"
                                     temporaryDisableTwoStepConfirmation
-                                    step2ButtonText="I understand, enable management"
+                                    :step2ButtonText="__('I understand, enable management')"
                                     :confirmationText="$server->name"
-                                    confirmationLabel="Enter the server name to take the server back."
-                                    shortConfirmationLabel="Server name"
-                                    :warningMessage="'<strong>Changes made on '.e($transferTarget).' after '.e($transferredAt).' are lost.</strong> This instance uses its copy of the settings and resources from the time of the transfer. Use this only when '.e($transferTarget).' is lost or cannot transfer the server back. Otherwise use Transfer back, which keeps those changes.'"
+                                    :confirmationLabel="__('Enter the server name to take the server back.')"
+                                    :shortConfirmationLabel="__('Server name')"
+                                    :warningMessage="__('<strong>Changes made on :target after :time are lost.</strong> This instance uses its copy of the settings and resources from the time of the transfer. Use this only when :target is lost or cannot transfer the server back. Otherwise use Transfer back, which keeps those changes.', ['target' => e($transferTarget), 'time' => e($transferredAt)])"
                                     :actions="[
-                                        'This instance starts to run deployments, webhooks, scheduled tasks, backups, proxy updates, and monitoring for this server again.',
-                                        'The server records that this instance owns it. The next time the other instance connects to the server, it stops managing it automatically.',
-                                        'Sentinel on the server is reconfigured to send its data to this instance.',
-                                        'This instance takes back its DNS records and shows the steps that finish the take back: webhooks, DNS, Sentinel, backups, and runners.',
+                                        __('This instance starts to run deployments, webhooks, scheduled tasks, backups, proxy updates, and monitoring for this server again.'),
+                                        __('The server records that this instance owns it. The next time the other instance connects to the server, it stops managing it automatically.'),
+                                        __('Sentinel on the server is reconfigured to send its data to this instance.'),
+                                        __('This instance takes back its DNS records and shows the steps that finish the take back: webhooks, DNS, Sentinel, backups, and runners.'),
                                     ]">
                                     <x-slot:trigger>
                                         <x-forms.button type="button" isError canGate="update" :canResource="$server">
                                             <x-reicon name="alert-triangle" class="size-3.5" />
-                                            Enable management
+                                            {{ __('Enable management') }}
                                         </x-forms.button>
                                     </x-slot:trigger>
                                 </x-modal-confirmation>
@@ -186,65 +186,63 @@
                         </x-slot:actions>
 
                         @if ($server->isTransferredAway())
-                            <x-callout type="danger" title="Transferred to another instance" class="mb-4">
-                                This server was transferred to
-                                <strong>{{ data_get($server->server_metadata, 'transfer.target_instance_url') ?: 'another Coolify instance' }}</strong>,
-                                which manages it now. Use that instance. To undo the transfer, use
-                                <a href="{{ route('server.transfer', ['server_uuid' => $server->uuid]) }}" {{ wireNavigate() }}
-                                    class="underline">Transfer back</a>. Keep this archive until you are sure: it is the copy
-                                that an undo uses.
+                            <x-callout type="danger" :title="__('Transferred to another instance')" class="mb-4">
+                                {!! __('This server was transferred to :target, which manages it now. Use that instance. To undo the transfer, use :link. Keep this archive until you are sure: it is the copy that an undo uses.', [
+                                    'target' => '<strong>'.e(data_get($server->server_metadata, 'transfer.target_instance_url') ?: __('another Coolify instance')).'</strong>',
+                                    'link' => '<a href="'.e(route('server.transfer', ['server_uuid' => $server->uuid])).'" '.wireNavigate().' class="underline">'.e(__('Transfer back')).'</a>',
+                                ]) !!}
                             </x-callout>
                         @endif
 
                         <livewire:server.transfer-finish :server="$server" :key="'transfer-finish-'.$server->uuid" />
 
                         @if ($this->limaStartCommand)
-                            <x-callout type="info" title="Start this Lima VM locally" class="mb-4">
+                            <x-callout type="info" :title="__('Start this Lima VM locally')" class="mb-4">
                                 <code
                                     class="mt-2 block overflow-x-auto rounded-lg bg-neutral-950 px-3 py-2 font-mono text-[11px] text-neutral-200">{{ $this->limaStartCommand }}</code>
                             </x-callout>
                         @endif
 
                         @if ($server->isForceDisabled() && isCloud())
-                            <x-callout type="danger" title="Server disabled" class="mb-4">
-                                This server is disabled because the current plan server limit was exceeded.
+                            <x-callout type="danger" :title="__('Server disabled')" class="mb-4">
+                                {{ __('This server is disabled because the current plan server limit was exceeded.') }}
                             </x-callout>
                         @endif
 
                         <div class="grid gap-4 sm:grid-cols-2">
-                            <x-forms.input canGate="update" :canResource="$server" id="name" label="Name"
+                            <x-forms.input canGate="update" :canResource="$server" id="name" :label="__('Name')"
                                 required :disabled="$isValidating" />
                             <x-forms.input canGate="update" :canResource="$server" id="description"
-                                label="Description" :disabled="$isValidating" />
+                                :label="__('Description')" :disabled="$isValidating" />
                         </div>
 
                         <div class="mt-4 grid gap-4 lg:grid-cols-3">
                             <x-forms.input canGate="update" :canResource="$server" type="password" id="ip"
-                                label="IP address or domain"
-                                helper="Enter a hostname or IP address without http:// or https://."
+                                :label="__('IP address or domain')"
+                                :helper="__('Enter a hostname or IP address without http:// or https://.')"
                                 required :disabled="$isValidating || $server->isTransferredAway()" />
-                            <x-forms.input canGate="update" :canResource="$server" id="user" label="SSH user"
+                            <x-forms.input canGate="update" :canResource="$server" id="user" :label="__('SSH user')"
                                 required :disabled="$isValidating || $server->isTransferredAway()" />
                             <x-forms.input canGate="update" :canResource="$server" type="number" id="port"
-                                label="SSH port" required :disabled="$isValidating || $server->isTransferredAway()" />
+                                :label="__('SSH port')" required :disabled="$isValidating || $server->isTransferredAway()" />
                         </div>
 
                         <div class="mt-4 grid gap-4 lg:grid-cols-3">
                             <x-forms.input canGate="update" :canResource="$server" type="number"
-                                id="connectionTimeout" label="Connection timeout"
-                                helper="Seconds to wait before an SSH connection fails." min="1" max="300"
+                                id="connectionTimeout" :label="__('Connection timeout')"
+                                :helper="__('Seconds to wait before an SSH connection fails.')" min="1" max="300"
                                 required :disabled="$isValidating" />
-                            <x-forms.listbox searchable id="serverTimezone" label="Server timezone"
-                                helper="Used for backups, cron jobs, and displayed timestamps."
-                                searchPlaceholder="Search timezones" searchEmptyText="No matching timezone"
+                            <x-forms.listbox searchable id="serverTimezone" :label="__('Server timezone')"
+                                :helper="__('Used for backups, cron jobs, and displayed timestamps.')"
+                                :searchPlaceholder="__('Search timezones')" :searchEmptyText="__('No matching timezone')"
                                 :options="collect($this->timezones)->map(fn ($timezone) => [
                                     'value' => $timezone,
                                     'label' => $timezone,
                                 ])->all()" :disabled="$isValidating" canGate="update" :canResource="$server" />
                             @if (!$isSwarmWorker && $serverRole !== 'build')
                                 <x-forms.input canGate="update" :canResource="$server"
-                                    placeholder="https://example.com" id="wildcardDomain" label="Wildcard domain"
-                                    helper="New resources can receive generated subdomains from this domain."
+                                    placeholder="https://example.com" id="wildcardDomain" :label="__('Wildcard domain')"
+                                    :helper="__('New resources can receive generated subdomains from this domain.')"
                                     :disabled="$isValidating" />
                             @endif
                         </div>
@@ -252,19 +250,19 @@
                         @if (!$server->isLocalhost())
                             <div class="mt-4 border-t border-neutral-200 pt-4 dark:border-white/[0.08]">
                                 <x-forms.listbox canGate="update" :canResource="$server" id="serverRole"
-                                    label="Server role" onChange="requestServerRoleChange"
-                                    helper="Builds can use large amounts of CPU and memory. Deployments on the same server can become slow or unreachable during a build. GitHub Actions runners need the Builds only or the Deployments and builds role."
+                                    :label="__('Server role')" onChange="requestServerRoleChange"
+                                    :helper="__('Builds can use large amounts of CPU and memory. Deployments on the same server can become slow or unreachable during a build. GitHub Actions runners need the Builds only or the Deployments and builds role.')"
                                     :disabled="$isValidating" :options="[
-                                        ['value' => 'deployment', 'label' => 'Deployments only', 'description' => 'Runs your resources. Images are built on a build server.'],
-                                        ['value' => 'build', 'label' => 'Builds only', 'description' => 'Builds images for other servers and runs GitHub Actions runners.'],
-                                        ['value' => 'both', 'label' => 'Deployments and builds', 'description' => 'Builds and runs your resources on this server. Can also run GitHub Actions runners.'],
+                                        ['value' => 'deployment', 'label' => __('Deployments only'), 'description' => __('Runs your resources. Images are built on a build server.')],
+                                        ['value' => 'build', 'label' => __('Builds only'), 'description' => __('Builds images for other servers and runs GitHub Actions runners.')],
+                                        ['value' => 'both', 'label' => __('Deployments and builds'), 'description' => __('Builds and runs your resources on this server. Can also run GitHub Actions runners.')],
                                     ]" />
                             </div>
                         @endif
                     </x-application.settings-section>
 
-                    <x-application.settings-section id="server-overview-section" title="Server overview"
-                        helper="Provider state, operating system, and hardware details.">
+                    <x-application.settings-section id="server-overview-section" :title="__('Server overview')"
+                        :helper="__('Provider state, operating system, and hardware details.')">
                         <x-slot:actions>
                             @if ($provider)
                                 <x-status-badge :label="$provider . ($providerStatus ? ' · ' . ucfirst($providerStatus) : '')"
@@ -272,25 +270,25 @@
                                 @if ($provider === 'Hetzner')
                                     <x-forms.button type="button" class="size-8! px-0!"
                                         wire:click.prevent="checkHetznerServerStatus(true)"
-                                        title="Refresh provider status">
+                                        :title="__('Refresh provider status')">
                                         <x-reicon name="refresh" class="size-3.5" />
                                     </x-forms.button>
                                 @elseif ($provider === 'DigitalOcean')
                                     <x-forms.button type="button" class="size-8! px-0!"
                                         wire:click.prevent="checkDigitalOceanDropletStatus(true)"
-                                        title="Refresh provider status">
+                                        :title="__('Refresh provider status')">
                                         <x-reicon name="refresh" class="size-3.5" />
                                     </x-forms.button>
                                 @elseif ($provider === 'Vultr')
                                     <x-forms.button type="button" class="size-8! px-0!"
                                         wire:click.prevent="checkVultrInstanceStatus(true)"
-                                        title="Refresh provider status">
+                                        :title="__('Refresh provider status')">
                                         <x-reicon name="refresh" class="size-3.5" />
                                     </x-forms.button>
                                 @elseif ($provider === 'Hostinger')
                                     <x-forms.button type="button" class="size-8! px-0!"
                                         wire:click.prevent="checkHostingerVirtualMachineStatus(true)"
-                                        title="Refresh provider status">
+                                        :title="__('Refresh provider status')">
                                         <x-reicon name="refresh" class="size-3.5" />
                                     </x-forms.button>
                                 @endif
@@ -298,26 +296,26 @@
                                     @if ($provider === 'Hetzner' && !$server->isFunctional() && $hetznerServerStatus === 'off')
                                         <x-forms.button type="button" wire:click.prevent="startHetznerServer" isHighlighted
                                             canGate="update" :canResource="$server">
-                                            Power On
+                                            {{ __('Power On') }}
                                         </x-forms.button>
                                     @elseif ($provider === 'DigitalOcean' && $digitalOceanDropletStatus === 'off')
                                         <x-forms.button type="button" wire:click.prevent="startDigitalOceanDroplet"
                                             isHighlighted canGate="update" :canResource="$server">
-                                            Power On
+                                            {{ __('Power On') }}
                                         </x-forms.button>
                                     @elseif ($provider === 'Vultr' && $vultrInstanceStatus === 'stopped')
                                         <x-forms.button type="button" wire:click.prevent="startVultrInstance" isHighlighted
                                             canGate="update" :canResource="$server">
-                                            Power On
+                                            {{ __('Power On') }}
                                         </x-forms.button>
                                     @endif
                                 @endif
                             @endif
                             <x-forms.button type="button" wire:click="refreshServerMetadata"
                                 :disabled="! $server->isFunctional()"
-                                :tooltip="$server->isFunctional() ? null : 'Validate the connection first.'">
+                                :tooltip="$server->isFunctional() ? null : __('Validate the connection first.')">
                                 <x-reicon name="refresh" class="size-3.5" />
-                                {{ $server->server_metadata ? 'Refresh details' : 'Fetch server details' }}
+                                {{ $server->server_metadata ? __('Refresh details') : __('Fetch server details') }}
                             </x-forms.button>
                         </x-slot:actions>
 
@@ -332,11 +330,11 @@
                                 </p>
                                 <p class="mt-1 text-xs leading-5 text-neutral-500 dark:text-fg-dim">
                                     @if ($server->isTransferredAway())
-                                        This server was migrated away from this Coolify instance and cannot be managed here.
+                                        {{ __('This server was migrated away from this Coolify instance and cannot be managed here.') }}
                                     @elseif ($server->isFunctional())
-                                        The server is reachable, validated, and ready to host resources.
+                                        {{ __('The server is reachable, validated, and ready to host resources.') }}
                                     @else
-                                        Validate the SSH connection before using this server.
+                                        {{ __('Validate the SSH connection before using this server.') }}
                                     @endif
                                 </p>
                             </div>
@@ -348,8 +346,8 @@
                     </x-application.settings-section>
 
                     @if ($server->validation_logs)
-                        <x-application.settings-section title="Previous validation output"
-                            helper="The latest output produced while checking this server.">
+                        <x-application.settings-section :title="__('Previous validation output')"
+                            :helper="__('The latest output produced while checking this server.')">
                             <div
                                 class="max-h-72 overflow-auto rounded-lg bg-neutral-950 p-4 font-mono text-xs leading-5 text-neutral-300">
                                 {!! $server->validation_logs !!}
@@ -361,11 +359,11 @@
         </div>
     </div>
 
-    <x-modal-confirmation title="Use this server for deployments and builds?"
+    <x-modal-confirmation :title="__('Use this server for deployments and builds?')"
         submitAction="confirmServerRoleChange" :confirmWithText="false" :confirmWithPassword="false"
-        step2ButtonText="Enable deployments and builds"
-        warningMessage="Builds can use a large amount of CPU and memory. During a build, deployed resources on this server can become slow or unreachable."
-        :actions="['Enable builds on this deployment server.']">
+        :step2ButtonText="__('Enable deployments and builds')"
+        :warningMessage="__('Builds can use a large amount of CPU and memory. During a build, deployed resources on this server can become slow or unreachable.')"
+        :actions="[__('Enable builds on this deployment server.')]">
         <x-slot:trigger>
             <button id="server-role-confirmation-trigger" type="button" class="hidden" aria-hidden="true"></button>
         </x-slot:trigger>

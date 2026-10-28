@@ -1,6 +1,6 @@
 <div class="flex min-h-[calc(100dvh-7.5rem)] flex-col">
     <x-slot:title>
-        {{ data_get_str($application, 'name')->limit(10) }} > Deployment | Coolify
+        {{ data_get_str($application, 'name')->limit(10) }} > {{ __('Deployment') }} | Coolify
         </x-slot>
         <livewire:project.shared.configuration-checker :resource="$application" />
         <livewire:project.application.heading :application="$application" wire:key="application-heading-deployment-show" />
@@ -195,7 +195,7 @@
             try {
                 return await this.$wire.exportLogs(this.showTimestamps, this.searchQuery.trim());
             } catch {
-                Livewire.dispatch('error', ['Failed to prepare logs for export.']);
+                Livewire.dispatch('error', [@js(__('Failed to prepare logs for export.'))]);
                 return '';
             }
         },
@@ -203,13 +203,13 @@
             const content = await this.exportLogs();
             if (!content) return;
             if (!navigator.clipboard?.writeText) {
-                Livewire.dispatch('error', ['Clipboard is not available. Please use HTTPS or localhost.']);
+                Livewire.dispatch('error', [@js(__('Clipboard is not available. Please use HTTPS or localhost.'))]);
                 return;
             }
             navigator.clipboard.writeText(content).then(() => {
-                Livewire.dispatch('success', ['Logs copied to clipboard.']);
+                Livewire.dispatch('success', [@js(__('Logs copied to clipboard.'))]);
             }).catch(() => {
-                Livewire.dispatch('error', ['Failed to copy logs to clipboard.']);
+                Livewire.dispatch('error', [@js(__('Failed to copy logs to clipboard.'))]);
             });
         },
         async downloadLogs() {
@@ -293,7 +293,7 @@
                         @php
                             $deploymentStatus = data_get($application_deployment_queue, 'status');
                             $deploymentStatusLabel = $deploymentStatus === 'in_progress'
-                                ? 'In progress'
+                                ? __('In progress')
                                 : Str::headline((string) $deploymentStatus);
                             $deploymentStatusType = match ($deploymentStatus) {
                                 'finished' => 'success',
@@ -306,7 +306,7 @@
                             <div class="logs-viewer-primary">
                                 <div class="logs-viewer-actions">
                                 @if ($isKeepAliveOn)
-                                <button title="Follow Logs" :class="alwaysScroll ? 'logs-viewer-btn-active' : ''"
+                                <button title="{{ __('Follow Logs') }}" :class="alwaysScroll ? 'logs-viewer-btn-active' : ''"
                                     x-on:click="toggleScroll"
                                     class="logs-viewer-btn">
                                     <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -315,7 +315,7 @@
                                     </svg>
                                 </button>
                                 @endif
-                                <button title="Fullscreen" x-show="!fullscreen" x-on:click="makeFullscreen"
+                                <button title="{{ __('Fullscreen') }}" x-show="!fullscreen" x-on:click="makeFullscreen"
                                     class="logs-viewer-btn">
                                     <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <g fill="none">
@@ -326,7 +326,7 @@
                                         </g>
                                     </svg>
                                 </button>
-                                <button title="Minimize" x-show="fullscreen" x-on:click="makeFullscreen"
+                                <button title="{{ __('Minimize') }}" x-show="fullscreen" x-on:click="makeFullscreen"
                                     class="logs-viewer-btn">
                                     <svg class="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path fill="none" stroke="currentColor" stroke-linecap="round"
@@ -352,41 +352,41 @@
                             <div class="logs-viewer-search relative">
                                 <x-reicon name="search"
                                     class="pointer-events-none absolute top-1/2 left-2.5 z-10 size-3.5 -translate-y-1/2 text-neutral-400 dark:text-fg-faint" />
-                                <input type="search" x-ref="search" x-model.debounce.300ms="searchQuery" placeholder="Find in logs"
-                                    aria-label="Find in logs" :aria-keyshortcuts="findShortcutLabel === '⌘F' ? 'Meta+F' : 'Control+F'"
+                                <input type="search" x-ref="search" x-model.debounce.300ms="searchQuery" placeholder="{{ __('Find in logs') }}"
+                                    aria-label="{{ __('Find in logs') }}" :aria-keyshortcuts="findShortcutLabel === '⌘F' ? 'Meta+F' : 'Control+F'"
                                     class="h-8! w-full rounded-lg! border-neutral-200! bg-white! py-0! pr-8! pl-8! text-[12px]! shadow-none! placeholder:text-neutral-400 focus:border-accent! focus:ring-0! dark:border-white/[0.08]! dark:bg-white/[0.035]! dark:text-fg! dark:placeholder:text-fg-faint" />
                                 <kbd x-cloak x-show="!searchQuery" x-text="findShortcutLabel" aria-hidden="true"
                                     class="pointer-events-none absolute top-1/2 right-2 z-10 -translate-y-1/2 rounded border border-neutral-200 px-1 font-sans text-[10px] leading-4 text-neutral-400 dark:border-white/[0.08] dark:text-fg-faint"></kbd>
                                 <button x-cloak x-show="searchQuery" x-on:click="searchQuery = ''" type="button"
                                     class="absolute top-1/2 right-2 z-10 flex size-5 -translate-y-1/2 items-center justify-center rounded text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-black dark:text-fg-faint dark:hover:bg-white/[0.07] dark:hover:text-fg"
-                                    aria-label="Clear search">
+                                    aria-label="{{ __('Clear search') }}">
                                     <x-reicon name="x" class="size-3" />
                                 </button>
                             </div>
                             <div class="runtime-log-menus">
                             <x-table.dropdown panel-class="runtime-log-menu min-w-48! max-h-none!" role="menu">
-                                <x-slot:trigger><button type="button" title="View Options"
+                                <x-slot:trigger><button type="button" title="{{ __('View Options') }}"
                                     class="button" aria-haspopup="menu" :aria-expanded="open">
                                     <svg class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
                                     </svg>
-                                    <span>View</span>
+                                    <span>{{ __('View') }}</span>
                                     <x-reicon name="chevron-down" class="size-3 transition-transform" ::class="open ? 'rotate-180' : ''" />
                                 </button></x-slot:trigger>
                                 <div>
-                                    <p class="runtime-log-menu-label">Display</p>
+                                    <p class="runtime-log-menu-label">{{ __('Display') }}</p>
                                     <button type="button" class="listbox-option" role="menuitemcheckbox"
                                         :aria-checked="showTimestamps" x-on:click="showTimestamps = !showTimestamps">
-                                        <span class="flex-1 text-left">Timestamps</span>
+                                        <span class="flex-1 text-left">{{ __('Timestamps') }}</span>
                                         <span x-show="showTimestamps">✓</span>
                                     </button>
                                     @can('update', $application)
                                         <button type="button" class="listbox-option" role="menuitemcheckbox"
                                             aria-checked="{{ $is_debug_enabled ? 'true' : 'false' }}" wire:click="toggleDebug">
-                                            <span class="flex-1 text-left">Debug logs</span>
-                                            <x-loading compact wire:loading.flex wire:target="toggleDebug" class="hidden" aria-label="Loading debug logs..." />
+                                            <span class="flex-1 text-left">{{ __('Debug logs') }}</span>
+                                            <x-loading compact wire:loading.flex wire:target="toggleDebug" class="hidden" :aria-label="__('Loading debug logs...')" />
                                             @if ($is_debug_enabled)
                                                 <span wire:loading.remove wire:target="toggleDebug">✓</span>
                                             @endif
@@ -395,25 +395,25 @@
                                 </div>
                             </x-table.dropdown>
                             <x-table.dropdown panel-class="runtime-log-menu min-w-52!" role="menu">
-                                <x-slot:trigger><button type="button" title="Copy or Download Logs"
+                                <x-slot:trigger><button type="button" title="{{ __('Copy or Download Logs') }}"
                                     class="button" aria-haspopup="menu" :aria-expanded="open">
                                     <svg class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                                     </svg>
-                                    <span>Export</span>
+                                    <span>{{ __('Export') }}</span>
                                     <x-reicon name="chevron-down" class="size-3 transition-transform" ::class="open ? 'rotate-180' : ''" />
                                 </button></x-slot:trigger>
                                 <div x-data="{ downloadingAllLogs: false }">
-                                    <p class="px-2 py-1.5 text-xs text-neutral-500 dark:text-fg-dim">Copied and downloaded logs hide secrets.</p>
+                                    <p class="px-2 py-1.5 text-xs text-neutral-500 dark:text-fg-dim">{{ __('Copied and downloaded logs hide secrets.') }}</p>
                                     <button type="button" role="menuitem" class="listbox-option"
                                         x-on:click="copyLogs(); open = false">
-                                        <span class="flex-1 text-left">Copy visible logs</span>
+                                        <span class="flex-1 text-left">{{ __('Copy visible logs') }}</span>
                                     </button>
                                     <button type="button" role="menuitem" class="listbox-option"
                                         x-on:click="downloadLogs(); open = false">
-                                        <span class="flex-1 text-left">Download visible logs</span>
+                                        <span class="flex-1 text-left">{{ __('Download visible logs') }}</span>
                                     </button>
                                     @can('update', $application)
                                         <button type="button" role="menuitem" x-on:click="
@@ -428,7 +428,7 @@
                                                 a.download = 'deployment-' + deploymentId + '-all-logs-' + timestamp + '.txt';
                                                 a.click();
                                                 URL.revokeObjectURL(url);
-                                                Livewire.dispatch('success', ['All logs downloaded.']);
+                                                Livewire.dispatch('success', [@js(__('All logs downloaded.'))]);
                                             }).finally(() => {
                                                 downloadingAllLogs = false;
                                                 open = false;
@@ -437,13 +437,13 @@
                                             :disabled="downloadingAllLogs"
                                             :class="{ 'opacity-50 cursor-not-allowed': downloadingAllLogs }"
                                             class="listbox-option">
-                                            <span x-show="!downloadingAllLogs" class="flex-1 text-left">Download full log (with debug)</span>
+                                            <span x-show="!downloadingAllLogs" class="flex-1 text-left">{{ __('Download full log (with debug)') }}</span>
                                             <span x-show="downloadingAllLogs" class="flex items-center gap-2">
                                                 <svg class="w-4 h-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                 </svg>
-                                                Downloading...
+                                                {{ __('Downloading...') }}
                                             </span>
                                         </button>
                                     @endcan
@@ -463,7 +463,7 @@
                         <div id="logs" class="flex min-w-0 flex-col font-logs text-[11px] leading-relaxed sm:text-xs">
                             <div x-show="searchQuery.trim() && matchCount === 0"
                                 class="py-2 text-neutral-500">
-                                No matches found.
+                                {{ __('No matches found.') }}
                             </div>
                             @forelse ($this->logLines as $line)
                                 @php
@@ -486,7 +486,7 @@
                                         ])>{{ $lineContent }}</span>
                                 </div>
                             @empty
-                                <span class="mb-2 font-logs text-neutral-400">No logs yet.</span>
+                                <span class="mb-2 font-logs text-neutral-400">{{ __('No logs yet.') }}</span>
                             @endforelse
                         </div>
                     </div>

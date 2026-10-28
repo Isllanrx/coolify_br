@@ -1,6 +1,6 @@
 <div class="h-full">
     <x-slot:title>
-        Deploy canvas | Coolify
+        {{ __('Deploy canvas') }} | Coolify
     </x-slot>
     {{-- The app's icons, cloned by resources/js/canvas/deploy/Icon.svelte. --}}
     <template data-deploy-canvas-icons>
@@ -19,10 +19,10 @@
          Out of the page flow: its empty trigger line under the full-height canvas
          made the page scroll, which moved the canvas panels up. --}}
     <div class="absolute">
-        <x-modal-confirmation title="Reset the canvas?" submitAction="deploy-canvas-reset" dispatchAction
-            :confirmWithText="false" :confirmWithPassword="false" step2ButtonText="Reset"
-            warningMessage="Your steps and their settings are removed from the canvas. Resources that you already deployed stay in Coolify."
-            :actions="['Remove every step from the canvas.']">
+        <x-modal-confirmation :title="__('Reset the canvas?')" submitAction="deploy-canvas-reset" dispatchAction
+            :confirmWithText="false" :confirmWithPassword="false" :step2ButtonText="__('Reset')"
+            :warningMessage="__('Your steps and their settings are removed from the canvas. Resources that you already deployed stay in Coolify.')"
+            :actions="[__('Remove every step from the canvas.')]">
             <x-slot:trigger>
                 <button id="deploy-canvas-reset-trigger" type="button" class="hidden" aria-hidden="true"></button>
             </x-slot:trigger>

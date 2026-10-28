@@ -1,16 +1,16 @@
 <div>
     <x-slot:title>
-        Teams | Coolify
+        {{ __('Teams') }} | Coolify
     </x-slot>
 
     <x-team.settings-layout>
     <div class="flex flex-col gap-6">
         <form wire:submit="submit" class="application-settings-form">
             <x-unsaved-bar action="submit" />
-            <x-application.settings-section title="General"
-                description="Manage this team's identity and shared API access.">
+            <x-application.settings-section :title="__('General')"
+                :description="__('Manage this team\'s identity and shared API access.')">
                 <x-slot:actions>
-                    <x-modal-input buttonTitle="New team" title="New Team">
+                    <x-modal-input :buttonTitle="__('New team')" :title="__('New Team')">
                         <livewire:team.create />
                     </x-modal-input>
                 </x-slot:actions>
@@ -46,16 +46,16 @@
                                     this.processing = false;
                                 }, () => {
                                     this.processing = false;
-                                    this.uploadError = 'The image could not be uploaded.';
+                                    this.uploadError = @js(__('The image could not be uploaded.'));
                                 });
                             } catch (error) {
                                 this.processing = false;
-                                this.uploadError = 'The image could not be processed in this browser.';
+                                this.uploadError = @js(__('The image could not be processed in this browser.'));
                             }
                             event.target.value = '';
                         },
                     }">
-                        <div class="mb-2 text-sm font-medium leading-4">Avatar</div>
+                        <div class="mb-2 text-sm font-medium leading-4">{{ __('Avatar') }}</div>
                         <div class="flex items-center gap-4">
                             <x-team.avatar :team="$team" class="size-16 rounded-xl! text-2xl" />
                             @can('update', $team)
@@ -63,45 +63,45 @@
                                     <div class="flex flex-wrap gap-2">
                                         <input x-ref="avatarInput" type="file" x-on:change="prepareAvatar($event)" accept="image/jpeg,image/png,image/webp" class="hidden">
                                         <x-forms.button type="button" x-on:click="$refs.avatarInput.click()" x-bind:disabled="processing">
-                                            <span x-text="processing ? 'Uploading…' : 'Browse…'"></span>
+                                            <span x-text="processing ? @js(__('Uploading…')) : @js(__('Browse…'))"></span>
                                         </x-forms.button>
                                         @if ($team->avatar_path)
-                                            <x-forms.button type="button" wire:click="removeAvatar" x-bind:disabled="processing" isError>Remove</x-forms.button>
+                                            <x-forms.button type="button" wire:click="removeAvatar" x-bind:disabled="processing" isError>{{ __('Remove') }}</x-forms.button>
                                         @endif
                                     </div>
-                                    <p class="text-xs text-neutral-500 dark:text-fg-dim">JPG, PNG, or WebP. Shown in the team switcher.</p>
+                                    <p class="text-xs text-neutral-500 dark:text-fg-dim">{{ __('JPG, PNG, or WebP. Shown in the team switcher.') }}</p>
                                     <p x-cloak x-show="uploadError" x-text="uploadError" class="text-xs text-red-500"></p>
                                     @error('avatar') <p class="text-xs text-red-500">{{ $message }}</p> @enderror
                                 </div>
                             @endcan
                         </div>
                     </div>
-                    <x-forms.input id="name" label="Name" required canGate="update" :canResource="$team" />
-                    <x-forms.input id="description" label="Description" canGate="update" :canResource="$team" />
+                    <x-forms.input id="name" :label="__('Name')" required canGate="update" :canResource="$team" />
+                    <x-forms.input id="description" :label="__('Description')" canGate="update" :canResource="$team" />
                     <div class="lg:col-span-2">
-                        <x-forms.listbox canGate="update" :canResource="$team" id="is_mcp_server_enabled" label="MCP server"
-                            helper="Controls whether this team's API tokens can use the instance MCP endpoint."
+                        <x-forms.listbox canGate="update" :canResource="$team" id="is_mcp_server_enabled" :label="__('MCP server')"
+                            :helper="__('Controls whether this team\'s API tokens can use the instance MCP endpoint.')"
                             :disabled="! auth()->user()->can('update', $team)" :options="[
-                                ['value' => false, 'label' => 'Disabled for this team'],
-                                ['value' => true, 'label' => 'Enabled for this team'],
+                                ['value' => false, 'label' => __('Disabled for this team')],
+                                ['value' => true, 'label' => __('Enabled for this team')],
                             ]" />
                     </div>
                     <div class="lg:col-span-2">
                         <x-forms.listbox canGate="update" :canResource="$team"
-                            id="is_build_server_fallback_enabled" label="Build server fallback"
-                            helper="Controls what happens when an application is configured to use a dedicated build server, but no usable build server is available."
+                            id="is_build_server_fallback_enabled" :label="__('Build server fallback')"
+                            :helper="__('Controls what happens when an application is configured to use a dedicated build server, but no usable build server is available.')"
                             :disabled="! auth()->user()->can('update', $team)" :options="[
-                                ['value' => true, 'label' => 'Build on the deployment server'],
-                                ['value' => false, 'label' => 'Fail the deployment'],
+                                ['value' => true, 'label' => __('Build on the deployment server')],
+                                ['value' => false, 'label' => __('Fail the deployment')],
                             ]" />
                     </div>
                     <div class="lg:col-span-2">
                         <x-forms.listbox canGate="update" :canResource="$team" id="is_two_factor_required"
-                            label="Two-factor authentication"
-                            helper="When required, members without two-factor authentication must configure it before they can use this team."
+                            :label="__('Two-factor authentication')"
+                            :helper="__('When required, members without two-factor authentication must configure it before they can use this team.')"
                             :disabled="! auth()->user()->can('update', $team)" :options="[
-                                ['value' => false, 'label' => 'Optional for members'],
-                                ['value' => true, 'label' => 'Required for all members'],
+                                ['value' => false, 'label' => __('Optional for members')],
+                                ['value' => true, 'label' => __('Required for all members')],
                             ]" />
                     </div>
                 </div>

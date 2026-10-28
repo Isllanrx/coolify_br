@@ -1,10 +1,10 @@
 <div class="flex flex-col gap-6" x-init="$wire.loadImages">
-    <x-application.settings-section title="Rollback images"
-        helper="Keep previously built Docker images available for fast rollbacks. Rollback uses an existing image without rebuilding the application. Images in the Docker registry are pulled to the server first." flush>
+    <x-application.settings-section :title="__('Rollback images')"
+        :helper="__('Keep previously built Docker images available for fast rollbacks. Rollback uses an existing image without rebuilding the application. Images in the Docker registry are pulled to the server first.')" flush>
         <x-slot:actions>
             @can('view', $application)
                 <x-forms.button wire:click="loadImages(true)">
-                    Reload images
+                    {{ __('Reload images') }}
                 </x-forms.button>
             @endcan
         </x-slot:actions>
@@ -13,16 +13,15 @@
             class="flex flex-col gap-4 border-b border-neutral-200 px-4 py-3.5 dark:border-white/[0.07]">
             <x-unsaved-bar action="saveSettings" />
             @if ($serverRetentionDisabled)
-                <x-callout type="warning" title="Disabled by the server">
-                    Image retention is disabled at the server level. This setting has no effect until a server
-                    administrator enables it.
+                <x-callout type="warning" :title="__('Disabled by the server')">
+                    {{ __('Image retention is disabled at the server level. This setting has no effect until a server administrator enables it.') }}
                 </x-callout>
             @endif
 
             <div class="max-w-sm">
                 <x-forms.input id="dockerImagesToKeep" type="number" min="0" max="100"
-                    label="Images to keep"
-                    helper="Set to 0 to keep only the running image. Pull request images are always removed during cleanup."
+                    :label="__('Images to keep')"
+                    :helper="__('Set to 0 to keep only the running image. Pull request images are always removed during cleanup.')"
                     canGate="update" :canResource="$application" :disabled="$serverRetentionDisabled" />
             </div>
         </form>
@@ -60,37 +59,37 @@
                             @endif
                         </div>
                         <p class="mt-1 text-xs text-neutral-500 dark:text-fg-dim">
-                            {{ $isRegistryImage ? 'Deployed' : 'Built' }} {{ $createdAt->diffForHumans() }}
+                            {{ $isRegistryImage ? __('Deployed') : __('Built') }} {{ $createdAt->diffForHumans() }}
                             <span class="mx-1 text-neutral-300 dark:text-fg-faint">·</span>
                             {{ $date }}
                         </p>
                     </div>
                     @can('deploy', $application)
                         @if ($isCurrent)
-                            <x-forms.button disabled tooltip="This image is currently running.">
-                                Rollback
+                            <x-forms.button disabled :tooltip="__('This image is currently running.')">
+                                {{ __('Rollback') }}
                             </x-forms.button>
                         @elseif (!$isRollbackable)
                             <x-forms.button disabled
-                                tooltip="Only commit and pull-request image tags support rollback.">
-                                Rollback
+                                :tooltip="__('Only commit and pull-request image tags support rollback.')">
+                                {{ __('Rollback') }}
                             </x-forms.button>
                         @else
                             <x-forms.button wire:click="rollbackImage('{{ $tag }}')">
-                                Roll back to this image
+                                {{ __('Roll back to this image') }}
                             </x-forms.button>
                         @endif
                     @endcan
                 </div>
             @empty
-                <x-empty title="No rollback images"
-                    description="No previous application images are stored on this server or in the Docker registry."
+                <x-empty :title="__('No rollback images')"
+                    :description="__('No previous application images are stored on this server or in the Docker registry.')"
                     icon-name="layers" />
             @endforelse
         </div>
 
         <div class="w-full" wire:target="loadImages" wire:loading>
-            <x-skeleton.list :rows="3" label="Loading available images" />
+            <x-skeleton.list :rows="3" :label="__('Loading available images')" />
         </div>
     </x-application.settings-section>
 </div>

@@ -2,7 +2,7 @@
     'title',
     'subtitle' => null,
     'href' => null,
-    'actionLabel' => 'View all',
+    'actionLabel' => __('View all'),
     'icon' => null,
 ])
 

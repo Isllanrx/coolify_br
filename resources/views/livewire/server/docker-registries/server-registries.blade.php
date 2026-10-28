@@ -13,11 +13,11 @@
         <div class="ml-auto flex shrink-0 items-center gap-2">
             <button type="button" wire:click="loadRegistries" wire:loading.attr="disabled" class="button w-fit">
                 <x-reicon name="refresh" class="size-3.5" />
-                Refresh
+                {{ __('Refresh') }}
             </button>
             @if ($server->isFunctional())
-                <x-modal-input buttonTitle="New" title="Log in to a registry"
-                    subtitle="Runs docker login on {{ $server->name }}.">
+                <x-modal-input :buttonTitle="__('New')" :title="__('Log in to a registry')"
+                    :subtitle="__('Runs docker login on :server.', ['server' => $server->name])">
                     <livewire:server.docker-registries.login :server="$server"
                         :key="'registry-login-'.$server->uuid" />
                 </x-modal-input>
@@ -32,16 +32,16 @@
     @if (empty($visibleRows))
         @unless ($error)
             <div class="px-4 py-3 text-[12px] text-neutral-500 dark:text-fg-faint">
-                Not logged in to any registry, and no resource on this server uses a private registry host.
+                {{ __('Not logged in to any registry, and no resource on this server uses a private registry host.') }}
             </div>
         @endunless
     @else
         <div class="overflow-x-auto">
             <div
                 class="grid min-w-[760px] grid-cols-[minmax(0,1fr)_9rem_minmax(0,1fr)_14rem] border-b border-neutral-200 px-4 py-2 text-[11px] font-medium text-neutral-500 dark:border-white/[0.08] dark:text-fg-faint">
-                <div>Registry</div>
-                <div>Status</div>
-                <div>Used by</div>
+                <div>{{ __('Registry') }}</div>
+                <div>{{ __('Status') }}</div>
+                <div>{{ __('Used by') }}</div>
                 <div></div>
             </div>
             @foreach ($visibleRows as $row)
@@ -57,16 +57,16 @@
                         <div class="truncate font-mono">{{ $row['registry'] }}</div>
                         <div>
                             @if ($row['logged_in'] && ($loginChecks[$row['registry']]['ok'] ?? true) === false)
-                                <x-status-badge type="error" label="Login failed"
+                                <x-status-badge type="error" :label="__('Login failed')"
                                     :title="$loginChecks[$row['registry']]['message']" />
                             @elseif ($row['logged_in'])
                                 <x-status-badge type="success"
-                                    :label="$row['source'] === 'credHelpers' ? 'Credential helper' : 'Logged in'" />
+                                    :label="$row['source'] === 'credHelpers' ? __('Credential helper') : __('Logged in')" />
                             @elseif ($error)
-                                <x-status-badge label="Unknown" />
+                                <x-status-badge :label="__('Unknown')" />
                             @else
-                                <x-status-badge :type="$row['registry'] === 'docker.io' ? 'neutral' : 'warning'" label="Not logged in"
-                                    :title="$row['registry'] === 'docker.io' ? 'Public Docker Hub images do not need a login.' : null" />
+                                <x-status-badge :type="$row['registry'] === 'docker.io' ? 'neutral' : 'warning'" :label="__('Not logged in')"
+                                    :title="$row['registry'] === 'docker.io' ? __('Public Docker Hub images do not need a login.') : null" />
                             @endif
                         </div>
                         <div class="min-w-0 text-neutral-600 dark:text-fg-dim">
@@ -87,26 +87,26 @@
                             @if ($row['logged_in'])
                                 <button type="button" wire:click="testLogin(@js($row['registry']))" wire:loading.attr="disabled"
                                     wire:target="testLogin" class="button w-fit"
-                                    title="Run docker login with the saved credentials">Test</button>
+                                    title="{{ __('Run docker login with the saved credentials') }}">{{ __('Test') }}</button>
                             @elseif (! $error && $server->isFunctional())
-                                <x-modal-input buttonTitle="Log in" title="Log in to {{ $row['registry'] }}"
-                                    subtitle="Runs docker login on {{ $server->name }}.">
+                                <x-modal-input :buttonTitle="__('Log in')" :title="__('Log in to :registry', ['registry' => $row['registry']])"
+                                    :subtitle="__('Runs docker login on :server.', ['server' => $server->name])">
                                     <livewire:server.docker-registries.login :server="$server" :presetRegistry="$row['registry']"
                                         :key="'registry-login-'.$server->uuid.'-'.$row['registry']" />
                                 </x-modal-input>
                             @endif
                             @if ($row['logged_in'] && $row['source'] === 'auths')
-                                <x-modal-input buttonTitle="Edit" title="Edit login for {{ $row['registry'] }}"
-                                    subtitle="Runs docker login on {{ $server->name }} again. The new values replace the old login.">
+                                <x-modal-input :buttonTitle="__('Edit')" :title="__('Edit login for :registry', ['registry' => $row['registry']])"
+                                    :subtitle="__('Runs docker login on :server again. The new values replace the old login.', ['server' => $server->name])">
                                     <livewire:server.docker-registries.login :server="$server" :editRegistry="$row['registry']"
                                         :currentUsername="$row['username']"
                                         :key="'registry-edit-'.$server->uuid.'-'.$row['registry']" />
                                 </x-modal-input>
-                                <x-modal-confirmation title="Delete the login for {{ $row['registry'] }}?" buttonTitle="Delete" isErrorButton
+                                <x-modal-confirmation :title="__('Delete the login for :registry?', ['registry' => $row['registry']])" :buttonTitle="__('Delete')" isErrorButton
                                     submitAction="logout({{ $row['registry'] }})" :actions="[
-                                        'Runs docker logout on '.$server->name.' and removes the saved credentials.',
-                                        'The server can no longer pull private images from this registry.',
-                                        'Deployments that need this registry fail until you log in again.',
+                                        __('Runs docker logout on :server and removes the saved credentials.', ['server' => $server->name]),
+                                        __('The server can no longer pull private images from this registry.'),
+                                        __('Deployments that need this registry fail until you log in again.'),
                                     ]" :confirmWithText="false" :confirmWithPassword="false" />
                             @endif
                         </div>
@@ -138,7 +138,7 @@
     @if ($dockerHubRow && ! $error)
         <div class="border-t border-neutral-200 px-4 py-2.5 text-[12px] text-neutral-500 dark:border-white/[0.07] dark:text-fg-faint">
             {{ trans_choice(':count resource on this server uses|:count resources on this server use', count($dockerHubRow['used_by'])) }}
-            Docker Hub images. Public images need no login. Log in to Docker Hub for private images or higher pull limits.
+            {{ __('Docker Hub images. Public images need no login. Log in to Docker Hub for private images or higher pull limits.') }}
         </div>
     @endif
 </div>

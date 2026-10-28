@@ -1,6 +1,6 @@
 <div class="h-full">
     <x-slot:title>
-        {{ $project->name }} > Canvas | Coolify
+        {{ $project->name }} > {{ __('Canvas') }} | Coolify
     </x-slot>
     <div data-environment-canvas data-endpoint="/projects/{{ $project->uuid }}/canvas"
         data-empty="No resources in this project yet"
@@ -16,21 +16,21 @@
                 :canvas-url="route('project.canvas', ['project_uuid' => $project->uuid])" />
             @can('update', $project)
                 <a href="{{ route('project.edit', ['project_uuid' => $project->uuid]) }}" {{ wireNavigate() }}
-                    class="button whitespace-nowrap" title="Project settings"
-                    aria-label="Open settings for {{ $project->name }}">
+                    class="button whitespace-nowrap" title="{{ __('Project settings') }}"
+                    aria-label="{{ __('Open settings for :name', ['name' => $project->name]) }}">
                     <x-reicon name="settings" class="size-3.5" />
-                    Settings
+                    {{ __('Settings') }}
                 </a>
                 <button type="button" x-data x-on:click="$dispatch('open-new-environment')"
                     class="button button-highlighted whitespace-nowrap">
                     <x-reicon name="plus" class="size-3.5" />
-                    New environment
+                    {{ __('New environment') }}
                 </button>
             @endcan
         </div>
     </div>
     @can('update', $project)
-        <x-modal-input title="New Environment" x-on:open-new-environment.window="modalOpen = true">
+        <x-modal-input :title="__('New Environment')" x-on:open-new-environment.window="modalOpen = true">
             <x-slot:content></x-slot:content>
             @include('livewire.project.partials.new-environment-form')
         </x-modal-input>

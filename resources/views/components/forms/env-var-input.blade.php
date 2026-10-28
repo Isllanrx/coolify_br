@@ -255,7 +255,7 @@
         @if ($type === 'password' && $allowToPeak)
             <button type="button" x-on:click="type = type === 'password' ? 'text' : 'password'"
                 class="password-toggle flex absolute inset-y-0 right-0 z-10 items-center pr-2 cursor-pointer text-neutral-500 hover:text-black dark:text-neutral-400 dark:hover:text-white"
-                aria-label="Toggle password visibility">
+                aria-label="{{ __('Toggle password visibility') }}">
                 <x-reicon name="eye" x-show="type === 'password'" class="size-[18px]" />
                 <x-reicon name="eye-off2" x-cloak x-show="type === 'text'" class="size-[18px]" />
             </button>
@@ -267,18 +267,18 @@
 
             <template x-if="suggestions.length === 0 && currentScope === 'vault'">
                 <div class="px-2 py-2 text-sm text-neutral-500 dark:text-fg-dim">
-                    <span x-show="vaultKeysLoading">Loading keys from the secret manager…</span>
-                    <span x-show="!vaultKeysLoading">No matching keys in the secret manager.</span>
+                    <span x-show="vaultKeysLoading">{{ __('Loading keys from the secret manager…') }}</span>
+                    <span x-show="!vaultKeysLoading">{{ __('No matching keys in the secret manager.') }}</span>
                 </div>
             </template>
 
             <template x-if="suggestions.length === 0 && currentScope && currentScope !== 'vault'">
                 <div class="px-2 py-2 text-sm text-neutral-500 dark:text-fg-dim">
-                    <div>No shared variables found in <span class="font-semibold" x-text="currentScope"></span> scope.</div>
+                    <div>{{ __('No shared variables found in') }} <span class="font-semibold" x-text="currentScope"></span> scope.</div>
                     <a :href="getScopeUrl(currentScope)"
                        class="mt-1 inline-block text-xs text-coollabs hover:underline dark:text-brand-light"
                        target="_blank">
-                        Add <span x-text="currentScope"></span> variables →
+                        {{ __('Add') }} <span x-text="currentScope"></span> {{ __('variables →') }}
                     </a>
                 </div>
             </template>

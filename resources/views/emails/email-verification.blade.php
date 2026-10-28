@@ -1,3 +1,3 @@
 <x-emails.layout>
-Verify your email [here]({{ $url }}).
+{{ __('Verify your email [here](:url).', ['url' => $url]) }}
 </x-emails.layout>

@@ -2,22 +2,22 @@
     <form wire:submit="submit" class="flex flex-col gap-6">
         <x-unsaved-bar action="submit" />
 
-        <x-application.settings-section title="Repository"
-            description="Configure the Git repository, branch, and commit Coolify deploys.">
+        <x-application.settings-section :title="__('Repository')"
+            :description="__('Configure the Git repository, branch, and commit Coolify deploys.')">
             <x-slot:actions>
                 <div class="flex flex-wrap items-center gap-2">
                     <a target="_blank" class="button" href="{{ $application?->gitBranchLocation }}">
-                        Repository
+                        {{ __('Repository') }}
                         <x-external-link />
                     </a>
                     @if (data_get($application, 'source.is_public') === false && $application->source instanceof \App\Models\GithubApp)
                         <a target="_blank" class="button" href="{{ getInstallationPath($application->source) }}">
-                            Git app
+                            {{ __('Git app') }}
                             <x-external-link />
                         </a>
                     @endif
                     <a target="_blank" class="button" href="{{ $application?->gitCommits }}">
-                        Commits
+                        {{ __('Commits') }}
                         <x-external-link />
                     </a>
                 </div>
@@ -26,30 +26,30 @@
             @if (blank($privateKeyId))
                 <div
                     class="mb-4 flex items-center justify-between gap-3 rounded-lg bg-neutral-50 px-3 py-2.5 ring-1 ring-neutral-200 dark:bg-white/[0.05] dark:ring-white/[0.07]">
-                    <span class="text-[12px] text-neutral-500 dark:text-fg-dim">Connected source</span>
+                    <span class="text-[12px] text-neutral-500 dark:text-fg-dim">{{ __('Connected source') }}</span>
                     <span class="text-[12px] font-medium text-neutral-900 dark:text-fg">
-                        {{ data_get($application, 'source.name', 'No source connected') }}
+                        {{ data_get($application, 'source.name', __('No source connected')) }}
                     </span>
                 </div>
             @endif
 
             <div class="grid gap-4 lg:grid-cols-2">
-                <x-forms.input placeholder="coollabsio/coolify-example" id="gitRepository" label="Repository"
+                <x-forms.input placeholder="coollabsio/coolify-example" id="gitRepository" :label="__('Repository')"
                     canGate="update" :canResource="$application" />
-                <x-forms.input placeholder="main" id="gitBranch" label="Branch" canGate="update"
+                <x-forms.input placeholder="main" id="gitBranch" :label="__('Branch')" canGate="update"
                     :canResource="$application" />
-                <x-forms.input placeholder="HEAD" id="gitCommitSha" label="Commit SHA" canGate="update"
+                <x-forms.input placeholder="HEAD" id="gitCommitSha" :label="__('Commit SHA')" canGate="update"
                     :canResource="$application" />
             </div>
         </x-application.settings-section>
     </form>
 
     @if (filled($privateKeyId))
-        <x-application.settings-section title="Deploy key"
-            description="The SSH key Coolify uses to clone this private repository.">
+        <x-application.settings-section :title="__('Deploy key')"
+            :description="__('The SSH key Coolify uses to clone this private repository.')">
             <div
                 class="mb-4 flex items-center justify-between gap-3 rounded-lg bg-neutral-50 px-3 py-2.5 ring-1 ring-neutral-200 dark:bg-white/[0.05] dark:ring-white/[0.07]">
-                <span class="text-[12px] text-neutral-500 dark:text-fg-dim">Attached private key</span>
+                <span class="text-[12px] text-neutral-500 dark:text-fg-dim">{{ __('Attached private key') }}</span>
                 <span class="text-[12px] font-medium text-neutral-900 dark:text-fg">{{ $privateKeyName }}</span>
             </div>
             @can('update', $application)
@@ -60,8 +60,8 @@
                             {{ $key->name }}
                         </button>
                     @empty
-                        <x-empty title="No alternative private keys"
-                            description="Add another private key from Keys & Tokens before switching."
+                        <x-empty :title="__('No alternative private keys')"
+                            :description="__('Add another private key from Keys & Tokens before switching.')"
                             icon-name="keys" size="sm" />
                     @endforelse
                 </div>
@@ -76,17 +76,17 @@
                 $currentSourceIsGitlab = $currentSourceMorph === \App\Models\GitlabApp::class;
                 $currentSourceIsGitea = $currentSourceMorph === \App\Models\GiteaApp::class;
                 $currentSourceSubtitle = match (true) {
-                    $currentSourceIsGithub && filled(data_get($currentSource, 'organization')) => 'GitHub · '.$currentSource->organization,
-                    $currentSourceIsGithub => data_get($currentSource, 'is_public') ? 'Public GitHub' : 'GitHub · Personal account',
-                    $currentSourceIsGitlab && filled(data_get($currentSource, 'group_name')) => 'GitLab · '.$currentSource->group_name,
-                    $currentSourceIsGitlab => 'GitLab · Personal account',
-                    $currentSourceIsGitea && filled(data_get($currentSource, 'organization')) => 'Gitea · '.$currentSource->organization,
-                    $currentSourceIsGitea => 'Gitea · Personal account',
-                    default => 'Connected source',
+                    $currentSourceIsGithub && filled(data_get($currentSource, 'organization')) => __('GitHub · :name', ['name' => $currentSource->organization]),
+                    $currentSourceIsGithub => data_get($currentSource, 'is_public') ? __('Public GitHub') : __('GitHub · Personal account'),
+                    $currentSourceIsGitlab && filled(data_get($currentSource, 'group_name')) => __('GitLab · :name', ['name' => $currentSource->group_name]),
+                    $currentSourceIsGitlab => __('GitLab · Personal account'),
+                    $currentSourceIsGitea && filled(data_get($currentSource, 'organization')) => __('Gitea · :name', ['name' => $currentSource->organization]),
+                    $currentSourceIsGitea => __('Gitea · Personal account'),
+                    default => __('Connected source'),
                 };
             @endphp
-            <x-application.settings-section title="Git source"
-                description="Switch the Git provider App Coolify uses to clone this repository.">
+            <x-application.settings-section :title="__('Git source')"
+                :description="__('Switch the Git provider App Coolify uses to clone this repository.')">
                 <div class="grid gap-2 sm:grid-cols-2">
                     @if ($currentSource)
                         <div
@@ -100,7 +100,7 @@
                                 <div class="flex min-w-0 flex-wrap items-center gap-2">
                                     <span
                                         class="truncate text-[13px] font-semibold text-black dark:text-fg">{{ $currentSource->name }}</span>
-                                    <x-status-badge label="Current" type="success" />
+                                    <x-status-badge :label="__('Current')" type="success" />
                                 </div>
                                 <p class="mt-0.5 truncate text-[11px] text-neutral-500 dark:text-fg-faint">
                                     {{ $currentSourceSubtitle }}
@@ -118,17 +118,17 @@
                             $sourceIsGitlab = $sourceMorph === \App\Models\GitlabApp::class;
                             $sourceIsGitea = $sourceMorph === \App\Models\GiteaApp::class;
                             $sourceSubtitle = match (true) {
-                                $sourceIsGithub && filled($source->organization) => 'GitHub · '.$source->organization,
-                                $sourceIsGithub => data_get($source, 'is_public') ? 'Public GitHub' : 'GitHub · Personal account',
-                                $sourceIsGitlab && filled($source->group_name) => 'GitLab · '.$source->group_name,
-                                $sourceIsGitlab => 'GitLab · Personal account',
-                                $sourceIsGitea && filled($source->organization) => 'Gitea · '.$source->organization,
-                                $sourceIsGitea => 'Gitea · Personal account',
-                                default => 'Git source',
+                                $sourceIsGithub && filled($source->organization) => __('GitHub · :name', ['name' => $source->organization]),
+                                $sourceIsGithub => data_get($source, 'is_public') ? __('Public GitHub') : __('GitHub · Personal account'),
+                                $sourceIsGitlab && filled($source->group_name) => __('GitLab · :name', ['name' => $source->group_name]),
+                                $sourceIsGitlab => __('GitLab · Personal account'),
+                                $sourceIsGitea && filled($source->organization) => __('Gitea · :name', ['name' => $source->organization]),
+                                $sourceIsGitea => __('Gitea · Personal account'),
+                                default => __('Git source'),
                             };
                         @endphp
-                        <x-modal-confirmation title="Change Git source?"
-                            :actions="['Change Git source to ' . $source->name]" :buttonFullWidth="true"
+                        <x-modal-confirmation :title="__('Change Git source?')"
+                            :actions="[__('Change Git source to :name', ['name' => $source->name])]" :buttonFullWidth="true"
                             submitAction="changeSource({{ $source->id }}, {{ $sourceMorph }})"
                             :confirmWithText="true" confirmationText="Change Git Source"
                             confirmationLabel="Enter the text below to confirm changing the Git source."
@@ -154,12 +154,12 @@
                     @empty
                         @if (! $currentSource)
                             <div class="col-span-full">
-                                <x-empty title="No other sources"
-                                    description="Connect another Git source before moving this application."
+                                <x-empty :title="__('No other sources')"
+                                    :description="__('Connect another Git source before moving this application.')"
                                     icon-name="sources" size="sm">
                                     <x-slot:contents>
                                         <a href="{{ route('source.all') }}" {{ wireNavigate() }} class="button">
-                                            Connect source
+                                            {{ __('Connect source') }}
                                         </a>
                                     </x-slot:contents>
                                 </x-empty>
@@ -169,11 +169,10 @@
                 </div>
                 @if ($currentSource && $sources->isEmpty())
                     <p class="mt-3 text-[12px] leading-5 text-neutral-500 dark:text-fg-dim">
-                        No other sources available.
+                        {{ __('No other sources available.') }}
                         <a href="{{ route('source.all') }}" {{ wireNavigate() }}
-                            class="font-medium text-coollabs underline-offset-2 hover:underline dark:text-brand-light">Connect
-                            another source</a>
-                        to switch providers.
+                            class="font-medium text-coollabs underline-offset-2 hover:underline dark:text-brand-light">{{ __('Connect another source') }}</a>
+                        {{ __('to switch providers.') }}
                     </p>
                 @endif
             </x-application.settings-section>

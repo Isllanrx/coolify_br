@@ -11,11 +11,11 @@
             :show-dashboard="false"
             primary-href="/login"
             :primary-label="__('error.back_to_login')">
-            <x-forms.collapsible title="Using a reverse proxy or Cloudflare Tunnel?" class="error-proxy-help">
+            <x-forms.collapsible :title="__('Using a reverse proxy or Cloudflare Tunnel?')" class="error-proxy-help">
                 <ul>
-                    <li>Set your domain in <strong>Settings &rarr; FQDN</strong> to match the URL you use to access Coolify.</li>
-                    <li>Cloudflare users: disable <strong>Browser Integrity Check</strong> and <strong>Under Attack Mode</strong> for your Coolify domain, as these can interrupt login sessions.</li>
-                    <li>If you can still access Coolify via <code>localhost</code>, log in there first to configure your FQDN.</li>
+                    <li>{!! __('Set your domain in :setting to match the URL you use to access Coolify.', ['setting' => '<strong>'.e(__('Settings')).' &rarr; '.e(__('FQDN')).'</strong>']) !!}</li>
+                    <li>{!! __('Cloudflare users: disable :integrity and :attack for your Coolify domain, as these can interrupt login sessions.', ['integrity' => '<strong>'.e(__('Browser Integrity Check')).'</strong>', 'attack' => '<strong>'.e(__('Under Attack Mode')).'</strong>']) !!}</li>
+                    <li>{!! __('If you can still access Coolify via :host, log in there first to configure your FQDN.', ['host' => '<code>localhost</code>']) !!}</li>
                 </ul>
             </x-forms.collapsible>
         </x-error-page>

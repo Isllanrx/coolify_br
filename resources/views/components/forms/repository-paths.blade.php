@@ -26,21 +26,21 @@
         return this.location.slice(this.directory.length);
     },
 }">
-    <x-forms.input label="Base directory" placeholder="/"
-        helper="Repository directory used as the build root. Useful for monorepos." x-model="base"
+    <x-forms.input :label="__('Base directory')" placeholder="/"
+        :helper="__('Repository directory used as the build root. Useful for monorepos.')" x-model="base"
         x-bind:disabled="{{ $disabled }}" @blur="base = directory || '/'" />
     @if ($file)
-        <x-forms.input :label="$fileLabel" :placeholder="$defaultFile" helper="Path relative to the base directory."
+        <x-forms.input :label="$fileLabel" :placeholder="$defaultFile" :helper="__('Path relative to the base directory.')"
             x-model="file" x-bind:disabled="{{ $disabled }}" @blur="file = location" />
         <p class="col-span-full text-xs text-neutral-500 dark:text-fg-dim">
-            Resolved file:
+            {{ __('Resolved file:') }}
             <code class="font-mono text-coollabs dark:text-brand-light" x-text="directory + location"></code>
         </p>
-        <x-callout class="col-span-full" x-cloak x-show="repeatsBase" title="Base directory is repeated">
-            {{ $fileLabel }} is relative to the base directory, so it should not start with
+        <x-callout class="col-span-full" x-cloak x-show="repeatsBase" :title="__('Base directory is repeated')">
+            {{ $fileLabel }} {{ __('is relative to the base directory, so it should not start with') }}
             <code class="rounded bg-black/10 px-1 dark:bg-white/10" x-text="directory"></code> again.
             <button type="button" class="font-medium underline" x-show="!({{ $disabled }})"
-                @click="file = suggestion">Use <span x-text="suggestion"></span></button>
+                @click="file = suggestion">{{ __('Use') }} <span x-text="suggestion"></span></button>
         </x-callout>
     @endif
     {{ $slot }}

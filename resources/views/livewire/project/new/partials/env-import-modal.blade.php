@@ -1,12 +1,12 @@
-<x-modal-input title="Import environment variables" :wireIgnore="false"
-    subtitle="The variables are added to the application when you continue.">
+<x-modal-input :title="__('Import environment variables')" :wireIgnore="false"
+    :subtitle="__('The variables are added to the application when you continue.')">
     <x-slot:content>
-        <x-forms.button type="button">{{ $envImported ? 'Edit' : 'Review' }}</x-forms.button>
+        <x-forms.button type="button">{{ $envImported ? __('Edit') : __('Review') }}</x-forms.button>
     </x-slot:content>
 
     <div class="flex flex-col gap-4">
         @if (count($detectedEnvFiles) > 1)
-            <x-forms.listbox id="selectedEnvFile" label="Env file" live
+            <x-forms.listbox id="selectedEnvFile" :label="__('Env file')" live
                 :options="collect($detectedEnvFiles)->map(fn ($file) => ['value' => $file, 'label' => $file])->all()" />
         @endif
         <div class="flex flex-col gap-2">
@@ -22,10 +22,10 @@
 
     <x-slot:footer>
         @if ($envImported)
-            <x-forms.button type="button" wire:click="clearEnvVars" @click="modalOpen = false">Remove import</x-forms.button>
+            <x-forms.button type="button" wire:click="clearEnvVars" @click="modalOpen = false">{{ __('Remove import') }}</x-forms.button>
         @endif
         <x-forms.button type="button" isHighlighted wire:click="confirmEnvImport" @click="modalOpen = false">
-            {{ $envImported ? 'Update' : 'Import' }} {{ count($envExampleVars) }} {{ Str::plural('variable', count($envExampleVars)) }}
+            {{ $envImported ? __('Update') : __('Import') }} {{ count($envExampleVars) }} {{ Str::plural('variable', count($envExampleVars)) }}
         </x-forms.button>
     </x-slot:footer>
 </x-modal-input>

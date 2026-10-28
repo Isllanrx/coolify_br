@@ -1,19 +1,19 @@
 <div>
     <x-slot:title>
-        Team Audit Log | Coolify
+        {{ __('Team Audit Log') }} | Coolify
     </x-slot>
 
     <x-team.settings-layout>
         <div class="application-settings-form">
-            <x-application.settings-section title="Audit log"
-                description="Activity from the last 90 days for the current team." flush>
+            <x-application.settings-section :title="__('Audit log')"
+                :description="__('Activity from the last 90 days for the current team.')" flush>
                 <div
                     class="flex flex-col gap-2 border-b border-neutral-200 p-3 sm:flex-row sm:items-center dark:border-white/[0.08]">
                     <div class="relative min-w-0 flex-1 sm:max-w-sm">
                         <x-reicon name="search"
                             class="pointer-events-none absolute top-1/2 left-2.5 z-10 size-3.5 -translate-y-1/2 text-neutral-400 dark:text-fg-faint" />
                         <input wire:model.live.debounce.300ms="search" type="search"
-                            placeholder="Search activity" aria-label="Search activity"
+                            placeholder="{{ __('Search activity') }}" aria-label="{{ __('Search activity') }}"
                             class="h-8! w-full rounded-lg! border-neutral-200! bg-white! py-0! pr-8! pl-8! text-[12px]! shadow-none! placeholder:text-neutral-400 focus:border-accent! focus:ring-0! dark:border-white/[0.08]! dark:bg-white/[0.035]! dark:text-fg! dark:placeholder:text-fg-faint">
                     </div>
                     <div class="grid grid-cols-2 gap-2 sm:flex">
@@ -23,11 +23,11 @@
                         </div>
                         <div class="sm:w-36">
                             <x-forms.listbox id="source" live canGate="viewAdmin" :canResource="currentTeam()" :options="[
-                                ['value' => 'all', 'label' => 'All sources'],
-                                ['value' => 'ui', 'label' => 'Web UI'],
+                                ['value' => 'all', 'label' => __('All sources')],
+                                ['value' => 'ui', 'label' => __('Web UI')],
                                 ['value' => 'api', 'label' => 'API'],
                                 ['value' => 'mcp', 'label' => 'MCP'],
-                                ['value' => 'webhook', 'label' => 'Webhook'],
+                                ['value' => 'webhook', 'label' => __('Webhook')],
                             ]" />
                         </div>
                     </div>
@@ -38,10 +38,10 @@
                         <div class="data-table transition-opacity" wire:loading.class="opacity-50 pointer-events-none"
                             wire:target="search,action,source,setPage,previousPage,nextPage">
                         <div class="grid min-w-[760px] grid-cols-[14rem_minmax(0,1fr)_12rem_9rem] gap-4 border-b border-neutral-200 px-4 py-2 text-[11px] font-medium uppercase tracking-wide text-neutral-500 dark:border-white/[0.07] dark:text-fg-faint">
-                            <span>Actor</span>
-                            <span>Activity</span>
-                            <span>Source</span>
-                            <span class="text-right">Time</span>
+                            <span>{{ __('Actor') }}</span>
+                            <span>{{ __('Activity') }}</span>
+                            <span>{{ __('Source') }}</span>
+                            <span class="text-right">{{ __('Time') }}</span>
                         </div>
                         @foreach ($events as $event)
                             <div wire:key="audit-event-{{ $event->id }}" x-data="{ expanded: false }"
@@ -58,8 +58,8 @@
                                     @endif
                                     @if ($event->actor_token_name)
                                         <div class="truncate text-[11px] text-neutral-500 dark:text-fg-faint"
-                                            title="Token: {{ $event->actor_token_name }}">
-                                            Token: {{ $event->actor_token_name }}
+                                            title="{{ __('Token: :name', ['name' => $event->actor_token_name]) }}">
+                                            {{ __('Token: :name', ['name' => $event->actor_token_name]) }}
                                         </div>
                                     @endif
                                 </div>
@@ -74,7 +74,7 @@
                                         <button type="button" @click="expanded = ! expanded"
                                             class="mt-1 text-[11px] font-medium text-accent hover:underline"
                                             :aria-expanded="expanded">
-                                            <span x-text="expanded ? 'Hide changes' : 'View changes'">View changes</span>
+                                            <span x-text="expanded ? 'Hide changes' : 'View changes'">{{ __('View changes') }}</span>
                                         </button>
                                     @endif
                                 </div>
@@ -94,9 +94,9 @@
                                 <div x-cloak x-show="expanded" x-collapse
                                     class="border-t border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-white/[0.07] dark:bg-white/[0.02]">
                                     <div class="grid grid-cols-[12rem_minmax(0,1fr)_minmax(0,1fr)] gap-4 pb-2 text-[10px] font-medium uppercase tracking-wide text-neutral-500 dark:text-fg-faint">
-                                        <span>Field</span>
-                                        <span>Previous value</span>
-                                        <span>New value</span>
+                                        <span>{{ __('Field') }}</span>
+                                        <span>{{ __('Previous value') }}</span>
+                                        <span>{{ __('New value') }}</span>
                                     </div>
                                     @foreach ($event->changes as $field => $change)
                                         <div class="grid grid-cols-[12rem_minmax(0,1fr)_minmax(0,1fr)] gap-4 border-t border-neutral-200 py-2 text-[12px] dark:border-white/[0.07]">
@@ -122,8 +122,8 @@
                         </x-slot:pageSize>
                     </x-table-pagination>
                 @else
-                    <x-empty title="No activity found"
-                        description="Team actions will appear here as they happen." icon-name="time-back" size="sm" />
+                    <x-empty :title="__('No activity found')"
+                        :description="__('Team actions will appear here as they happen.')" icon-name="time-back" size="sm" />
                 @endif
             </x-application.settings-section>
         </div>

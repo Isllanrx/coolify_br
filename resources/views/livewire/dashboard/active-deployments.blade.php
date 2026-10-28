@@ -36,20 +36,20 @@
                         class="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm dark:border-white/[0.08] dark:bg-white/[0.05]">
                         <div class="border-b border-neutral-200 px-4 py-2.5 dark:border-white/[0.08]">
                             <h3 class="text-[11px]! leading-4! font-medium! text-neutral-500! dark:text-fg-faint!">
-                                Active
+                                {{ __('Active') }}
                             </h3>
                             <p class="mt-0.5 text-[11px] text-neutral-500 dark:text-fg-faint">
-                                Running or queued right now
+                                {{ __('Running or queued right now') }}
                             </p>
                         </div>
 
                         <div
                             class="dashboard-deployment-table-grid hidden items-center gap-4 border-b border-neutral-200 bg-neutral-50 px-4 py-2.5 text-[11px] font-medium text-neutral-500 @2xl:grid dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-fg-faint">
-                            <span>Application</span>
-                            <span>Environment</span>
-                            <span>Server</span>
-                            <span>Status</span>
-                            <span>Started</span>
+                            <span>{{ __('Application') }}</span>
+                            <span>{{ __('Environment') }}</span>
+                            <span>{{ __('Server') }}</span>
+                            <span>{{ __('Status') }}</span>
+                            <span>{{ __('Started') }}</span>
                         </div>
 
                         @foreach ($activeDeployments as $deployment)
@@ -69,7 +69,7 @@
                                     </p>
                                     @if ($deployment->pull_request_id)
                                         <p class="mt-0.5 text-[11px] text-neutral-500 dark:text-fg-faint">
-                                            Pull request #{{ $deployment->pull_request_id }}
+                                            {{ __('Pull request #') }}{{ $deployment->pull_request_id }}
                                         </p>
                                     @endif
                                 </div>
@@ -105,11 +105,11 @@
                         class="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm dark:border-white/[0.08] dark:bg-white/[0.05]">
                         <div
                             class="dashboard-deployment-table-grid hidden items-center gap-4 border-b border-neutral-200 bg-neutral-50 px-4 py-2.5 text-[11px] font-medium text-neutral-500 @2xl:grid dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-fg-faint">
-                            <span>Application</span>
-                            <span>Environment</span>
-                            <span>Server</span>
-                            <span>Status</span>
-                            <span>Started</span>
+                            <span>{{ __('Application') }}</span>
+                            <span>{{ __('Environment') }}</span>
+                            <span>{{ __('Server') }}</span>
+                            <span>{{ __('Status') }}</span>
+                            <span>{{ __('Started') }}</span>
                         </div>
 
                         @foreach ($recentDeployments as $deployment)
@@ -129,7 +129,7 @@
                                     </p>
                                     @if ($deployment->pull_request_id)
                                         <p class="mt-0.5 text-[11px] text-neutral-500 dark:text-fg-faint">
-                                            Pull request #{{ $deployment->pull_request_id }}
+                                            {{ __('Pull request #') }}{{ $deployment->pull_request_id }}
                                         </p>
                                     @endif
                                 </div>

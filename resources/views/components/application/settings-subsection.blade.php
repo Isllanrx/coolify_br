@@ -10,7 +10,7 @@
         <h3 class="flex items-center gap-1.5 text-sm! font-semibold! text-black dark:text-fg">
             {{ $title }}
             @if (filled($helper))
-                <x-helper :helper="$helper" :label="'More information about '.$title" />
+                <x-helper :helper="$helper" :label="__('More information about :title', ['title' => $title])" />
             @endif
         </h3>
         @isset($actions)

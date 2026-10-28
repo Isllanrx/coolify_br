@@ -1,7 +1,7 @@
 <x-emails.layout>
-Your Coolify API token ({{ $tokenName }}) expires on {{ $expiresAt }}.
+{{ __('Your Coolify API token (:name) expires on :date.', ['name' => $tokenName, 'date' => $expiresAt]) }}
 
-Rotate this token before it expires. API calls using this token will start failing once the expiration time is reached.
+{{ __('Rotate this token before it expires. API calls using this token will start failing once the expiration time is reached.') }}
 
-Manage your API tokens [here]({{ $manageUrl }}).
+{{ __('Manage your API tokens [here](:url).', ['url' => $manageUrl]) }}
 </x-emails.layout>

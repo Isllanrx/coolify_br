@@ -2,12 +2,12 @@
 {{ $summary }}
 
 @if ($last_execution_at)
-The last execution was at {{ $last_execution_at }}.
+{{ __('The last execution was at :time.', ['time' => $last_execution_at]) }}
 @else
-This schedule has never produced an execution.
+{{ __('This schedule has never produced an execution.') }}
 @endif
 
 @if ($url)
-Click [here]({{ $url }}) to open the resource.
+{{ __('Click [here](:url) to open the resource.', ['url' => $url]) }}
 @endif
 </x-emails.layout>

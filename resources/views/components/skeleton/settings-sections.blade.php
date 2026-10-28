@@ -1,6 +1,6 @@
 @props([
     'count' => 2,
-    'label' => 'Loading',
+    'label' => __('Loading'),
 ])
 
 {{-- Settings section skeleton: a title bar and a content block per section. --}}

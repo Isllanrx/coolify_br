@@ -59,7 +59,7 @@
             @if ($allowToPeak)
                 <button type="button" x-on:click="type = type === 'password' ? 'text' : 'password'"
                     class="password-toggle flex absolute inset-y-0 right-0 z-10 items-center pr-2 cursor-pointer text-neutral-500 hover:text-black dark:text-neutral-400 dark:hover:text-white"
-                    aria-label="Toggle password visibility">
+                    aria-label="{{ __('Toggle password visibility') }}">
                     {{-- Eye icon (shown when password is hidden) --}}
                     <x-reicon name="eye" x-show="type === 'password'" class="size-[18px]" />
                     {{-- Eye-off2 icon (shown when password is visible) --}}
@@ -67,7 +67,7 @@
                 </button>
             @endif
             @if ($copyable)
-                <x-copy-button :resolve="$copyResolve" label="Copy to clipboard"
+                <x-copy-button :resolve="$copyResolve" :label="__('Copy to clipboard')"
                     class="absolute top-1/2 z-10 -translate-y-1/2 {{ $allowToPeak ? 'right-8' : 'right-1' }}" />
             @endif
 
@@ -90,18 +90,18 @@
             @if ($autofocus) x-ref="autofocusInput" autofocus @endif>
         @if ($type === 'number')
                 <div class="number-stepper">
-                    <button type="button" tabindex="-1" aria-label="Decrease" x-on:click="step(-1)"
+                    <button type="button" tabindex="-1" aria-label="{{ __('Decrease') }}" x-on:click="step(-1)"
                         @disabled($disabled || $readonly)>
                         <x-reicon name="minus" class="size-3.5" />
                     </button>
-                    <button type="button" tabindex="-1" aria-label="Increase" x-on:click="step(1)"
+                    <button type="button" tabindex="-1" aria-label="{{ __('Increase') }}" x-on:click="step(1)"
                         @disabled($disabled || $readonly)>
                         <x-reicon name="plus" class="size-3.5" />
                     </button>
                 </div>
             </div>
         @elseif ($copyable)
-                <x-copy-button :resolve="$copyResolve" label="Copy to clipboard"
+                <x-copy-button :resolve="$copyResolve" :label="__('Copy to clipboard')"
                     class="absolute top-1/2 right-1 z-10 -translate-y-1/2" />
             </div>
         @endif
@@ -118,7 +118,7 @@
             <span class="text-red-500 label-text-alt">
                 @if ($validationLink)
                     {{ str($message)->beforeLast($validationLink)->trim() }}
-                    <a class="font-medium underline" href="{{ $validationLink }}">Set them here.</a>
+                    <a class="font-medium underline" href="{{ $validationLink }}">{{ __('Set them here.') }}</a>
                 @else
                     {{ $message }}
                 @endif

@@ -14,7 +14,7 @@
     $hasDeviceData = array_sum(array_map('intval', $series)) > 0;
 @endphp
 @if (! $hasDeviceData)
-    <x-empty size="sm" title="No device data" description="No device data for the selected range." icon-name="network" />
+    <x-empty size="sm" :title="__('No device data')" :description="__('No device data for the selected range.')" icon-name="network" />
 @else
     <div wire:ignore id="{!! $deviceChartId !!}" class="min-h-[240px] w-full"></div>
 

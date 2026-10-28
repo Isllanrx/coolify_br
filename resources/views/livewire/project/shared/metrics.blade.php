@@ -6,64 +6,64 @@
                 str($resource->status)->contains('running'))) x-init="$wire.loadData()"
     @endif>
     @if ($resource->getMorphClass() === 'App\Models\Application' && $resource->build_pack === 'dockercompose')
-        <x-application.settings-section id="metrics-overview-section" title="Metrics"
-            helper="Inspect CPU and memory usage for this application.">
-            <x-empty size="sm" title="Metrics unavailable"
-                description="Container metrics are not currently available for Docker Compose applications."
+        <x-application.settings-section id="metrics-overview-section" :title="__('Metrics')"
+            :helper="__('Inspect CPU and memory usage for this application.')">
+            <x-empty size="sm" :title="__('Metrics unavailable')"
+                :description="__('Container metrics are not currently available for Docker Compose applications.')"
                 icon-name="dashboard" />
         </x-application.settings-section>
     @elseif (!$resource->destination->server->isMetricsEnabled())
-        <x-application.settings-section id="metrics-overview-section" title="Metrics"
-            helper="Inspect CPU and memory usage for this application.">
+        <x-application.settings-section id="metrics-overview-section" :title="__('Metrics')"
+            :helper="__('Inspect CPU and memory usage for this application.')">
             <x-slot:actions>
                 <a class="button"
                     href="{{ route('server.metrics', ['server_uuid' => $resource->destination->server->uuid]) }}"
                     {{ wireNavigate() }}>
-                    Server metrics
+                    {{ __('Server metrics') }}
                     <x-external-link />
                 </a>
             </x-slot:actions>
-            <x-empty size="sm" title="Metrics are not enabled"
-                description="Enable metrics for this server before collecting application usage data."
+            <x-empty size="sm" :title="__('Metrics are not enabled')"
+                :description="__('Enable metrics for this server before collecting application usage data.')"
                 icon-name="dashboard" />
         </x-application.settings-section>
     @elseif (!str($resource->status)->contains('running'))
-        <x-application.settings-section id="metrics-overview-section" title="Metrics"
-            helper="Inspect CPU and memory usage for this application.">
+        <x-application.settings-section id="metrics-overview-section" :title="__('Metrics')"
+            :helper="__('Inspect CPU and memory usage for this application.')">
             <x-slot:actions>
                 <x-status-badge status="Not running" type="neutral" />
             </x-slot:actions>
-            <x-empty size="sm" title="Container is not running"
-                description="Start the application to begin collecting CPU and memory metrics."
+            <x-empty size="sm" :title="__('Container is not running')"
+                :description="__('Start the application to begin collecting CPU and memory metrics.')"
                 icon-name="dashboard" />
         </x-application.settings-section>
     @else
         @if ($live)
             <div wire:key="metrics-poll-{{ $this->pollSeconds() }}" wire:poll.{{ $this->pollSeconds() }}s="loadData" class="hidden"></div>
         @endif
-        <x-application.settings-section id="metrics-overview-section" title="Metrics"
-            helper="Inspect recent CPU and memory usage reported by Sentinel.">
+        <x-application.settings-section id="metrics-overview-section" :title="__('Metrics')"
+            :helper="__('Inspect recent CPU and memory usage reported by Sentinel.')">
             <x-slot:actions>
                 <x-live-toggle :active="$live" storageKey="resource-metrics-live" />
             </x-slot:actions>
             <div class="max-w-xs">
-                <x-forms.listbox id="interval" label="Time range" onChange="setInterval" :options="[
-                    ['value' => 5, 'label' => 'Last 5 minutes'],
-                    ['value' => 10, 'label' => 'Last 10 minutes'],
-                    ['value' => 30, 'label' => 'Last 30 minutes'],
-                    ['value' => 60, 'label' => 'Last hour'],
-                    ['value' => 720, 'label' => 'Last 12 hours'],
-                    ['value' => 10080, 'label' => 'Last week'],
-                    ['value' => 43200, 'label' => 'Last 30 days'],
+                <x-forms.listbox id="interval" :label="__('Time range')" onChange="setInterval" :options="[
+                    ['value' => 5, 'label' => __('Last 5 minutes')],
+                    ['value' => 10, 'label' => __('Last 10 minutes')],
+                    ['value' => 30, 'label' => __('Last 30 minutes')],
+                    ['value' => 60, 'label' => __('Last hour')],
+                    ['value' => 720, 'label' => __('Last 12 hours')],
+                    ['value' => 10080, 'label' => __('Last week')],
+                    ['value' => 43200, 'label' => __('Last 30 days')],
                 ]" />
             </div>
             <p class="mt-3 text-xs leading-5 text-neutral-500 dark:text-fg-dim">
-                While live, ranges up to one hour refresh every five seconds. Longer ranges refresh every minute.
+                {{ __('While live, ranges up to one hour refresh every five seconds. Longer ranges refresh every minute.') }}
             </p>
         </x-application.settings-section>
 
-        <x-application.settings-section id="cpu-metrics-section" title="CPU usage"
-            helper="Percentage of available CPU capacity used by the application container.">
+        <x-application.settings-section id="cpu-metrics-section" :title="__('CPU usage')"
+            :helper="__('Percentage of available CPU capacity used by the application container.')">
             <x-slot:actions>
                 <div wire:ignore id="{!! $chartId !!}-cpu-legend" class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs"></div>
             </x-slot:actions>
@@ -141,7 +141,7 @@
                             },
                         },
                         noData: {
-                            text: 'Loading CPU metrics…',
+                            text: @js(__('Loading CPU metrics…')),
                             style: {
                                 color: textColor,
                             },
@@ -205,7 +205,7 @@
                                 },
                             },
                             noData: {
-                                text: 'No CPU metrics available',
+                                text: @js(__('No CPU metrics available')),
                                 style: {
                                     color: textColor,
                                 },
@@ -223,8 +223,8 @@
             @endscript
         </x-application.settings-section>
 
-        <x-application.settings-section id="memory-metrics-section" title="Memory usage"
-            helper="Memory consumed by the application container, measured in megabytes.">
+        <x-application.settings-section id="memory-metrics-section" :title="__('Memory usage')"
+            :helper="__('Memory consumed by the application container, measured in megabytes.')">
             <x-slot:actions>
                 <div wire:ignore id="{!! $chartId !!}-memory-legend" class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs"></div>
             </x-slot:actions>
@@ -300,7 +300,7 @@
                             },
                         },
                         noData: {
-                            text: 'Loading memory metrics…',
+                            text: @js(__('Loading memory metrics…')),
                             style: {
                                 color: textColor,
                             },
@@ -360,7 +360,7 @@
                                 },
                             },
                             noData: {
-                                text: 'No memory metrics available',
+                                text: @js(__('No memory metrics available')),
                                 style: {
                                     color: textColor,
                                 },

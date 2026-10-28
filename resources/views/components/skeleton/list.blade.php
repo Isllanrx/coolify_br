@@ -1,6 +1,6 @@
 @props([
     'rows' => 4,
-    'label' => 'Loading',
+    'label' => __('Loading'),
 ])
 
 @php

@@ -17,5 +17,5 @@
     @else
         <x-reicon name="x" class="size-4 shrink-0" />
     @endif
-    <span class="sr-only">Two-factor authentication is {{ $enabled ? 'enabled' : 'disabled' }}</span>
+    <span class="sr-only">{{ __('Two-factor authentication is') }} {{ $enabled ? 'enabled' : 'disabled' }}</span>
 </span>

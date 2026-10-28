@@ -1,4 +1,4 @@
-@props(['backLabel', 'backTitle' => 'Back to the main menu', 'depth' => 0, 'navOnly' => false])
+@props(['backLabel', 'backTitle' => __('Back to the main menu'), 'depth' => 0, 'navOnly' => false])
 @php
     // The main sidebar and the mobile drawer replace their menu with this one (see components/navbar.blade.php).
     registerMainNavContext($depth, $backLabel, $backTitle);

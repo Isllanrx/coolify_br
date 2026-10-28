@@ -1,6 +1,6 @@
 <div>
     @unless ($embedded)
-        <x-slot:title>{{ data_get_str($application, 'name')->limit(10) }} > Deployments | Coolify</x-slot>
+        <x-slot:title>{{ data_get_str($application, 'name')->limit(10) }} > {{ __('Deployments') }} | Coolify</x-slot>
         <livewire:project.shared.configuration-checker :resource="$application" />
         <livewire:project.application.heading :application="$application" wire:key="application-heading-deployment-index" />
     @endunless
@@ -46,19 +46,19 @@
                 new ResizeObserver(() => { clearTimeout(timer); timer = setTimeout(() => fit(), 100); }).observe($el);
                 $wire.$hook('commit', ({ succeed }) => succeed(() => $nextTick(() => fit())))"
         @endif>
-        <x-application.settings-section title="Deployment history"
-            helper="Search, filter, and open a deployment to inspect its build logs." flush>
+        <x-application.settings-section :title="__('Deployment history')"
+            :helper="__('Search, filter, and open a deployment to inspect its build logs.')" flush>
             <x-table.toolbar class="border-b border-neutral-200 p-3 dark:border-white/[0.08]">
                 <x-slot:search>
-                    <x-table.search placeholder="Search deployments" loading-target="search"
+                    <x-table.search :placeholder="__('Search deployments')" loading-target="search"
                         wire:model.live.debounce.300ms="search" />
                 </x-slot:search>
                 <x-table.filter :active-count="count($deploymentFilters) + (filled($pull_request_id) ? 1 : 0)"
-                    :active-text="filled($pull_request_id) ? 'Pull request #'.$pull_request_id : null"
+                    :active-text="filled($pull_request_id) ? __('Pull request #:id', ['id' => $pull_request_id]) : null"
                     reset-action="clearFilter">
                             @if (count($statusFilterOptions) > 0)
                                 <span
-                                    class="px-2 pb-1 pt-2 text-[10px] font-medium uppercase tracking-wider text-neutral-400 dark:text-fg-faint">Status</span>
+                                    class="px-2 pb-1 pt-2 text-[10px] font-medium uppercase tracking-wider text-neutral-400 dark:text-fg-faint">{{ __('Status') }}</span>
                                 @foreach ($statusFilterOptions as $option)
                                     <button type="button" class="listbox-option" role="option"
                                         aria-selected="{{ in_array($option['value'], $deploymentFilters, true) ? 'true' : 'false' }}"
@@ -85,7 +85,7 @@
 
                             @if (count($sourceFilterOptions) > 0)
                                 <span
-                                    class="px-2 pb-1 pt-2 text-[10px] font-medium uppercase tracking-wider text-neutral-400 dark:text-fg-faint">Source</span>
+                                    class="px-2 pb-1 pt-2 text-[10px] font-medium uppercase tracking-wider text-neutral-400 dark:text-fg-faint">{{ __('Source') }}</span>
                                 @foreach ($sourceFilterOptions as $option)
                                     <button type="button" class="listbox-option" role="option"
                                         aria-selected="{{ in_array($option['value'], $deploymentFilters, true) ? 'true' : 'false' }}"
@@ -112,7 +112,7 @@
 
                             @if (count($serverFilterOptions) > 0)
                                 <span
-                                    class="px-2 pb-1 pt-2 text-[10px] font-medium uppercase tracking-wider text-neutral-400 dark:text-fg-faint">Server</span>
+                                    class="px-2 pb-1 pt-2 text-[10px] font-medium uppercase tracking-wider text-neutral-400 dark:text-fg-faint">{{ __('Server') }}</span>
                                 @foreach ($serverFilterOptions as $option)
                                     <button type="button" class="listbox-option" role="option"
                                         aria-selected="{{ in_array($option['value'], $deploymentFilters, true) ? 'true' : 'false' }}"
@@ -139,7 +139,7 @@
 
                             @if (count($pullRequestOptions) > 1)
                                 <span
-                                    class="px-2 pb-1 pt-2 text-[10px] font-medium uppercase tracking-wider text-neutral-400 dark:text-fg-faint">Pull request</span>
+                                    class="px-2 pb-1 pt-2 text-[10px] font-medium uppercase tracking-wider text-neutral-400 dark:text-fg-faint">{{ __('Pull request') }}</span>
                                 @foreach (array_slice($pullRequestOptions, 1) as $option)
                                     <button type="button" class="listbox-option" role="option"
                                         aria-selected="{{ $pull_request_id === $option['value'] ? 'true' : 'false' }}"
@@ -160,8 +160,8 @@
                 </x-table.filter>
                 <x-table.sort>
                             @foreach ([
-                                'newest' => 'Newest first',
-                                'oldest' => 'Oldest first',
+                                'newest' => __('Newest first'),
+                                'oldest' => __('Oldest first'),
                             ] as $sortValue => $sortLabel)
                                 <button type="button" class="listbox-option" role="option"
                                     aria-selected="{{ $deploymentSort === $sortValue ? 'true' : 'false' }}"
@@ -186,7 +186,7 @@
                     wire:target="goToPage,previousPage,nextPage,toggleDeploymentFilter,clearFilter,setPullRequestFilter">
                     <x-table.loading id="deployment-table-filter-loading"
                         target="toggleDeploymentFilter,clearFilter,setPullRequestFilter"
-                        text="Filtering deployments..." class="rounded-lg" />
+                        :text="__('Filtering deployments...')" class="rounded-lg" />
                     <div @class(['deployment-table-scroll', 'deployment-table-embedded' => $embedded])
                         @if ($embedded)
                             @click="const link = $event.target.closest('a[data-select-deployment]');
@@ -197,17 +197,17 @@
                         @endif>
                         <div class="data-table-header deployment-table-grid rounded-none!">
                             @unless ($embedded)
-                                <span>Status</span>
+                                <span>{{ __('Status') }}</span>
                             @endunless
-                            <span>Source</span>
-                            <span>Commit</span>
+                            <span>{{ __('Source') }}</span>
+                            <span>{{ __('Commit') }}</span>
                             @unless ($embedded)
-                                <span>Started</span>
+                                <span>{{ __('Started') }}</span>
                             @endunless
-                            <span>Duration</span>
-                            <span>Server</span>
+                            <span>{{ __('Duration') }}</span>
+                            <span>{{ __('Server') }}</span>
                             @if ($embedded)
-                                <span class="text-right">Status</span>
+                                <span class="text-right">{{ __('Status') }}</span>
                             @endif
                         </div>
 
@@ -215,10 +215,10 @@
                         @php
                             $deploymentStatus = data_get($deployment, 'status');
                             $statusLabel = match ($deploymentStatus) {
-                                'finished' => 'Success',
-                                'in_progress' => 'In progress',
-                                'cancelled-by-user' => 'Cancelled',
-                                'queued' => 'Queued',
+                                'finished' => __('Success'),
+                                'in_progress' => __('In progress'),
+                                'cancelled-by-user' => __('Cancelled'),
+                                'queued' => __('Queued'),
                                 default => str($deploymentStatus)->headline()->toString(),
                             };
                             $statusType = match ($deploymentStatus) {
@@ -229,15 +229,15 @@
                             };
                             $pullRequestId = (int) data_get($deployment, 'pull_request_id', 0);
                             $sourceLabel = match (true) {
-                                (bool) data_get($deployment, 'is_webhook') && $pullRequestId > 0 => 'Webhook · PR #' . $pullRequestId,
-                                (bool) data_get($deployment, 'is_webhook') => 'Webhook',
-                                $pullRequestId > 0 => 'Pull request #' . $pullRequestId,
-                                (bool) data_get($deployment, 'rollback') => 'Rollback',
+                                (bool) data_get($deployment, 'is_webhook') && $pullRequestId > 0 => __('Webhook · PR #:id', ['id' => $pullRequestId]),
+                                (bool) data_get($deployment, 'is_webhook') => __('Webhook'),
+                                $pullRequestId > 0 => __('Pull request #:id', ['id' => $pullRequestId]),
+                                (bool) data_get($deployment, 'rollback') => __('Rollback'),
                                 (bool) data_get($deployment, 'is_api') => 'API',
-                                default => 'Manual',
+                                default => __('Manual'),
                             };
                             $duration = match ($deploymentStatus) {
-                                'queued' => 'Waiting',
+                                'queued' => __('Waiting'),
                                 'in_progress' => calculateDuration(data_get($deployment, 'created_at'), now()),
                                 default => data_get($deployment, 'finished_at')
                                     ? calculateDuration(data_get($deployment, 'created_at'), data_get($deployment, 'finished_at'))
@@ -304,7 +304,7 @@
                                     title="{{ $statusLabel }} · {{ formatDateInServerTimezone(data_get($deployment, 'created_at'), data_get($application, 'destination.server')) }}">
                                     <span>{{ \Carbon\Carbon::parse(data_get($deployment, 'created_at'))->diffForHumans(syntax: \Carbon\CarbonInterface::DIFF_ABSOLUTE, short: true) }}</span>
                                     <x-loading compact x-cloak x-show="selecting === '{{ data_get($deployment, 'deployment_uuid') }}'"
-                                        aria-label="Loading deployment logs..." />
+                                        :aria-label="__('Loading deployment logs...')" />
                                     <span x-show="selecting !== '{{ data_get($deployment, 'deployment_uuid') }}'" @class([
                                         'size-2 shrink-0 rounded-full',
                                         'bg-emerald-500' => $statusType === 'success',
@@ -321,7 +321,7 @@
 
                         @if ($embedded)
                             <div wire:loading.flex wire:target="defaultTake" class="hidden justify-center py-6">
-                                <x-loading aria-label="Loading deployments..." class="[&_.loading-indicator]:size-5" />
+                                <x-loading :aria-label="__('Loading deployments...')" class="[&_.loading-indicator]:size-5" />
                             </div>
                         @endif
                     </div>
@@ -339,10 +339,10 @@
                     </x-table-pagination>
                 </div>
             @else
-                <x-empty size="sm" title="No deployments found"
+                <x-empty size="sm" :title="__('No deployments found')"
                     :description="$hasActiveQuery
-                        ? 'No deployments match the current search and filters.'
-                        : 'Deploy the application to create its first deployment record.'"
+                        ? __('No deployments match the current search and filters.')
+                        : __('Deploy the application to create its first deployment record.')"
                     icon-name="layers" />
             @endif
         </x-application.settings-section>

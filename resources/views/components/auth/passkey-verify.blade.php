@@ -1,7 +1,7 @@
 @props([
     'optionsRoute' => 'passkey.login-options',
     'submitRoute' => 'passkey.login',
-    'label' => 'Sign in with a passkey',
+    'label' => __('Sign in with a passkey'),
     'autofill' => false,
 ])
 

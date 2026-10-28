@@ -1,6 +1,5 @@
 <div>
-    <x-slot:title>Environment Variables | Coolify</x-slot>
-
+    <x-slot:title>{{ __('Environment Variables') }} | Coolify</x-slot>
     <x-shared-variables.layout>
         <div class="w-full" x-data="{
             search: '',
@@ -11,7 +10,7 @@
             }
         }">
             @if ($projects->isEmpty())
-                <x-empty title="No environments yet" description="Create a project environment before adding environment-wide variables." icon-name="layers" />
+                <x-empty :title="__('No environments yet')" :description="__('Create a project environment before adding environment-wide variables.')" icon-name="layers" />
             @else
                 <x-shared-variables.view-controls label="environments" storage-key="shared-variables-environments-view" />
 
@@ -22,9 +21,9 @@
                             $project->description,
                             ...$project->environments->flatMap(fn ($environment) => [$environment->name, $environment->description])->all(),
                         ]))">
-                            <x-section-heading :title="$project->name" :subtitle="$project->description ?: 'Project environments'" />
+                            <x-section-heading :title="$project->name" :subtitle="$project->description ?: __('Project environments')" />
                             @if ($project->environments->isEmpty())
-                                <x-empty title="No environments in this project." size="sm" />
+                                <x-empty :title="__('No environments in this project.')" size="sm" />
                             @else
                                 <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                                     @foreach ($project->environments as $environment)

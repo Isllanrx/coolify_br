@@ -16,18 +16,14 @@ $email = getOldOrLocal('email', 'test3@example.com');
         <div class="flex flex-col gap-4">
             @if ($isRootSetupWindowClosed)
                 <x-auth.alert type="warning">
-                    <p class="font-medium">Setup window closed</p>
-                    <p class="mt-0.5 text-black/70 dark:text-white/70">You can create the root account only in the
-                        first {{ \App\Support\RootSetupWindow::MINUTES }} minutes after Coolify
-                        starts. To open the window again, run this command on the server, then reload this page:</p>
+                    <p class="font-medium">{{ __('Setup window closed') }}</p>
+                    <p class="mt-0.5 text-black/70 dark:text-white/70">{{ __('You can create the root account only in the first :minutes minutes after Coolify starts. To open the window again, run this command on the server, then reload this page:', ['minutes' => \App\Support\RootSetupWindow::MINUTES]) }}</p>
                     <code class="mt-2 block font-mono text-xs">docker restart coolify</code>
                 </x-auth.alert>
             @elseif ($isFirstUser)
                 <x-auth.alert type="warning">
-                    <p class="font-medium">Full instance access</p>
-                    <p class="mt-0.5 text-black/70 dark:text-white/70">This first account becomes the root user.
-                        Create it within {{ \App\Support\RootSetupWindow::MINUTES }} minutes after
-                        Coolify starts.</p>
+                    <p class="font-medium">{{ __('Full instance access') }}</p>
+                    <p class="mt-0.5 text-black/70 dark:text-white/70">{{ __('This first account becomes the root user. Create it within :minutes minutes after Coolify starts.', ['minutes' => \App\Support\RootSetupWindow::MINUTES]) }}</p>
                 </x-auth.alert>
             @endif
 
@@ -55,11 +51,11 @@ $email = getOldOrLocal('email', 'test3@example.com');
 
                 <div class="auth-guidance">
                     <x-reicon name="info-circle" class="mt-0.5 size-4 shrink-0" />
-                    <p>Use at least 8 characters with uppercase, lowercase, number, and symbol.</p>
+                    <p>{{ __('Use at least 8 characters with uppercase, lowercase, number, and symbol.') }}</p>
                 </div>
 
                 <x-forms.button class="w-full justify-center" type="submit" isHighlighted>
-                    Create account
+                    {{ __('Create account') }}
                 </x-forms.button>
             </form>
             @endunless
@@ -67,7 +63,7 @@ $email = getOldOrLocal('email', 'test3@example.com');
 
         @if (! $isFirstUser)
             <x-slot:footer>
-                <span>Already have an account?</span>
+                <span>{{ __('Already have an account?') }}</span>
                 <a href="{{ route('login') }}"
                     class="auth-text-link underline">{{ __('auth.already_registered') }}</a>
             </x-slot:footer>

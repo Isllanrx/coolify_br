@@ -2,10 +2,10 @@
     x-init="@js($loadComposeOnOpen) && $wire.loadComposeFile(true)">
     <div>
         @if ($application->build_pack === 'nixpacks')
-            <x-callout type="warning" title="Nixpacks is deprecated" class="mb-4">
+            <x-callout type="warning" :title="__('Nixpacks is deprecated')" class="mb-4">
                 {{ config('deprecations.nixpacks') }}
                 <a class="underline" href="{{ route('project.application.configuration', $parameters) }}" {{ wireNavigate() }}>
-                    Switch to Railpack in General settings.
+                    {{ __('Switch to Railpack in General settings.') }}
                 </a>
             </x-callout>
         @endif
@@ -35,13 +35,13 @@
                 @if ($this->needsComposeFile())
                     <div class="flex items-center gap-1">
                         @can('update', $application)
-                            <x-forms.button wire:click="loadComposeFile">Load compose</x-forms.button>
+                            <x-forms.button wire:click="loadComposeFile">{{ __('Load compose') }}</x-forms.button>
                         @endcan
                         @can('deploy', $application)
                             <x-forms.button id="application-mobile-actions" disabled default-class="split-action-main rounded-md!"
-                                tooltip="Load the Compose file before you deploy.">
+                                :tooltip="__('Load the Compose file before you deploy.')">
                                 <x-reicon name="play-circle" class="size-3.5" />
-                                Deploy
+                                {{ __('Deploy') }}
                             </x-forms.button>
                         @endcan
                     </div>
@@ -51,20 +51,20 @@
                             @if (str($application->status)->startsWith('exited'))
                                 <x-slot:main wire:click="deploy">
                                     <x-reicon name="play-circle" class="size-3.5" />
-                                    {{ $application->stoppedAfterRestartLimit() ? 'Retry deployment' : 'Deploy' }}
+                                    {{ $application->stoppedAfterRestartLimit() ? __('Retry deployment') : __('Deploy') }}
                                 </x-slot:main>
                                 @if (!$application->destination->server->isSwarm())
                                     <button type="button" class="listbox-option justify-start! gap-2.5!" wire:click="deploy(true)"
                                         @click="open = false" role="menuitem">
                                         <x-reicon name="refresh" class="size-3.5 opacity-70" />
-                                        {{ $application->stoppedAfterRestartLimit() ? 'Retry deployment (without cache)' : 'Deploy (without cache)' }}
+                                        {{ $application->stoppedAfterRestartLimit() ? __('Retry deployment (without cache)') : __('Deploy (without cache)') }}
                                     </button>
                                 @endif
                                 @if ($application->container_present !== false)
                                     <button type="button" class="listbox-option justify-start! gap-2.5!"
                                         @click="open = false; document.getElementById('application-mobile-stop-trigger')?.click()" role="menuitem">
                                         <x-reicon name="stop-circle" class="size-3.5 text-error" />
-                                        Remove container
+                                        {{ __('Remove container') }}
                                     </button>
                                 @endif
                             @else
@@ -72,31 +72,31 @@
                                     @if ($application->build_pack !== 'dockercompose')
                                         <x-slot:main wire:click="deploy">
                                             <x-reicon name="refresh" class="size-3.5" />
-                                            Update Service
+                                            {{ __('Update Service') }}
                                         </x-slot:main>
                                     @else
                                         <x-slot:main @click="document.getElementById('application-mobile-stop-trigger')?.click()">
                                             <x-reicon name="stop-circle" class="size-3.5" />
-                                            Stop
+                                            {{ __('Stop') }}
                                         </x-slot:main>
                                     @endif
                                 @else
                                     <x-slot:main wire:click="deploy">
                                         <x-reicon name="refresh" class="size-3.5" />
-                                        Redeploy
+                                        {{ __('Redeploy') }}
                                     </x-slot:main>
                                     <button type="button" class="listbox-option justify-start! gap-2.5!"
                                         wire:click="{{ str($application->status)->startsWith('running') ? 'force_deploy_without_cache' : 'deploy(true)' }}"
                                         @click="open = false" role="menuitem">
                                         <x-reicon name="refresh" class="size-3.5 opacity-70" />
-                                        Redeploy (without cache)
+                                        {{ __('Redeploy (without cache)') }}
                                     </button>
                                     @if ($application->build_pack !== 'dockercompose')
                                         <button type="button" class="listbox-option justify-start! gap-2.5!"
                                             @click="open = false; document.getElementById('application-mobile-restart-trigger')?.click()"
                                             role="menuitem">
                                             <x-reicon name="restart" class="size-3.5 opacity-70" />
-                                            Restart
+                                            {{ __('Restart') }}
                                         </button>
                                     @endif
                                 @endif
@@ -105,7 +105,7 @@
                                         @click="open = false; document.getElementById('application-mobile-stop-trigger')?.click()"
                                         role="menuitem">
                                         <x-reicon name="stop-circle" class="size-3.5 text-error" />
-                                        Stop
+                                        {{ __('Stop') }}
                                     </button>
                                 @endunless
                             @endif
@@ -115,24 +115,24 @@
                 <div class="hidden" aria-hidden="true">
                     <x-modal-confirmation
                         canGate="deploy" :canResource="$application"
-                        title="{{ str($application->status)->startsWith('exited') ? 'Confirm Container Removal?' : 'Confirm Application Stopping?' }}"
-                        buttonTitle="{{ str($application->status)->startsWith('exited') ? 'Remove container' : 'Stop' }}"
+                        title="{{ str($application->status)->startsWith('exited') ? __('Confirm Container Removal?') : __('Confirm Application Stopping?') }}"
+                        buttonTitle="{{ str($application->status)->startsWith('exited') ? __('Remove container') : __('Stop') }}"
                         submitAction="stop" :checkboxes="$checkboxes" :actions="[
-                            str($application->status)->startsWith('exited') ? 'The exited application container will be removed.' : 'This application will be stopped.',
-                            str($application->status)->startsWith('exited') ? 'Anonymous volumes may become eligible for Docker cleanup.' : 'All non-persistent data of this application will be deleted.',
+                            str($application->status)->startsWith('exited') ? __('The exited application container will be removed.') : __('This application will be stopped.'),
+                            str($application->status)->startsWith('exited') ? __('Anonymous volumes may become eligible for Docker cleanup.') : __('All non-persistent data of this application will be deleted.'),
                         ]" :confirmWithText="false" :confirmWithPassword="false"
                         step1ButtonText="Continue" step2ButtonText="Confirm">
                         <x-slot:trigger>
-                            <button id="application-mobile-stop-trigger" type="button">Stop</button>
+                            <button id="application-mobile-stop-trigger" type="button">{{ __('Stop') }}</button>
                         </x-slot:trigger>
                     </x-modal-confirmation>
-                    <x-modal-confirmation title="Confirm Application Restart?" buttonTitle="Restart"
+                    <x-modal-confirmation :title="__('Confirm Application Restart?')" :buttonTitle="__('Restart')"
                         submitAction="restart" :actions="[
-                            'This application will be restarted without rebuilding.',
+                            __('This application will be restarted without rebuilding.'),
                         ]" :confirmWithText="false" :confirmWithPassword="false"
                         step2ButtonText="Confirm">
                         <x-slot:trigger>
-                            <button id="application-mobile-restart-trigger" type="button">Restart</button>
+                            <button id="application-mobile-restart-trigger" type="button">{{ __('Restart') }}</button>
                         </x-slot:trigger>
                     </x-modal-confirmation>
                 </div>
@@ -150,13 +150,13 @@
                     @endif
                     @if ($this->needsComposeFile())
                         @can('update', $application)
-                            <x-forms.button wire:click="loadComposeFile">Load compose</x-forms.button>
+                            <x-forms.button wire:click="loadComposeFile">{{ __('Load compose') }}</x-forms.button>
                         @endcan
                         @can('deploy', $application)
                             <x-forms.button id="application-desktop-actions" disabled default-class="split-action-main rounded-md!"
-                                tooltip="Load the Compose file before you deploy.">
+                                :tooltip="__('Load the Compose file before you deploy.')">
                                 <x-reicon name="play-circle" class="size-3.5" />
-                                Deploy
+                                {{ __('Deploy') }}
                             </x-forms.button>
                         @endcan
                     @else
@@ -168,20 +168,20 @@
                                 @if (str($application->status)->startsWith('exited'))
                                     <x-slot:main wire:click="deploy">
                                         <x-reicon name="play-circle" class="size-3.5" />
-                                        {{ $application->stoppedAfterRestartLimit() ? 'Retry deployment' : 'Deploy' }}
+                                        {{ $application->stoppedAfterRestartLimit() ? __('Retry deployment') : __('Deploy') }}
                                     </x-slot:main>
                                     @if (!$application->destination->server->isSwarm())
                                         <button type="button" class="listbox-option justify-start! gap-2.5!" wire:click="deploy(true)"
                                             @click="open = false" role="menuitem">
                                             <x-reicon name="refresh" class="size-3.5 opacity-70" />
-                                            {{ $application->stoppedAfterRestartLimit() ? 'Retry deployment (without cache)' : 'Deploy (without cache)' }}
+                                            {{ $application->stoppedAfterRestartLimit() ? __('Retry deployment (without cache)') : __('Deploy (without cache)') }}
                                         </button>
                                     @endif
                                     @if ($application->container_present !== false)
                                         <button type="button" class="listbox-option justify-start! gap-2.5!"
                                             @click="open = false; document.getElementById('application-mobile-stop-trigger')?.click()" role="menuitem">
                                             <x-reicon name="stop-circle" class="size-3.5 text-error" />
-                                            Remove container
+                                            {{ __('Remove container') }}
                                         </button>
                                     @endif
                                 @else
@@ -189,31 +189,31 @@
                                         @if ($application->build_pack !== 'dockercompose')
                                             <x-slot:main wire:click="deploy">
                                                 <x-reicon name="refresh" class="size-3.5" />
-                                                Update Service
+                                                {{ __('Update Service') }}
                                             </x-slot:main>
                                         @else
                                             <x-slot:main @click="document.getElementById('application-mobile-stop-trigger')?.click()">
                                                 <x-reicon name="stop-circle" class="size-3.5" />
-                                                Stop
+                                                {{ __('Stop') }}
                                             </x-slot:main>
                                         @endif
                                     @else
                                         <x-slot:main wire:click="deploy">
                                             <x-reicon name="refresh" class="size-3.5" />
-                                            Redeploy
+                                            {{ __('Redeploy') }}
                                         </x-slot:main>
                                         <button type="button" class="listbox-option justify-start! gap-2.5!"
                                             wire:click="{{ str($application->status)->startsWith('running') ? 'force_deploy_without_cache' : 'deploy(true)' }}"
                                             @click="open = false" role="menuitem">
                                             <x-reicon name="refresh" class="size-3.5 opacity-70" />
-                                            Redeploy (without cache)
+                                            {{ __('Redeploy (without cache)') }}
                                         </button>
                                         @if ($application->build_pack !== 'dockercompose')
                                             <button type="button" class="listbox-option justify-start! gap-2.5!"
                                                 @click="open = false; document.getElementById('application-mobile-restart-trigger')?.click()"
                                                 role="menuitem">
                                                 <x-reicon name="restart" class="size-3.5 opacity-70" />
-                                                Restart
+                                                {{ __('Restart') }}
                                             </button>
                                         @endif
                                     @endif
@@ -222,7 +222,7 @@
                                             @click="open = false; document.getElementById('application-mobile-stop-trigger')?.click()"
                                             role="menuitem">
                                             <x-reicon name="stop-circle" class="size-3.5 text-error" />
-                                            Stop
+                                            {{ __('Stop') }}
                                         </button>
                                     @endunless
                                 @endif

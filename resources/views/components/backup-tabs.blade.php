@@ -23,13 +23,13 @@
     };
 
     $items = collect([
-        ['key' => 'general', 'label' => 'General'],
-        ['key' => 'executions', 'label' => 'Executions'],
-        ['key' => 'danger', 'label' => 'Danger Zone'],
+        ['key' => 'general', 'label' => __('General')],
+        ['key' => 'executions', 'label' => __('Executions')],
+        ['key' => 'danger', 'label' => __('Danger Zone')],
     ])->filter(fn (array $item): bool => isset($routes[$item['key']]));
 @endphp
 
-<nav aria-label="Backup sections"
+<nav aria-label="{{ __('Backup sections') }}"
     class="flex min-w-0 flex-wrap gap-1 border-b border-neutral-200 pb-2 dark:border-white/[0.08]">
     @foreach ($items as $item)
         @if ($context === 'service-schedule')

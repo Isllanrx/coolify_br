@@ -4,7 +4,7 @@
 
 @php
     $user = auth()->user();
-    $userName = $user?->name ?? 'Account';
+    $userName = $user?->name ?? __('Account');
     $userEmail = $user?->email ?? '';
     $userInitial = strtoupper(mb_substr($user?->name ?: ($user?->email ?: 'A'), 0, 1));
 @endphp
@@ -27,7 +27,7 @@
 }" @avatar-updated.window="avatarUrl = $event.detail.url" @keydown.escape.window="closePanel()" @resize.window="open && fitPanel()"
     @click.outside="closePanel()">
     <button type="button" x-ref="userMenuButton" @click="open ? closePanel() : openPanel()"
-        title="{{ $userName }}" aria-label="Account menu for {{ $userName }}"
+        title="{{ $userName }}" aria-label="{{ __('Account menu for :name', ['name' => $userName]) }}"
         @if ($sidebar) :class="collapsed ? 'w-8 px-0' : 'w-full'" @endif
         @class([
             'button rounded-lg px-2 normal-case',
@@ -91,7 +91,7 @@
                 {{ __('common.documentation') }}
             </span>
         </a>
-        <x-modal-input title="How can we help?">
+        <x-modal-input :title="__('How can we help?')">
             <x-slot:content>
                 <div class="listbox-option cursor-pointer" @click="closePanel()">
                     <span class="flex items-center gap-2">
@@ -107,7 +107,7 @@
                 class="listbox-option">
                 <span class="flex items-center gap-2">
                     <x-reicon name="sponsor" class="size-4 text-pink-500" />
-                    Sponsor us
+                    {{ __('Sponsor us') }}
                 </span>
             </a>
         @endif

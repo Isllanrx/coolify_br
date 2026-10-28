@@ -20,7 +20,7 @@
             @if ($member->id === Auth::id())
                 <span
                     class="rounded-full bg-coollabs/10 px-1.5 py-0.5 text-[10px] font-medium text-coollabs dark:bg-brand/15 dark:text-brand-light">
-                    You
+                    {{ __('You') }}
                 </span>
             @endif
         </div>
@@ -43,7 +43,7 @@
                 <div x-data="{ open: false }" @keydown.escape.window="open = false">
                     <button type="button" class="button h-7! px-2.5! text-[11px]!" x-ref="trigger"
                         @click="open = !open" aria-haspopup="menu" :aria-expanded="open">
-                        Manage
+                        {{ __('Manage') }}
                     </button>
                     <template x-teleport="body">
                         <div x-show="open" x-cloak role="menu" x-anchor.bottom-end.fixed.offset.4="$refs.trigger"
@@ -53,38 +53,38 @@
                                 @if (data_get($member, 'pivot.role') !== 'owner')
                                     <button type="button" class="listbox-option justify-start!" wire:click="makeOwner"
                                         @click="open = false">
-                                        Make owner
+                                        {{ __('Make owner') }}
                                     </button>
                                 @endif
                                 @if (data_get($member, 'pivot.role') !== 'admin')
                                     <button type="button" class="listbox-option justify-start!" wire:click="makeAdmin"
                                         @click="open = false">
-                                        Make admin
+                                        {{ __('Make admin') }}
                                     </button>
                                 @endif
                                 @if (data_get($member, 'pivot.role') !== 'member')
                                     <button type="button" class="listbox-option justify-start!"
                                         wire:click="makeReadonly" @click="open = false">
-                                        Make member
+                                        {{ __('Make member') }}
                                     </button>
                                 @endif
                             @elseif (Auth::user()->isAdmin())
                                 @if (data_get($member, 'pivot.role') === 'admin')
                                     <button type="button" class="listbox-option justify-start!"
                                         wire:click="makeReadonly" @click="open = false">
-                                        Make member
+                                        {{ __('Make member') }}
                                     </button>
                                 @elseif (data_get($member, 'pivot.role') === 'member')
                                     <button type="button" class="listbox-option justify-start!" wire:click="makeAdmin"
                                         @click="open = false">
-                                        Make admin
+                                        {{ __('Make admin') }}
                                     </button>
                                 @endif
                             @endif
                             <div class="my-1 border-t border-neutral-200 dark:border-white/[0.08]"></div>
                             <button type="button" class="listbox-option justify-start! text-error! hover:text-error!"
                                 wire:click="remove" @click="open = false">
-                                Remove member
+                                {{ __('Remove member') }}
                             </button>
                         </div>
                     </template>

@@ -3,13 +3,13 @@
         <div wire:poll.3s="checkDownloads" class="hidden"></div>
     @endif
     <x-slot:title>
-        {{ data_get_str($resource, 'name')->limit(10) }} > Files | Coolify
+        {{ data_get_str($resource, 'name')->limit(10) }} > {{ __('Files') }} | Coolify
     </x-slot>
 
     @if ($type === 'application')
         <livewire:project.application.heading :application="$resource" wire:key="application-heading-files" />
     @elseif ($type === 'service')
-        <livewire:project.service.heading :service="$resource" :parameters="$parameters" title="Files" />
+        <livewire:project.service.heading :service="$resource" :parameters="$parameters" title="{{ __('Files') }}" />
     @else
         <livewire:project.database.heading :database="$resource" />
     @endif
@@ -30,7 +30,7 @@
                 });
             },
             uploadFile(file) {
-                return this.run('Uploading file...', () => new Promise((resolve, reject) => {
+                return this.run(@js(__('Uploading file...')), () => new Promise((resolve, reject) => {
                     this.$wire.upload('upload', file, () => this.$wire.uploadFile().then(resolve, reject), reject);
                 }));
             },
@@ -48,17 +48,17 @@
             @endif
 
             <div class="min-w-0">
-    <x-application.settings-section title="Files"
-        helper="Browse and manage files inside the running container." :flush="true">
+    <x-application.settings-section :title="__('Files')"
+        :helper="__('Browse and manage files inside the running container.')" :flush="true">
 
         <x-slot:badges>
             <x-beta-badge />
             @if ($containerRunning && $filesLoaded && count($availableContainers) > 1)
                 <div class="-my-0.5 w-full sm:w-72" wire:key="file-browser-container-{{ $container }}"
                     x-data="{ selected: @js($container) }"
-                    x-init="$watch('selected', (name) => run('Loading files...', () => $wire.selectContainer(name)))">
+                    x-init="$watch('selected', (name) => run(@js(__('Loading files...')), () => $wire.selectContainer(name)))">
                     <x-forms.listbox id="file-browser-container" :wire="false" x-model="selected" searchable portal
-                        searchPlaceholder="Search containers"
+                        :searchPlaceholder="__('Search containers')"
                         :options="collect($availableContainers)->map(fn ($name) => ['value' => $name, 'label' => $name])->all()" />
                 </div>
             @endif
@@ -68,16 +68,16 @@
             @if ($containerRunning && $filesLoaded && ! $shellUnavailable)
                 <input type="file" class="hidden" x-ref="uploadInput"
                     @change="if ($event.target.files.length) { uploadFile($event.target.files[0]); $event.target.value = '' }" />
-                <x-forms.button type="button" title="Upload a file to this folder" canGate="canAccessTerminal" :canResource="$resource"
+                <x-forms.button type="button" :title="__('Upload a file to this folder')" canGate="canAccessTerminal" :canResource="$resource"
                     wire:target="uploadFile" @click="$refs.uploadInput.click()">
-                    Upload
+                    {{ __('Upload') }}
                 </x-forms.button>
 
                 <div x-data="{ creationMenuOpen: false }" @keydown.escape.window="creationMenuOpen = false">
                     <x-forms.button type="button" x-ref="newTrigger"
                         @click="creationMenuOpen = !creationMenuOpen" x-bind:aria-expanded="creationMenuOpen"
                         canGate="canAccessTerminal" :canResource="$resource">
-                        New
+                        {{ __('New') }}
                         <x-reicon name="chevron-down" class="size-3.5" />
                     </x-forms.button>
                     <template x-teleport="body">
@@ -85,38 +85,38 @@
                             x-anchor.bottom-end.fixed.offset.4="$refs.newTrigger"
                             @click.outside="creationMenuOpen = false"
                             class="listbox-panel min-w-36! w-36! z-50!">
-                            <x-modal-input title="New file">
+                            <x-modal-input :title="__('New file')">
                                 <x-slot:content>
                                     <button type="button" class="listbox-option" @click="creationMenuOpen = false">
                                         <x-reicon name="file" class="size-3.5 shrink-0" />
-                                        <span class="flex-1 text-left">New file</span>
+                                        <span class="flex-1 text-left">{{ __('New file') }}</span>
                                     </button>
                                 </x-slot:content>
                                 <form x-data="{ name: '' }"
-                                    @submit.prevent="run('Creating file...', () => $wire.createFile(name)); name=''; $dispatch('close-modal')"
+                                    @submit.prevent="run(@js(__('Creating file...')), () => $wire.createFile(name)); name=''; $dispatch('close-modal')"
                                     class="flex flex-col gap-4">
-                                    <x-forms.input id="newFileName" label="File name" x-model="name"
+                                    <x-forms.input id="newFileName" :label="__('File name')" x-model="name"
                                         placeholder="config.yml" required />
                                     <div class="flex justify-end">
-                                        <x-forms.button type="submit" isHighlighted canGate="canAccessTerminal" :canResource="$resource">Create file</x-forms.button>
+                                        <x-forms.button type="submit" isHighlighted canGate="canAccessTerminal" :canResource="$resource">{{ __('Create file') }}</x-forms.button>
                                     </div>
                                 </form>
                             </x-modal-input>
 
-                            <x-modal-input title="New folder">
+                            <x-modal-input :title="__('New folder')">
                                 <x-slot:content>
                                     <button type="button" class="listbox-option" @click="creationMenuOpen = false">
                                         <x-reicon name="folder" class="size-3.5 shrink-0" />
-                                        <span class="flex-1 text-left">New folder</span>
+                                        <span class="flex-1 text-left">{{ __('New folder') }}</span>
                                     </button>
                                 </x-slot:content>
                                 <form x-data="{ name: '' }"
-                                    @submit.prevent="run('Creating folder...', () => $wire.createDirectory(name)); name=''; $dispatch('close-modal')"
+                                    @submit.prevent="run(@js(__('Creating folder...')), () => $wire.createDirectory(name)); name=''; $dispatch('close-modal')"
                                     class="flex flex-col gap-4">
-                                    <x-forms.input id="newFolderName" label="Folder name" x-model="name"
+                                    <x-forms.input id="newFolderName" :label="__('Folder name')" x-model="name"
                                         placeholder="plugins" required />
                                     <div class="flex justify-end">
-                                        <x-forms.button type="submit" isHighlighted canGate="canAccessTerminal" :canResource="$resource">Create folder</x-forms.button>
+                                        <x-forms.button type="submit" isHighlighted canGate="canAccessTerminal" :canResource="$resource">{{ __('Create folder') }}</x-forms.button>
                                     </div>
                                 </form>
                             </x-modal-input>
@@ -124,39 +124,39 @@
                     </template>
                 </div>
 
-                <x-forms.button type="button" @click="run('Loading files...', () => $wire.refresh())" title="Refresh this folder">
-                    Refresh
+                <x-forms.button type="button" @click="run({{ \Illuminate\Support\Js::from(__('Loading files...')) }}, () => $wire.refresh())" :title="__('Refresh this folder')">
+                    {{ __('Refresh') }}
                 </x-forms.button>
             @elseif (! $filesLoaded && ! $loadFailed)
                 {{-- Disabled placeholders keep the header at its loaded height. --}}
-                <x-forms.button type="button" disabled>Upload</x-forms.button>
+                <x-forms.button type="button" disabled>{{ __('Upload') }}</x-forms.button>
                 <x-forms.button type="button" disabled>
-                    New
+                    {{ __('New') }}
                     <x-reicon name="chevron-down" class="size-3.5" />
                 </x-forms.button>
-                <x-forms.button type="button" disabled>Refresh</x-forms.button>
+                <x-forms.button type="button" disabled>{{ __('Refresh') }}</x-forms.button>
             @endif
         </x-slot:actions>
 
         @if ($loadFailed)
-            <x-empty title="Could not load files" description="Check the server connection and try again." />
+            <x-empty :title="__('Could not load files')" :description="__('Check the server connection and try again.')" />
             <div class="flex justify-center pb-4">
-                <x-forms.button wire:click="loadFiles">Retry</x-forms.button>
+                <x-forms.button wire:click="loadFiles">{{ __('Retry') }}</x-forms.button>
             </div>
         @elseif (! $filesLoaded)
             <div class="flex justify-center py-12">
-                <x-loading text="Loading files..." />
+                <x-loading :text="__('Loading files...')" />
             </div>
         @elseif (! $containerRunning)
-            <x-empty title="Container is not running"
-                description="Start the container to browse its files.">
+            <x-empty :title="__('Container is not running')"
+                :description="__('Start the container to browse its files.')">
                 <x-slot:icon>
                     <x-reicon name="folder" class="size-8" />
                 </x-slot:icon>
             </x-empty>
         @elseif ($shellUnavailable)
-            <x-empty title="File browser is not available"
-                description="Coolify cannot open the files of this container. {{ $helperError }}">
+            <x-empty :title="__('File browser is not available')"
+                :description="__('Coolify cannot open the files of this container. :helperError', ['helperError' => $helperError])">
                 <x-slot:icon>
                     <x-reicon name="folder" class="size-8" />
                 </x-slot:icon>
@@ -183,7 +183,7 @@
                     @if ($loop->index > 1)
                         <span class="text-coollabs-subtle">/</span>
                     @endif
-                    <button type="button" x-on:click="run('Loading files...', () => $wire.goTo(@js($crumb['path'])))"
+                    <button type="button" x-on:click="run(@js(__('Loading files...')), () => $wire.goTo(@js($crumb['path'])))"
                         @class([
                             'text-current font-medium cursor-default' => $loop->last,
                             'cursor-pointer text-coollabs-subtle underline-offset-4 hover:text-current hover:underline' => ! $loop->last,
@@ -201,8 +201,8 @@
                 :class="dragging ? 'ring-2 ring-coollabs/40 dark:ring-white/30' : ''"
                 class="transition-[box-shadow] duration-150 ease-out motion-reduce:transition-none">
                 @if (count($entries) === 0)
-                    <x-empty size="sm" title="This folder is empty"
-                        description="Upload a file to get started.">
+                    <x-empty size="sm" :title="__('This folder is empty')"
+                        :description="__('Upload a file to get started.')">
                         <x-slot:icon>
                             <x-reicon name="folder" class="size-8" />
                         </x-slot:icon>
@@ -211,13 +211,13 @@
                     <div class="data-table w-full">
                         <div class="data-table-header file-table-grid">
                             <span></span>
-                            <span>Name</span>
-                            <span>Perms</span>
-                            <span>Owner</span>
-                            <span>Group</span>
-                            <span class="text-right">Size</span>
-                            <span>Modified</span>
-                            <span class="text-right">Actions</span>
+                            <span>{{ __('Name') }}</span>
+                            <span>{{ __('Perms') }}</span>
+                            <span>{{ __('Owner') }}</span>
+                            <span>{{ __('Group') }}</span>
+                            <span class="text-right">{{ __('Size') }}</span>
+                            <span>{{ __('Modified') }}</span>
+                            <span class="text-right">{{ __('Actions') }}</span>
                         </div>
                         @foreach ($entries as $entry)
                             <div wire:key="entry-{{ $entry['name'] }}" class="data-table-row file-table-grid">
@@ -227,7 +227,7 @@
                                 </div>
                                 <div class="min-w-0">
                                     @if ($entry['type'] === 'dir')
-                                        <button type="button" x-on:click="run('Loading files...', () => $wire.open(@js($entry['name'])))"
+                                        <button type="button" x-on:click="run(@js(__('Loading files...')), () => $wire.open(@js($entry['name'])))"
                                             class="block w-full cursor-pointer truncate text-left font-medium hover:text-coollabs hover:underline dark:hover:text-white">{{ $entry['name'] }}</button>
                                     @else
                                         <span class="block truncate">{{ $entry['name'] }}</span>
@@ -235,24 +235,24 @@
                                 </div>
                                 {{-- Permissions (click to chmod) --}}
                                 <div class="min-w-0">
-                                    <x-modal-input title="Change permissions">
+                                    <x-modal-input :title="__('Change permissions')">
                                         <x-slot:content>
-                                            <button type="button" title="Edit permissions"
+                                            <button type="button" title="{{ __('Edit permissions') }}"
                                                 class="cursor-pointer rounded-md px-1.5 py-0.5 font-mono text-xs text-coollabs-subtle hover:bg-black/5 hover:text-current dark:hover:bg-white/[0.06]">
                                                 {{ $entry['perms'] ?: '-' }}
                                             </button>
                                         </x-slot:content>
                                         <form x-data="{ mode: @js($entry['perms']) }"
-                                            @submit.prevent="run('Updating permissions...', () => $wire.chmodEntry(@js($entry['name']), mode)); $dispatch('close-modal')"
+                                            @submit.prevent="run(@js(__('Updating permissions...')), () => $wire.chmodEntry(@js($entry['name']), mode)); $dispatch('close-modal')"
                                             class="flex flex-col gap-4">
                                             <p class="text-sm text-coollabs-subtle">
-                                                Set the octal permission mode for
+                                                {{ __('Set the octal permission mode for') }}
                                                 <span class="font-medium">{{ $entry['name'] }}</span>.
                                             </p>
-                                            <x-forms.input id="chmodMode-{{ $loop->index }}" label="Octal mode"
+                                            <x-forms.input id="chmodMode-{{ $loop->index }}" :label="__('Octal mode')"
                                                 x-model="mode" placeholder="644" required />
                                             <div class="flex justify-end">
-                                                <x-forms.button type="submit" isHighlighted canGate="canAccessTerminal" :canResource="$resource">Apply</x-forms.button>
+                                                <x-forms.button type="submit" isHighlighted canGate="canAccessTerminal" :canResource="$resource">{{ __('Apply') }}</x-forms.button>
                                             </div>
                                         </form>
                                     </x-modal-input>
@@ -278,7 +278,7 @@
                                     x-data="{ open: false, name: @js($entry['name']), isDir: @js($entry['type'] === 'dir') }"
                                     @keydown.escape.window="open = false">
                                     <div class="relative">
-                                        <button type="button" title="Actions" aria-label="Actions" x-ref="trigger"
+                                        <button type="button" title="{{ __('Actions') }}" aria-label="{{ __('Actions') }}" x-ref="trigger"
                                             x-on:click="open = !open" x-bind:aria-expanded="open"
                                             x-bind:class="open && 'bg-black/5 text-current dark:bg-white/[0.08]'"
                                             class="inline-flex size-7 cursor-pointer items-center justify-center rounded-md text-coollabs-subtle hover:bg-black/5 hover:text-current focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coollabs/40 dark:hover:bg-white/[0.06] dark:focus-visible:ring-white/30">
@@ -291,53 +291,53 @@
                                                 class="listbox-panel min-w-52! w-52! z-50!">
                                                 @if ($entry['type'] !== 'dir')
                                                     <button type="button" class="listbox-option"
-                                                        x-on:click="open = false; run('Opening file...', () => $wire.openEditor(name))">
+                                                        x-on:click="open = false; run(@js(__('Opening file...')), () => $wire.openEditor(name))">
                                                         <x-reicon name="file-content" class="size-3.5 shrink-0" />
-                                                        <span class="min-w-0 flex-1 text-left">Edit</span>
+                                                        <span class="min-w-0 flex-1 text-left">{{ __('Edit') }}</span>
                                                     </button>
                                                 @endif
                                                 <button type="button" class="listbox-option"
-                                                    x-on:click="open = false; run(isDir ? 'Preparing folder download...' : 'Preparing file download...', () => $wire.download(name))">
+                                                    x-on:click="open = false; run(isDir ? @js(__('Preparing folder download...')) : @js(__('Preparing file download...')), () => $wire.download(name))">
                                                     <x-reicon name="download" class="size-3.5 shrink-0" />
-                                                    <span class="min-w-0 flex-1 text-left">Download</span>
+                                                    <span class="min-w-0 flex-1 text-left">{{ __('Download') }}</span>
                                                 </button>
 
                                                 {{-- Rename --}}
-                                                <x-modal-input title="Rename">
+                                                <x-modal-input :title="__('Rename')">
                                                     <x-slot:content>
                                                         <button type="button" class="listbox-option" x-on:click="open = false">
                                                             <x-reicon name="edit" class="size-3.5 shrink-0" />
-                                                            <span class="min-w-0 flex-1 text-left">Rename</span>
+                                                            <span class="min-w-0 flex-1 text-left">{{ __('Rename') }}</span>
                                                         </button>
                                                     </x-slot:content>
                                                     <form x-data="{ newName: @js($entry['name']) }"
-                                                        @submit.prevent="run('Renaming...', () => $wire.renameEntry(name, newName)); $dispatch('close-modal')"
+                                                        @submit.prevent="run(@js(__('Renaming...')), () => $wire.renameEntry(name, newName)); $dispatch('close-modal')"
                                                         class="flex flex-col gap-4">
                                                         <x-forms.input id="renameName-{{ $loop->index }}"
-                                                            label="New name" x-model="newName" required />
+                                                            :label="__('New name')" x-model="newName" required />
                                                         <div class="flex justify-end">
-                                                            <x-forms.button type="submit" isHighlighted canGate="canAccessTerminal" :canResource="$resource">Rename</x-forms.button>
+                                                            <x-forms.button type="submit" isHighlighted canGate="canAccessTerminal" :canResource="$resource">{{ __('Rename') }}</x-forms.button>
                                                         </div>
                                                     </form>
                                                 </x-modal-input>
 
                                                 {{-- Delete --}}
-                                                <x-modal-input title="Delete this item?">
+                                                <x-modal-input :title="__('Delete this item?')">
                                                     <x-slot:content>
                                                         <button type="button" class="listbox-option" x-on:click="open = false">
                                                             <x-reicon name="trash" class="size-3.5 shrink-0 text-red-600 dark:text-red-500" />
-                                                            <span class="min-w-0 flex-1 text-left text-red-600 dark:text-red-500">Delete</span>
+                                                            <span class="min-w-0 flex-1 text-left text-red-600 dark:text-red-500">{{ __('Delete') }}</span>
                                                         </button>
                                                     </x-slot:content>
                                                     <div class="flex flex-col gap-4">
                                                         <p class="text-sm text-coollabs-subtle">
-                                                            This permanently deletes
+                                                            {{ __('This permanently deletes') }}
                                                             <span class="font-medium">{{ $entry['name'] }}</span>
-                                                            inside the container. This cannot be undone.
+                                                            {{ __('inside the container. This cannot be undone.') }}
                                                         </p>
                                                         <div class="flex justify-end">
                                                             <x-forms.button isError type="button" canGate="canAccessTerminal" :canResource="$resource"
-                                                                x-on:click="run(isDir ? 'Deleting folder...' : 'Deleting file...', () => $wire.deleteEntry(name)); $dispatch('close-modal')">Delete</x-forms.button>
+                                                                x-on:click="run(isDir ? {{ \Illuminate\Support\Js::from(__('Deleting folder...')) }} : {{ \Illuminate\Support\Js::from(__('Deleting file...')) }}, () => $wire.deleteEntry(name)); $dispatch('close-modal')">{{ __('Delete') }}</x-forms.button>
                                                         </div>
                                                     </div>
                                                 </x-modal-input>
@@ -354,11 +354,11 @@
             </div>
 
             {{-- Editor modal (opens when a text file is loaded) --}}
-            <x-modal-input title="Edit file" :wireOpen="'editorOpen'" :content="true" wireIgnore="false" isLarge>
+            <x-modal-input :title="__('Edit file')" :wireOpen="'editorOpen'" :content="true" wireIgnore="false" isLarge>
                 <x-slot:content>
                     <span class="hidden"></span>
                 </x-slot:content>
-                <form @submit.prevent="run('Saving file...', () => $wire.saveEditor())" class="flex flex-col gap-4">
+                <form @submit.prevent="run(@js(__('Saving file...')), () => $wire.saveEditor())" class="flex flex-col gap-4">
                     <div class="flex items-center justify-between gap-2">
                         <p class="truncate font-mono text-xs text-coollabs-subtle">{{ $editingPath }}</p>
                         @if ($editorLanguage)
@@ -430,9 +430,9 @@
                     </div>
                     <div class="flex justify-end gap-2">
                         <x-forms.button type="button" wire:click="closeEditor"
-                            @click="$dispatch('close-modal')">Cancel</x-forms.button>
+                            @click="$dispatch('close-modal')">{{ __('Cancel') }}</x-forms.button>
                         <x-forms.button type="submit" isHighlighted
-                            @click="$dispatch('close-modal')">Save changes</x-forms.button>
+                            @click="$dispatch('close-modal')">{{ __('Save changes') }}</x-forms.button>
                     </div>
                 </form>
             </x-modal-input>

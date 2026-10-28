@@ -61,11 +61,11 @@
                 <span x-text="tip.label"></span>
             </div>
             <div class="mt-0.5 text-[11px] text-neutral-300">
-                <span x-text="tip.count"></span> responses · <span x-text="tip.pct"></span>
+                <span x-text="tip.count"></span> {{ __('responses ·') }} <span x-text="tip.pct"></span>
             </div>
         </div>
     @else
-        <x-empty size="sm" title="No status data" description="No responses were recorded for the selected range."
+        <x-empty size="sm" :title="__('No status data')" :description="__('No responses were recorded for the selected range.')"
             icon-name="network" />
     @endif
 </div>

@@ -33,16 +33,16 @@
     };
 
     $items = [
-        ['key' => 'general', 'label' => 'General', 'icon' => 'settings'],
-        ['key' => 'executions', 'label' => 'Executions', 'icon' => 'browser-terminal'],
-        ['key' => 'danger', 'label' => 'Danger Zone', 'icon' => 'danger'],
+        ['key' => 'general', 'label' => __('General'), 'icon' => 'settings'],
+        ['key' => 'executions', 'label' => __('Executions'), 'icon' => 'browser-terminal'],
+        ['key' => 'danger', 'label' => __('Danger Zone'), 'icon' => 'danger'],
     ];
-    $backLabel = $context === 'database' ? 'Back to database' : 'Back to backups';
+    $backLabel = $context === 'database' ? __('Back to database') : __('Back to backups');
     // The resource menu that the page renders one Back away in the main sidebar.
     $parentMenu = match ($context) {
-        'application' => 'Application',
-        'database' => 'Database',
-        default => 'Service',
+        'application' => __('Application'),
+        'database' => __('Database'),
+        default => __('Service'),
     };
     $backParameters = match ($context) {
         'database' => collect($parameters)->except('backup_uuid')->all(),
@@ -51,9 +51,9 @@
     };
 @endphp
 
-<x-main-nav-menu :depth="1" :back-label="$parentMenu" :back-title="'Back to the '.strtolower($parentMenu).' menu'"
+<x-main-nav-menu :depth="1" :back-label="$parentMenu" :back-title="__('Back to the :menu menu', ['menu' => strtolower($parentMenu)])"
     data-settings-search-items="{{ json_encode(settingsSearchItems(['Backup' => collect($items)->map(fn (array $item): array => [...$item, 'route' => $routes[$item['key']]])], $parameters)) }}">
-    <nav aria-label="Backup settings"
+    <nav aria-label="{{ __('Backup settings') }}"
         class="grid grid-cols-1 gap-0.5">
         <a class="menu-item" data-page-only {{ wireNavigate() }} href="{{ route($routes['back'], $backParameters) }}">
             <x-reicon name="logout" class="menu-item-icon rotate-180" />

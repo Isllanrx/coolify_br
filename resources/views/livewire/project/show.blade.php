@@ -12,7 +12,7 @@
                             {{ wireNavigate() }}
                             class="flex size-7 shrink-0 items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-black dark:text-fg-faint dark:hover:bg-white/[0.06] dark:hover:text-fg"
                             title="{{ __('project.project_settings') }}"
-                            aria-label="Open settings for {{ $project->name }}">
+                            aria-label="{{ __('Open settings for :name', ['name' => $project->name]) }}">
                             <x-reicon name="settings" class="size-4" />
                         </a>
                     @endcan
@@ -51,11 +51,11 @@
                     <x-reicon name="search"
                         class="pointer-events-none absolute top-1/2 left-2.5 z-10 size-3.5 -translate-y-1/2 text-neutral-400 dark:text-fg-faint" />
                     <input x-model.debounce.150ms="search" x-on:input="page = 1" type="search"
-                        placeholder="Search environments"
+                        placeholder="{{ __('Search environments') }}"
                         class="h-8! w-full rounded-lg! border-neutral-200! bg-white! py-0! pr-8! pl-8! text-[12px]! shadow-none! placeholder:text-neutral-400 focus:border-accent! focus:ring-0! dark:border-white/[0.08]! dark:bg-white/[0.035]! dark:text-fg! dark:placeholder:text-fg-faint">
                     <button x-cloak x-show="search" x-on:click="search = ''; page = 1" type="button"
                         class="absolute top-1/2 right-2 flex size-5 -translate-y-1/2 items-center justify-center rounded text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-black dark:text-fg-faint dark:hover:bg-white/[0.07] dark:hover:text-fg"
-                        aria-label="Clear search">
+                        aria-label="{{ __('Clear search') }}">
                         <span class="text-sm leading-none">×</span>
                     </button>
                 </div>
@@ -70,7 +70,7 @@
                                     stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
                                     stroke-linejoin="round" />
                             </svg>
-                            Sort
+                            {{ __('Sort') }}
                             </button>
                         </x-slot:trigger>
                             <template x-for="option in sortOptions" :key="option.value">
@@ -99,7 +99,7 @@
                         <article
                             class="group relative flex min-h-28 flex-col rounded-xl border border-neutral-200 bg-white p-3 shadow-sm transition-all hover:-translate-y-px hover:border-neutral-300 hover:shadow-md dark:border-white/[0.08] dark:bg-white/[0.05] dark:hover:border-white/[0.14]">
                             <a :href="environment.href" {{ wireNavigate() }} class="absolute inset-0 rounded-xl"
-                                :aria-label="`Open ${environment.name}`"></a>
+                                :aria-label="@js(__('Open :name')).replace(':name', environment.name)"></a>
 
                             <div class="flex items-start gap-3">
                                 <div
@@ -111,27 +111,27 @@
                                         class="truncate text-[13px]! leading-4! font-semibold! text-black dark:text-fg"
                                         x-text="environment.name"></h2>
                                     <p class="mt-0.5 truncate text-[11px] text-neutral-500 dark:text-fg-faint"
-                                        x-text="environment.description || 'Environment'"></p>
+                                        x-text="environment.description || @js(__('Environment'))"></p>
                                 </div>
                             </div>
 
                             <div class="mt-auto flex items-center justify-between gap-3 pt-4">
                                 <p class="min-w-0 truncate text-[11px] text-neutral-500 dark:text-fg-dim"
-                                    x-text="`${environment.resourceCount} ${environment.resourceCount === 1 ? 'resource' : 'resources'}`">
+                                    x-text="`${environment.resourceCount} ${environment.resourceCount === 1 ? @js(__('resource')) : @js(__('resources'))}`">
                                 </p>
 
                                 <div class="relative z-10 flex shrink-0 items-center gap-0.5">
                                     <a x-show="environment.addResourceHref" :href="environment.addResourceHref"
                                         {{ wireNavigate() }}
                                         class="flex size-7.5 items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-black dark:text-fg-faint dark:hover:bg-white/[0.06] dark:hover:text-fg"
-                                        title="Add resource" :aria-label="`Add resource to ${environment.name}`">
+                                        title="{{ __('Add resource') }}" :aria-label="@js(__('Add resource to :name')).replace(':name', environment.name)">
                                         <x-reicon name="plus" class="size-3" />
                                     </a>
                                     <a x-show="environment.settingsHref" :href="environment.settingsHref"
                                         {{ wireNavigate() }}
                                         class="flex size-7.5 items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-black dark:text-fg-faint dark:hover:bg-white/[0.06] dark:hover:text-fg"
-                                        title="Environment settings"
-                                        :aria-label="`Open settings for ${environment.name}`">
+                                        title="{{ __('Environment settings') }}"
+                                        :aria-label="@js(__('Open settings for :name')).replace(':name', environment.name)">
                                         <x-reicon name="settings" class="size-3" />
                                     </a>
                                 </div>
@@ -148,9 +148,9 @@
                 class="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm dark:border-white/[0.08] dark:bg-white/[0.05]">
                 <div
                     class="environments-table-grid border-b border-neutral-200 bg-neutral-50 px-4 py-2.5 text-[11px] font-medium text-neutral-500 dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-fg-faint">
-                    <div>Environment</div>
-                    <div class="environment-resource-count">Resources</div>
-                    <div class="environment-description">Description</div>
+                    <div>{{ __('Environment') }}</div>
+                    <div class="environment-resource-count">{{ __('Resources') }}</div>
+                    <div class="environment-description">{{ __('Description') }}</div>
                     <div></div>
                 </div>
 
@@ -158,7 +158,7 @@
                     <div
                         class="environments-table-grid group relative min-h-14 items-center border-b border-neutral-200 px-4 py-2.5 transition-colors last:border-b-0 hover:bg-neutral-50 dark:border-white/[0.07] dark:hover:bg-white/[0.025]">
                         <a :href="environment.href" {{ wireNavigate() }} class="absolute inset-0"
-                            :aria-label="`Open ${environment.name}`"></a>
+                            :aria-label="@js(__('Open :name')).replace(':name', environment.name)"></a>
                         <div class="flex min-w-0 items-center gap-3">
                             <div
                                 class="flex size-8 shrink-0 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-500 dark:border-white/[0.08] dark:bg-white/[0.035] dark:text-fg-dim">
@@ -178,13 +178,13 @@
                             <a x-show="environment.addResourceHref" :href="environment.addResourceHref"
                                 {{ wireNavigate() }}
                                 class="flex size-7 items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-black dark:text-fg-faint dark:hover:bg-white/[0.06] dark:hover:text-fg"
-                                title="Add resource" :aria-label="`Add resource to ${environment.name}`">
+                                title="{{ __('Add resource') }}" :aria-label="@js(__('Add resource to :name')).replace(':name', environment.name)">
                                 <x-reicon name="plus" class="size-3.5" />
                             </a>
                             <a x-show="environment.settingsHref" :href="environment.settingsHref" {{ wireNavigate() }}
                                 class="flex size-7 items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-black dark:text-fg-faint dark:hover:bg-white/[0.06] dark:hover:text-fg"
-                                title="Environment settings"
-                                :aria-label="`Open settings for ${environment.name}`">
+                                title="{{ __('Environment settings') }}"
+                                :aria-label="@js(__('Open settings for :name')).replace(':name', environment.name)">
                                 <x-reicon name="settings" class="size-3.5" />
                             </a>
                         </div>
@@ -198,9 +198,9 @@
             <div x-show="filteredEnvironments.length === 0"
                 class="flex min-h-52 flex-col items-center justify-center rounded-xl border border-neutral-200 bg-white px-6 text-center dark:border-white/[0.08] dark:bg-white/[0.05]">
                 <x-reicon name="search" class="mb-3 size-6 text-neutral-300 dark:text-fg-faint" />
-                <p class="text-[13px] font-medium">No matching environments</p>
+                <p class="text-[13px] font-medium">{{ __('No matching environments') }}</p>
                 <p class="mt-1 text-[12px] text-neutral-500 dark:text-fg-dim">
-                    Try a different search.
+                    {{ __('Try a different search.') }}
                 </p>
             </div>
         @endif
@@ -219,19 +219,19 @@
             environments: @js($environmentsJs),
             sortOptions: [{
                     value: 'default',
-                    label: 'Default'
+                    label: @js(__('Default'))
                 },
                 {
                     value: 'name-asc',
-                    label: 'Name A–Z'
+                    label: @js(__('Name A–Z'))
                 },
                 {
                     value: 'name-desc',
-                    label: 'Name Z–A'
+                    label: @js(__('Name Z–A'))
                 },
                 {
                     value: 'resources',
-                    label: 'Most resources'
+                    label: @js(__('Most resources'))
                 },
             ],
             get filteredEnvironments() {

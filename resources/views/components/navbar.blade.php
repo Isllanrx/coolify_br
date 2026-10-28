@@ -91,8 +91,8 @@
                 x-data="{ hasPageSearch: false }"
                 x-init="$nextTick(() => hasPageSearch = (window.currentPageSearchItems?.() ?? []).length > 0)"
                 :title="hasPageSearch
-                    ? 'Search this page and everything (Press / or ' + modKeyLabel + 'K, then Tab to switch)'
-                    : 'Search (Press / or ' + modKeyLabel + 'K)'"
+                    ? @js(__('Search this page and everything (Press / or :key, then Tab to switch)')).replace(':key', modKeyLabel + 'K')
+                    : @js(__('Search (Press / or :key)')).replace(':key', modKeyLabel + 'K')"
                 class="menu-item menu-search justify-between !rounded-lg !bg-neutral-100 dark:!bg-white/[0.04] hover:!bg-neutral-200 dark:hover:!bg-white/[0.07] !text-fg-faint">
                 <span class="flex items-center gap-2.5 min-w-0">
                     <x-reicon name="search" class="menu-item-icon" />
@@ -144,11 +144,11 @@
                         ]],
                         ['label' => __('nav.notifications'), 'icon' => 'notifications', 'children' => [
                             ['label' => __('nav.email'), 'icon' => 'mail', 'href' => route('notifications.email'), 'active' => request()->is('notifications/email')],
-                            ['label' => 'Discord', 'brandIcon' => 'discord', 'href' => route('notifications.discord'), 'active' => request()->is('notifications/discord')],
-                            ['label' => 'Telegram', 'brandIcon' => 'telegram', 'href' => route('notifications.telegram'), 'active' => request()->is('notifications/telegram')],
-                            ['label' => 'Slack', 'brandIcon' => 'slack', 'href' => route('notifications.slack'), 'active' => request()->is('notifications/slack')],
-                            ['label' => 'Pushover', 'brandIcon' => 'pushover', 'href' => route('notifications.pushover'), 'active' => request()->is('notifications/pushover')],
-                            ['label' => 'Webhook', 'icon' => 'destinations', 'href' => route('notifications.webhook'), 'active' => request()->is('notifications/webhook')],
+                            ['label' => __('Discord'), 'brandIcon' => 'discord', 'href' => route('notifications.discord'), 'active' => request()->is('notifications/discord')],
+                            ['label' => __('Telegram'), 'brandIcon' => 'telegram', 'href' => route('notifications.telegram'), 'active' => request()->is('notifications/telegram')],
+                            ['label' => __('Slack'), 'brandIcon' => 'slack', 'href' => route('notifications.slack'), 'active' => request()->is('notifications/slack')],
+                            ['label' => __('Pushover'), 'brandIcon' => 'pushover', 'href' => route('notifications.pushover'), 'active' => request()->is('notifications/pushover')],
+                            ['label' => __('Webhook'), 'icon' => 'destinations', 'href' => route('notifications.webhook'), 'active' => request()->is('notifications/webhook')],
                         ]],
                         ['label' => __('nav.keys_tokens'), 'icon' => 'keys', 'children' => [
                             ['label' => __('nav.private_keys'), 'icon' => 'keys', 'href' => route('security.private-key.index'), 'active' => request()->is('security/private-key*')],
@@ -221,7 +221,7 @@
                     @if (! $submenuItem['active'] || $navContext) x-cloak @endif class="contents">
                     <ul role="list" class="flex flex-col gap-y-0.5" :class="navSwap && 'nav-swap-' + navSwap">
                         <li class="mb-1">
-                            <button type="button" @click="submenu = ''; navSwap = 'back'" title="Back to the main menu" aria-label="Back to the main menu"
+                            <button type="button" @click="submenu = ''; navSwap = 'back'" title="{{ __('Back to the main menu') }}" aria-label="{{ __('Back to the main menu') }}"
                                 class="menu-item menu-back bg-transparent! hover:bg-neutral-100! dark:hover:bg-white/[0.06]!" :class="collapsed && 'lg:justify-center lg:px-0'">
                                 {{-- As wide as a menu icon (with its tile), so the chevron lines up with the icons below. --}}
                                 <span class="menu-back-icon flex shrink-0 items-center justify-center">
@@ -299,7 +299,7 @@
         @if (auth()->id() === 0 && (isCloud() || isDev()))
             {{-- Part of the main menu: hidden while a submenu or a resource menu shows. --}}
             <li x-show="navLevel === -1 && !submenu" @if (($activeSubmenu ?? null) || ($navContext ?? [])) x-cloak @endif>
-                <a title="Admin" {{ wireNavigate() }}
+                <a title="{{ __('Admin') }}" {{ wireNavigate() }}
                     class="nav-admin {{ request()->is('admin') ? 'menu-item-active menu-item' : 'menu-item' }}"
                     :class="collapsed && 'lg:justify-center lg:px-0'" href="{{ route('admin.index') }}">
                     <x-reicon name="fire" class="menu-item-icon" />
@@ -311,14 +311,14 @@
             {{-- Unsubscribed cloud has no workspace items — keep these at the top of the list. --}}
             <li class="nav-section" aria-hidden="true"
                 :class="collapsed && 'lg:mx-2.5 lg:my-2 lg:h-0 lg:overflow-hidden lg:border-t lg:border-neutral-200 lg:p-0 lg:text-transparent dark:lg:border-white/10'">
-                Account</li>
+                {{ __('Account') }}</li>
             <li>
-                <a title="Subscription" {{ wireNavigate() }}
+                <a title="{{ __('Subscription') }}" {{ wireNavigate() }}
                     class="{{ request()->is('subscription*') ? 'menu-item-active menu-item' : 'menu-item' }}"
                     :class="collapsed && 'lg:justify-center lg:px-0'"
                     href="{{ isSubscriptionOnGracePeriod() ? route('subscription.show') : route('subscription.index') }}">
                     <x-reicon name="subscription" class="menu-item-icon" />
-                    <span class="menu-item-label" :class="collapsed && 'lg:hidden'">Subscription</span>
+                    <span class="menu-item-label" :class="collapsed && 'lg:hidden'">{{ __('Subscription') }}</span>
                 </a>
             </li>
             @if (auth()->user()->teams()->get()->count() > 1)
@@ -333,7 +333,7 @@
     <div class="sidebar-footer shrink-0 -mx-2 hidden flex-col gap-1 bg-neutral-50 px-2 py-2 dark:bg-transparent lg:-mx-3 lg:flex lg:px-3">
         <div class="flex items-center gap-1" :class="collapsed ? 'flex-col justify-center' : 'justify-between'">
             <x-top-user-menu sidebar />
-            <button type="button" @click="toggleSidebar()" title="Toggle sidebar" aria-label="Toggle sidebar"
+            <button type="button" @click="toggleSidebar()" title="{{ __('Toggle sidebar') }}" aria-label="{{ __('Toggle sidebar') }}"
                 class="menu-item sidebar-toggle w-8 shrink-0 justify-center px-0">
                 <svg class="menu-item-icon" viewBox="0 0 24 24" fill="none">
                     <rect x="3" y="5" width="18" height="14" rx="4" stroke="currentColor" stroke-width="1.6" />

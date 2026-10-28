@@ -1,6 +1,6 @@
 <div>
     <x-slot:title>
-        {{ data_get_str($server, 'name')->limit(10) }} > Delete Server | Coolify
+        {{ data_get_str($server, 'name')->limit(10) }} > {{ __('Delete Server') }} | Coolify
     </x-slot>
 
     <livewire:server.navbar :server="$server" />
@@ -11,52 +11,43 @@
 
         <div class="application-settings-form w-full">
             @if (! $server->is_coolify_host)
-                <x-application.settings-section id="server-danger-section" title="Delete server"
-                    helper="Permanently remove this server and its configuration from Coolify."
+                <x-application.settings-section id="server-danger-section" :title="__('Delete server')"
+                    :helper="__('Permanently remove this server and its configuration from Coolify.')"
                     class="server-danger-section">
-                    <x-danger-zone title="This action cannot be undone">
+                    <x-danger-zone :title="__('This action cannot be undone')">
                         <p>
-                        The server will be removed from Coolify.
+                        {{ __('The server will be removed from Coolify.') }}
                         @if ($server->isTransferredAway())
-                            This server was transferred to another Coolify instance. Only the records on this instance
-                            are deleted, also the records of its resources. The server, its containers, and its data
-                            stay as they are.
+                            {{ __('This server was transferred to another Coolify instance. Only the records on this instance are deleted, also the records of its resources. The server, its containers, and its data stay as they are.') }}
                         @elseif ($server->definedResources()->count() > 0)
-                            It currently contains managed resources. Enable force deletion in the confirmation only
-                            if those resources should also be removed.
+                            {{ __('It currently contains managed resources. Enable force deletion in the confirmation only if those resources should also be removed.') }}
                         @endif
                         @if ($server->hostinger_virtual_machine_id && ! $server->isTransferredAway())
-                            Hostinger deletes the VPS only at the end of its paid period, and only if you select this in the confirmation dialog.
+                            {{ __('Hostinger deletes the VPS only at the end of its paid period, and only if you select this in the confirmation dialog.') }}
                             <a class="underline" href="https://hpanel.hostinger.com/" target="_blank"
-                                rel="noopener noreferrer">Manage the VPS and billing in hPanel.</a>
+                                rel="noopener noreferrer">{{ __('Manage the VPS and billing in hPanel.') }}</a>
                         @endif
                         </p>
-                        <p>Type the server name in the confirmation dialog to continue.</p>
+                        <p>{{ __('Type the server name in the confirmation dialog to continue.') }}</p>
                         <x-slot:action>
                         @php
                             $deleteActions = $server->isTransferredAway()
-                                ? ['This server and the records of its resources will be permanently deleted from this Coolify instance. Nothing on the server changes.']
-                                : ['This server will be permanently deleted from Coolify.'];
+                                ? [__('This server and the records of its resources will be permanently deleted from this Coolify instance. Nothing on the server changes.')]
+                                : [__('This server will be permanently deleted from Coolify.')];
                             $deleteWarningMessage = null;
                             if ($server->isTransferredAway()) {
-                                $deleteWarningMessage = '<strong>This removes the option to undo the transfer.</strong><br>'
-                                    .'This archive is the copy that "Transfer back" and "Take back" use. '
-                                    .'Delete it only when the transfer works and you do not need to undo it.';
+                                $deleteWarningMessage = __('<strong>This removes the option to undo the transfer.</strong><br>This archive is the copy that "Transfer back" and "Take back" use. Delete it only when the transfer works and you do not need to undo it.');
                             }
                             if ($server->hostinger_virtual_machine_id && ! $server->isTransferredAway()) {
-                                $deleteWarningMessage = '<strong>Hostinger deletes a VPS only at the end of its paid period.</strong><br>'
-                                    .'If you select to delete the VPS from Hostinger, Coolify turns off its auto-renewal. '
-                                    .'The VPS keeps running until the paid period ends. Then Hostinger deletes it with all its data. '
-                                    .'To delete it now or to request a refund, '
-                                    .'<a class="underline font-semibold" href="https://hpanel.hostinger.com/" target="_blank" rel="noopener noreferrer">cancel the VPS in hPanel</a>.';
+                                $deleteWarningMessage = __('<strong>Hostinger deletes a VPS only at the end of its paid period.</strong><br>If you select to delete the VPS from Hostinger, Coolify turns off its auto-renewal. The VPS keeps running until the paid period ends. Then Hostinger deletes it with all its data. To delete it now or to request a refund, :link.', ['link' => '<a class="underline font-semibold" href="https://hpanel.hostinger.com/" target="_blank" rel="noopener noreferrer">'.e(__('cancel the VPS in hPanel')).'</a>']);
                             }
                         @endphp
-                        <x-modal-confirmation title="Confirm Server Deletion?" isErrorButton
-                            buttonTitle="Delete server" submitAction="delete"
+                        <x-modal-confirmation :title="__('Confirm Server Deletion?')" isErrorButton
+                            :buttonTitle="__('Delete server')" submitAction="delete"
                             :actions="$deleteActions" :warningMessage="$deleteWarningMessage"
                             :checkboxes="$checkboxes" confirmationText="{{ $server->name }}"
-                            confirmationLabel="Please confirm by entering the Server Name below"
-                            shortConfirmationLabel="Server Name" />
+                            :confirmationLabel="__('Please confirm by entering the Server Name below')"
+                            :shortConfirmationLabel="__('Server Name')" />
                         </x-slot:action>
                     </x-danger-zone>
                 </x-application.settings-section>

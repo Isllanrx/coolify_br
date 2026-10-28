@@ -9,130 +9,130 @@
 
         $configurationMenuItems = [
             [
-                'label' => 'General',
+                'label' => __('General'),
                 'route' => 'project.application.configuration',
                 'active' => $currentRoute === 'project.application.configuration',
             ],
             [
-                'label' => 'Domains',
+                'label' => __('Domains'),
                 'route' => 'project.application.domains',
                 'active' => $currentRoute === 'project.application.domains',
             ],
             [
-                'label' => 'Advanced',
+                'label' => __('Advanced'),
                 'route' => 'project.application.advanced',
                 'active' => $currentRoute === 'project.application.advanced',
             ],
             [
-                'label' => 'Swarm',
+                'label' => __('Swarm'),
                 'route' => 'project.application.swarm',
                 'active' => $currentRoute === 'project.application.swarm',
                 'visible' => $application->destination->server->isSwarm(),
             ],
             [
-                'label' => 'Environment Variables',
+                'label' => __('Environment Variables'),
                 'route' => 'project.application.environment-variables',
                 'active' => $currentRoute === 'project.application.environment-variables',
             ],
             [
-                'label' => 'Persistent Storage',
+                'label' => __('Persistent Storage'),
                 'route' => 'project.application.persistent-storage',
                 'active' => $currentRoute === 'project.application.persistent-storage',
             ],
             [
-                'label' => 'Backups',
+                'label' => __('Backups'),
                 'route' => 'project.application.backup.index',
                 'active' => str($currentRoute)->startsWith('project.application.backup'),
             ],
             [
-                'label' => 'Terminal',
+                'label' => __('Terminal'),
                 'route' => 'project.application.command',
                 'active' => $currentRoute === 'project.application.command',
                 'navigate' => false,
                 'visible' => ! $application->destination->server->isSwarm() && auth()->user()?->can('canAccessTerminal'),
             ],
             [
-                'label' => 'Files',
+                'label' => __('Files'),
                 'route' => 'project.application.files',
                 'active' => $currentRoute === 'project.application.files',
                 'visible' => ! $application->destination->server->isSwarm() && auth()->user()?->can('canAccessTerminal'),
             ],
             [
-                'label' => 'Deployment Logs',
+                'label' => __('Deployment Logs'),
                 'route' => 'project.application.deployment.index',
                 'active' => str($currentRoute)->startsWith('project.application.deployment'),
             ],
             [
-                'label' => 'Runtime Logs',
+                'label' => __('Runtime Logs'),
                 'route' => 'project.application.logs',
                 'active' => $currentRoute === 'project.application.logs',
             ],
             [
-                'label' => 'Git Source',
+                'label' => __('Git Source'),
                 'route' => 'project.application.source',
                 'active' => $currentRoute === 'project.application.source',
                 'visible' => $application->git_based(),
             ],
             [
-                'label' => 'Servers',
+                'label' => __('Servers'),
                 'route' => 'project.application.servers',
                 'active' => $currentRoute === 'project.application.servers',
                 'badge' => true,
             ],
             [
-                'label' => 'Scheduled Tasks',
+                'label' => __('Scheduled Tasks'),
                 'route' => 'project.application.scheduled-tasks.show',
                 'active' => str($currentRoute)->startsWith('project.application.scheduled-tasks'),
             ],
             [
-                'label' => 'Webhooks',
+                'label' => __('Webhooks'),
                 'route' => 'project.application.webhooks',
                 'active' => $currentRoute === 'project.application.webhooks',
             ],
             [
-                'label' => 'Preview Deployments',
+                'label' => __('Preview Deployments'),
                 'route' => 'project.application.preview-deployments',
                 'active' => $currentRoute === 'project.application.preview-deployments',
                 'visible' => $application->git_based() || $application->build_pack === 'dockerimage',
             ],
             [
-                'label' => 'Healthcheck',
+                'label' => __('Healthcheck'),
                 'route' => 'project.application.healthcheck',
                 'active' => $currentRoute === 'project.application.healthcheck',
                 'visible' => $application->build_pack !== 'dockercompose',
             ],
             [
-                'label' => 'Rollback',
+                'label' => __('Rollback'),
                 'route' => 'project.application.rollback',
                 'active' => $currentRoute === 'project.application.rollback',
             ],
             [
-                'label' => 'Resource Limits',
+                'label' => __('Resource Limits'),
                 'route' => 'project.application.resource-limits',
                 'active' => $currentRoute === 'project.application.resource-limits',
             ],
             [
-                'label' => 'Resource Operations',
+                'label' => __('Resource Operations'),
                 'route' => 'project.application.resource-operations',
                 'active' => $currentRoute === 'project.application.resource-operations',
             ],
             [
-                'label' => 'Metrics',
+                'label' => __('Metrics'),
                 'route' => 'project.application.metrics',
                 'active' => $currentRoute === 'project.application.metrics',
             ],
             [
-                'label' => 'Analytics',
+                'label' => __('Analytics'),
                 'route' => 'project.application.analytics',
                 'active' => $currentRoute === 'project.application.analytics',
             ],
             [
-                'label' => 'Tags',
+                'label' => __('Tags'),
                 'route' => 'project.application.tags',
                 'active' => $currentRoute === 'project.application.tags',
             ],
             [
-                'label' => 'Danger Zone',
+                'label' => __('Danger Zone'),
                 'route' => 'project.application.danger',
                 'active' => $currentRoute === 'project.application.danger',
             ],
@@ -145,40 +145,40 @@
 
         // Icons follow the main sidebar's reicon set
         $menuIcons = [
-            'General' => 'settings',
-            'Domains' => 'globe',
-            'Advanced' => 'grid',
-            'Swarm' => 'destinations',
-            'Environment Variables' => 'variables',
-            'Persistent Storage' => 'storages',
-            'Backups' => 'database',
-            'Terminal' => 'browser-terminal',
-            'Files' => 'folder',
-            'Deployment Logs' => 'time-back',
-            'Runtime Logs' => 'unordered-list',
-            'Git Source' => 'sources',
-            'Servers' => 'servers',
-            'Scheduled Tasks' => 'calendar',
-            'Webhooks' => 'webhook',
-            'Preview Deployments' => 'eye',
-            'Healthcheck' => 'feedback',
-            'Rollback' => 'time-back',
-            'Resource Limits' => 'cpu',
-            'Resource Operations' => 'server-update',
-            'Metrics' => 'graph',
-            'Analytics' => 'analytics',
-            'Tags' => 'tags',
-            'Danger Zone' => 'danger',
+            __('General') => 'settings',
+            __('Domains') => 'globe',
+            __('Advanced') => 'grid',
+            __('Swarm') => 'destinations',
+            __('Environment Variables') => 'variables',
+            __('Persistent Storage') => 'storages',
+            __('Backups') => 'database',
+            __('Terminal') => 'browser-terminal',
+            __('Files') => 'folder',
+            __('Deployment Logs') => 'time-back',
+            __('Runtime Logs') => 'unordered-list',
+            __('Git Source') => 'sources',
+            __('Servers') => 'servers',
+            __('Scheduled Tasks') => 'calendar',
+            __('Webhooks') => 'webhook',
+            __('Preview Deployments') => 'eye',
+            __('Healthcheck') => 'feedback',
+            __('Rollback') => 'time-back',
+            __('Resource Limits') => 'cpu',
+            __('Resource Operations') => 'server-update',
+            __('Metrics') => 'graph',
+            __('Analytics') => 'analytics',
+            __('Tags') => 'tags',
+            __('Danger Zone') => 'danger',
         ];
 
         // Discord-style groups for the settings sidebar
         $menuGroups = [
-            'Settings' => ['General', 'Domains', 'Environment Variables', 'Persistent Storage', 'Advanced', 'Swarm', 'Healthcheck'],
-            'Observe & troubleshoot' => ['Runtime Logs', 'Deployment Logs', 'Terminal', 'Files', 'Metrics', 'Analytics'],
-            'Deploy' => ['Git Source', 'Servers', 'Preview Deployments'],
-            'Automation' => ['Scheduled Tasks', 'Webhooks', 'Backups'],
-            'Operations' => ['Resource Operations', 'Resource Limits', 'Rollback', 'Tags'],
-            'Danger Zone' => ['Danger Zone'],
+            __('Settings') => [__('General'), __('Domains'), __('Environment Variables'), __('Persistent Storage'), __('Advanced'), __('Swarm'), __('Healthcheck')],
+            __('Observe & troubleshoot') => [__('Runtime Logs'), __('Deployment Logs'), __('Terminal'), __('Files'), __('Metrics'), __('Analytics')],
+            __('Deploy') => [__('Git Source'), __('Servers'), __('Preview Deployments')],
+            __('Automation') => [__('Scheduled Tasks'), __('Webhooks'), __('Backups')],
+            __('Operations') => [__('Resource Operations'), __('Resource Limits'), __('Rollback'), __('Tags')],
+            __('Danger Zone') => [__('Danger Zone')],
         ];
         $groupedMenuItems = collect($menuGroups)
             ->map(fn (array $labels) => collect($labels)
@@ -191,34 +191,34 @@
         $isComposeApp = $application->build_pack === 'dockercompose';
         $pageSections = [
             'project.application.configuration' => array_values(array_filter([
-                ['id' => 'application-details-section', 'label' => 'Application details'],
-                ['id' => 'access-section', 'label' => 'Access'],
-                ['id' => 'build-pipeline-section', 'label' => 'Build & deploy'],
-                $isComposeApp ? null : ['id' => 'container-section', 'label' => 'Container'],
+                ['id' => 'application-details-section', 'label' => __('Application details')],
+                ['id' => 'access-section', 'label' => __('Access')],
+                ['id' => 'build-pipeline-section', 'label' => __('Build & deploy')],
+                $isComposeApp ? null : ['id' => 'container-section', 'label' => __('Container')],
             ])),
             'project.application.advanced' => [
-                ['id' => 'advanced-build-section', 'label' => 'Build & deploy'],
-                ['id' => 'advanced-container-section', 'label' => 'Container'],
-                ['id' => 'advanced-proxy-section', 'label' => 'Proxy'],
+                ['id' => 'advanced-build-section', 'label' => __('Build & deploy')],
+                ['id' => 'advanced-container-section', 'label' => __('Container')],
+                ['id' => 'advanced-proxy-section', 'label' => __('Proxy')],
             ],
             'project.application.webhooks' => [
-                ['id' => 'deploy-webhook-section', 'label' => 'Deploy webhook'],
-                ['id' => 'manual-git-webhooks-section', 'label' => 'Manual Git webhooks'],
+                ['id' => 'deploy-webhook-section', 'label' => __('Deploy webhook')],
+                ['id' => 'manual-git-webhooks-section', 'label' => __('Manual Git webhooks')],
             ],
             'project.application.preview-deployments' => array_values(array_filter([
-                ['id' => 'preview-template-section', 'label' => 'URL template'],
+                ['id' => 'preview-template-section', 'label' => __('URL template')],
                 $application->build_pack === 'dockerimage'
-                    ? ['id' => 'manual-preview-section', 'label' => 'Manual preview']
+                    ? ['id' => 'manual-preview-section', 'label' => __('Manual preview')]
                     : null,
-                ['id' => 'preview-deployments-section', 'label' => 'Deployments'],
+                ['id' => 'preview-deployments-section', 'label' => __('Deployments')],
             ])),
             'project.application.healthcheck' => [
-                ['id' => 'healthcheck-configuration-section', 'label' => 'Configuration'],
-                ['id' => 'healthcheck-timing-section', 'label' => 'Timing and retries'],
+                ['id' => 'healthcheck-configuration-section', 'label' => __('Configuration')],
+                ['id' => 'healthcheck-timing-section', 'label' => __('Timing and retries')],
             ],
             'project.application.resource-operations' => [
-                ['id' => 'clone-resource-section', 'label' => 'Clone resource'],
-                ['id' => 'move-resource-section', 'label' => 'Move resource'],
+                ['id' => 'clone-resource-section', 'label' => __('Clone resource')],
+                ['id' => 'move-resource-section', 'label' => __('Move resource')],
             ],
         ];
 
@@ -228,7 +228,7 @@
 
 @php
     // The main sidebar and the mobile drawer show this menu (see components/navbar.blade.php).
-    registerMainNavContext(0, 'Dashboard', 'Back to the main menu');
+    registerMainNavContext(0, __('Dashboard'), __('Back to the main menu'));
 @endphp
 
 {{-- Rendered twice: in the page (CSS hides it; it keeps the command palette items), and teleported into the main sidebar.
@@ -243,7 +243,7 @@
     'is-flush' => $flush,
 ]) data-settings-search-items="{{ json_encode($settingsSearchItems) }}">
 @endif
-                <nav aria-label="Configuration sections"
+                <nav aria-label="{{ __('Configuration sections') }}"
                     class="grid grid-cols-1 gap-0.5">
                     @foreach ($groupedMenuItems as $groupLabel => $groupItems)
                         @unless ($loop->first)
@@ -263,7 +263,7 @@
                                     >
                                     <x-reicon :name="$menuIcons[$menuItem['label']] ?? 'settings'" class="menu-item-icon" />
                                     <span class="menu-item-label">{{ $menuItem['label'] }}</span>
-                                    @if ($menuItem['label'] === 'Files')
+                                    @if ($menuItem['label'] === __('Files'))
                                         <x-beta-badge class="ml-auto shrink-0" />
                                     @endif
                                     @if ($menuItem['badge'] ?? false)

@@ -5,8 +5,8 @@
     'helper' => null,
     'required' => false,
     'options' => [], // list of ['value' => ..., 'label' => ..., 'description' => ?string, 'disabled' => bool, 'dot' => ?string, 'state' => ?string]
-    'placeholder' => 'Select…',
-    'emptyText' => 'No options available.',
+    'placeholder' => __('Select…'),
+    'emptyText' => __('No options available.'),
     'live' => false,
     'onChange' => null, // optional $wire method to call after a selection
     'onChangeArgs' => null, // optional arguments followed by the selected value
@@ -22,7 +22,7 @@
     'multiple' => false, // true = the bound value is an array of option values
     'searchable' => false, // true = a search field filters the options
     'searchPlaceholder' => 'Search…',
-    'searchEmptyText' => 'No matching options',
+    'searchEmptyText' => __('No matching options'),
     'allowCustom' => false, // true (with searchable) = the search text can be chosen as a custom value
 ])
 
@@ -318,7 +318,7 @@
                     <template x-if="customOption">
                         <button type="button" class="listbox-option" role="option" aria-selected="false"
                             @click="choose(customOption)">
-                            <span class="truncate">Use <span class="font-mono" x-text="customOption.label"></span></span>
+                            <span class="truncate">{{ __('Use') }} <span class="font-mono" x-text="customOption.label"></span></span>
                         </button>
                     </template>
                 @endif

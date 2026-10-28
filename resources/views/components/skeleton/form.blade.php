@@ -1,6 +1,6 @@
 @props([
     'fields' => 4,
-    'label' => 'Loading',
+    'label' => __('Loading'),
 ])
 
 {{-- Form skeleton: a label and an input per field, two columns on wide screens. --}}

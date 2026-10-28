@@ -1,6 +1,6 @@
 <div class="application-settings-form w-full">
     <x-slot:title>
-        Dashboard | Coolify
+        {{ __('Dashboard') }} | Coolify
     </x-slot>
 
     @if (session('error'))
@@ -30,12 +30,12 @@
             $sentinelNeedsAttention = $server->isSentinelEnabled() && $server->sentinelStatus() === 'out_of_sync';
 
             return [$server->id => match (true) {
-                $server->settings->force_disabled => ['Disabled', 'error'],
-                ! $server->settings->is_reachable && ! $server->settings->is_usable => ['Unavailable', 'error'],
-                ! $server->settings->is_reachable => ['Unreachable', 'error'],
-                ! $server->settings->is_usable => ['Not ready', 'warning'],
-                $proxyNeedsAttention || $sentinelNeedsAttention => ['Attention required', 'warning'],
-                default => ['Ready', 'success'],
+                $server->settings->force_disabled => [__('Disabled'), 'error'],
+                ! $server->settings->is_reachable && ! $server->settings->is_usable => [__('Unavailable'), 'error'],
+                ! $server->settings->is_reachable => [__('Unreachable'), 'error'],
+                ! $server->settings->is_usable => [__('Not ready'), 'warning'],
+                $proxyNeedsAttention || $sentinelNeedsAttention => [__('Attention required'), 'warning'],
+                default => [__('Ready'), 'success'],
             }];
         });
         $iconButton = 'card-icon-button flex size-6.5 items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-black';
@@ -50,13 +50,13 @@
         @if ($pendingInvitations->isNotEmpty())
             <div class="flex min-w-0 flex-col gap-2">
                 @foreach ($pendingInvitations as $invitation)
-                    <x-callout type="info" title="Pending team invitation"
+                    <x-callout type="info" :title="__('Pending team invitation')"
                         wire:key="dashboard-invitation-{{ $invitation->uuid }}">
                         <div class="flex min-w-0 flex-wrap items-center justify-between gap-2">
-                            <span class="min-w-0">Team <span class="font-semibold">{{ $invitation->team->name }}</span>
-                                invited you as {{ ucfirst($invitation->role) }}.</span>
+                            <span class="min-w-0">{{ __('Team') }} <span class="font-semibold">{{ $invitation->team->name }}</span>
+                                {{ __('invited you as') }} {{ ucfirst($invitation->role) }}.</span>
                             <a href="{{ route('team.invitation.show', $invitation->uuid) }}" class="button shrink-0">
-                                Review invitation
+                                {{ __('Review invitation') }}
                             </a>
                         </div>
                     </x-callout>
@@ -83,15 +83,15 @@
                 $wire.saveListView('dashboard_projects', mode);
             }
         }">
-            <x-section-heading title="Projects"
+            <x-section-heading :title="__('Projects')"
                 :href="$projects->count() > $dashboardItemLimit ? route('project.index') : null">
                 {{-- Projects has no sidebar entry, so the dashboard is where new projects start. --}}
                 @can('createAnyResource')
                     <x-slot:titleAction>
-                        <x-modal-input title="New Project">
+                        <x-modal-input :title="__('New Project')">
                             <x-slot:content>
-                                <button type="button" class="{{ $titleIconButton }}" title="New project"
-                                    aria-label="New project">
+                                <button type="button" class="{{ $titleIconButton }}" title="{{ __('New project') }}"
+                                    aria-label="{{ __('New project') }}">
                                     <x-reicon name="plus" class="size-3" />
                                 </button>
                             </x-slot:content>
@@ -107,8 +107,8 @@
             </x-section-heading>
 
             @if ($dashboardProjects->isEmpty())
-                <x-empty title="No projects yet"
-                    description="Create your first deployment workspace."
+                <x-empty :title="__('No projects yet')"
+                    :description="__('Create your first deployment workspace.')"
                     icon-name="projects" size="sm" />
             @else
                 <div x-cloak x-show="viewMode === 'grid'"
@@ -123,14 +123,14 @@
                             class="group relative flex min-h-28 min-w-0 flex-col rounded-xl border border-neutral-200 bg-white p-3 shadow-sm transition-all hover:-translate-y-px hover:border-neutral-300 hover:shadow-md dark:border-white/[0.08] dark:bg-white/[0.05] dark:hover:border-white/[0.14]">
                             <a href="{{ $project->navigateTo() }}" {{ wireNavigate() }}
                                 class="absolute inset-0 rounded-xl"
-                                aria-label="Open {{ $project->name }}"></a>
+                                aria-label="{{ __('Open :name', ['name' => $project->name]) }}"></a>
 
                             <div class="flex min-w-0 items-start gap-3">
                                 <div
                                     class="resource-glyph flex size-8 shrink-0 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-500">
                                     @if ($project->icon_path)
                                         <img src="{{ project_icon_url($project) }}"
-                                            alt="{{ $project->name }} icon"
+                                            alt="{{ __(':name icon', ['name' => $project->name]) }}"
                                             class="h-full w-full rounded-lg object-cover">
                                     @else
                                         <x-reicon name="projects" class="size-4" />
@@ -167,8 +167,8 @@
                                             ]) }}"
                                                 {{ wireNavigate() }}
                                                 class="{{ $iconButton }}"
-                                                title="Add resource"
-                                                aria-label="Add resource to {{ $project->name }}">
+                                                title="{{ __('Add resource') }}"
+                                                aria-label="{{ __('Add resource to :name', ['name' => $project->name]) }}">
                                                 <x-reicon name="plus" class="size-3" />
                                             </a>
                                         @endcan
@@ -177,8 +177,8 @@
                                         <a href="{{ route('project.edit', ['project_uuid' => $project->uuid]) }}"
                                             {{ wireNavigate() }}
                                             class="{{ $iconButton }}"
-                                            title="Project settings"
-                                            aria-label="Open settings for {{ $project->name }}">
+                                            title="{{ __('Project settings') }}"
+                                            aria-label="{{ __('Open settings for :name', ['name' => $project->name]) }}">
                                             <x-reicon name="settings" class="size-3" />
                                         </a>
                                     @endcan
@@ -190,9 +190,9 @@
 
                 <div x-show="viewMode === 'table'" class="{{ $tableShell }}">
                     <div class="grid grid-cols-[minmax(0,1fr)_7rem_4rem] gap-4 @2xl:min-w-[560px] @2xl:grid-cols-[minmax(0,1.2fr)_7rem_minmax(0,1.5fr)_4rem] {{ $tableHead }}">
-                        <div>Project</div>
-                        <div>Contents</div>
-                        <div class="hidden @2xl:block">Description</div>
+                        <div>{{ __('Project') }}</div>
+                        <div>{{ __('Contents') }}</div>
+                        <div class="hidden @2xl:block">{{ __('Description') }}</div>
                         <div></div>
                     </div>
                     @foreach ($dashboardProjects as $project)
@@ -202,12 +202,12 @@
                         <div wire:key="dashboard-project-row-{{ $project->uuid }}"
                             class="relative grid grid-cols-[minmax(0,1fr)_7rem_4rem] gap-4 @2xl:min-w-[560px] @2xl:grid-cols-[minmax(0,1.2fr)_7rem_minmax(0,1.5fr)_4rem] {{ $tableRow }}">
                             <a href="{{ $project->navigateTo() }}" {{ wireNavigate() }}
-                                class="absolute inset-0" aria-label="Open {{ $project->name }}"></a>
+                                class="absolute inset-0" aria-label="{{ __('Open :name', ['name' => $project->name]) }}"></a>
                             <div class="flex min-w-0 items-center gap-3">
                                 <div
                                     class="resource-glyph flex size-8 shrink-0 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-500">
                                     @if ($project->icon_path)
-                                        <img src="{{ project_icon_url($project) }}" alt="{{ $project->name }} icon"
+                                        <img src="{{ project_icon_url($project) }}" alt="{{ __(':name icon', ['name' => $project->name]) }}"
                                             class="h-full w-full rounded-lg object-cover">
                                     @else
                                         <x-reicon name="projects" class="size-4" />
@@ -218,13 +218,13 @@
                                 </p>
                             </div>
                             <div class="relative z-10 flex w-fit items-center gap-3 font-medium text-neutral-600 dark:text-fg-dim">
-                                <span class="inline-flex items-center gap-1" data-tooltip="Environments"
-                                    aria-label="Environments">
+                                <span class="inline-flex items-center gap-1" data-tooltip="{{ __('Environments') }}"
+                                    aria-label="{{ __('Environments') }}">
                                     <x-reicon name="layers" class="size-3.5 text-neutral-400 dark:text-fg-faint" />
                                     {{ $project->environments->count() }}
                                 </span>
-                                <span class="inline-flex items-center gap-1" data-tooltip="Resources"
-                                    aria-label="Resources">
+                                <span class="inline-flex items-center gap-1" data-tooltip="{{ __('Resources') }}"
+                                    aria-label="{{ __('Resources') }}">
                                     <x-reicon name="grid" class="size-3.5 text-neutral-400 dark:text-fg-faint" />
                                     {{ $projectResourceCounts[$project->id] }}
                                 </span>
@@ -239,16 +239,16 @@
                                             'project_uuid' => $project->uuid,
                                             'environment_uuid' => $firstEnvironment->uuid,
                                         ]) }}"
-                                            {{ wireNavigate() }} class="{{ $iconButton }}" title="Add resource"
-                                            aria-label="Add resource to {{ $project->name }}">
+                                            {{ wireNavigate() }} class="{{ $iconButton }}" title="{{ __('Add resource') }}"
+                                            aria-label="{{ __('Add resource to :name', ['name' => $project->name]) }}">
                                             <x-reicon name="plus" class="size-3" />
                                         </a>
                                     @endcan
                                 @endif
                                 @can('update', $project)
                                     <a href="{{ route('project.edit', ['project_uuid' => $project->uuid]) }}"
-                                        {{ wireNavigate() }} class="{{ $iconButton }}" title="Project settings"
-                                        aria-label="Open settings for {{ $project->name }}">
+                                        {{ wireNavigate() }} class="{{ $iconButton }}" title="{{ __('Project settings') }}"
+                                        aria-label="{{ __('Open settings for :name', ['name' => $project->name]) }}">
                                         <x-reicon name="settings" class="size-3" />
                                     </a>
                                 @endcan
@@ -266,12 +266,12 @@
                 $wire.saveListView('dashboard_servers', mode);
             }
         }">
-            <x-section-heading title="Servers"
+            <x-section-heading :title="__('Servers')"
                 :href="$servers->count() > $dashboardItemLimit ? route('server.index') : null">
                 @can('createAnyResource')
                     <x-slot:titleAction>
                         <a href="{{ route('server.create') }}" {{ wireNavigate() }} class="{{ $titleIconButton }}"
-                            title="New server" aria-label="New server">
+                            title="{{ __('New server') }}" aria-label="{{ __('New server') }}">
                             <x-reicon name="plus" class="size-3" />
                         </a>
                     </x-slot:titleAction>
@@ -285,29 +285,29 @@
 
             @if ($dashboardServers->isEmpty())
                 @if ($privateKeys->isEmpty())
-                    <x-empty title="A private key is required"
-                        description="Add an SSH private key before connecting your first server."
+                    <x-empty :title="__('A private key is required')"
+                        :description="__('Add an SSH private key before connecting your first server.')"
                         icon-name="keys" size="sm">
                         @can('create', App\Models\PrivateKey::class)
                             <x-slot:contents>
                                 <a href="{{ route('security.private-key.index') }}" {{ wireNavigate() }}
                                     class="button button-highlighted">
                                     <x-reicon name="plus" class="size-3.5" />
-                                    Add private key
+                                    {{ __('Add private key') }}
                                 </a>
                             </x-slot:contents>
                         @endcan
                     </x-empty>
                 @else
-                    <x-empty title="No servers yet"
-                        description="Connect infrastructure for your deployments."
+                    <x-empty :title="__('No servers yet')"
+                        :description="__('Connect infrastructure for your deployments.')"
                         icon-name="servers" size="sm">
                         @can('createAnyResource')
                             <x-slot:contents>
                                 <a href="{{ route('server.create') }}" {{ wireNavigate() }}
                                     class="button button-highlighted">
                                     <x-reicon name="plus" class="size-3.5" />
-                                    New server
+                                    {{ __('New server') }}
                                 </a>
                             </x-slot:contents>
                         @endcan
@@ -322,7 +322,7 @@
                         @endphp
 
                         <a href="{{ route('server.show', ['server_uuid' => $server->uuid]) }}"
-                            {{ wireNavigate() }} aria-label="Open {{ $server->name }}"
+                            {{ wireNavigate() }} aria-label="{{ __('Open :name', ['name' => $server->name]) }}"
                             class="group relative flex min-h-28 min-w-0 flex-col rounded-xl border border-neutral-200 bg-white p-3 shadow-sm transition-all hover:-translate-y-px hover:border-neutral-300 hover:shadow-md dark:border-white/[0.08] dark:bg-white/[0.05] dark:hover:border-white/[0.14]">
                             @if ($server->isMetricsEnabled())
                                 <livewire:dashboard.server-metrics-chart :server="$server"
@@ -347,7 +347,7 @@
                                 </div>
                                 @if ($serverStatusType !== 'success')
                                     <span data-tooltip="{{ $serverStatus }}"
-                                        aria-label="Server status: {{ $serverStatus }}"
+                                        aria-label="{{ __('Server status: :status', ['status' => $serverStatus]) }}"
                                         @class([
                                             'flex size-6 shrink-0 items-center justify-center rounded-md',
                                             'text-orange-500 dark:text-warning' => $serverStatusType === 'warning',
@@ -369,12 +369,12 @@
                 @endphp
                 <div x-show="viewMode === 'table'" class="{{ $tableShell }}">
                     <div class="grid {{ $serverTableColumns }} gap-4 @2xl:min-w-[480px] {{ $tableHead }}">
-                        <div>Server</div>
-                        <div class="hidden @2xl:block">Description</div>
+                        <div>{{ __('Server') }}</div>
+                        <div class="hidden @2xl:block">{{ __('Description') }}</div>
                         @if ($showServerUsage)
-                            <div class="hidden @xl:block">Usage</div>
+                            <div class="hidden @xl:block">{{ __('Usage') }}</div>
                         @endif
-                        <div>Status</div>
+                        <div>{{ __('Status') }}</div>
                     </div>
                     @foreach ($dashboardServers as $server)
                         @php

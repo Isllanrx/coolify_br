@@ -1,15 +1,15 @@
 <x-emails.layout>
 {{ $summary }}
 
-Frequency: {{ $frequency }}
+{{ __('Frequency: :value', ['value' => $frequency]) }}
 
 @isset($output)
-### Reason
+### {{ __('Reason') }}
 
 {{ $output }}
 @endisset
 
 @if ($url)
-Click [here]({{ $url }}) to open the resource.
+{{ __('Click [here](:url) to open the resource.', ['url' => $url]) }}
 @endif
 </x-emails.layout>
