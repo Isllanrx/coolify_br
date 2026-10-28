@@ -17,8 +17,11 @@
             <x-forms.input canGate="update" :canResource="$storage" :label="__('Description')" id="description" />
             <div class="lg:col-span-2">
                 @can('update', $storage)
-                    <x-forms.domain-input id="endpointParts" errorId="endpoint" host-label="Host"
-                        host-placeholder="minio.internal or 192.168.1.50" />
+                    {{-- Sends the endpoint right away, so the URL style below follows the provider. --}}
+                    <div x-on:change="$wire.$commit()">
+                        <x-forms.domain-input id="endpointParts" errorId="endpoint" host-label="Host"
+                            host-placeholder="minio.internal or 192.168.1.50" />
+                    </div>
                 @else
                     <x-forms.input :label="__('Endpoint')" :value="$endpoint" disabled />
                 @endcan
@@ -34,6 +37,9 @@
                 <x-forms.input canGate="update" :canResource="$storage" required type="password"
                     :label="__('Secret key')" id="secret" />
             @endif
+            <x-forms.checkbox canGate="update" :canResource="$storage" id="usePathStyleEndpoint"
+                :label="__('Use path-style URLs')"
+                :helper="__('Turn this off for providers that only accept virtual-hosted-style URLs (bucket.endpoint). Coolify turns it off for Alibaba Cloud OSS, Tencent Cloud COS, and Volcengine TOS, and when the provider rejects path-style URLs.')" />
         </div>
     </x-application.settings-section>
 </form>

@@ -89,11 +89,15 @@
 
         <x-application.settings-section id="container-section" :title="__('Container')"
             :description="__('Docker options, configuration, and log forwarding for the database container.')">
-            <x-forms.input
-                :helper="__('Add supported docker run options used when the container starts. Unsupported options can interfere with Coolify automation.')"
-                placeholder="--cap-add SYS_ADMIN --device=/dev/fuse"
-                id="customDockerRunOptions" :label="__('Custom Docker options')" canGate="update"
-                :canResource="$database" />
+            @if ($isPasswordHiddenForMember)
+                <x-forms.input :label="__('Custom Docker options')" disabled value="Hidden (only admins can view)" />
+            @else
+                <x-forms.input
+                    :helper="__('Add supported docker run options used when the container starts. Unsupported options can interfere with Coolify automation.')"
+                    placeholder="--cap-add SYS_ADMIN --device=/dev/fuse"
+                    id="customDockerRunOptions" :label="__('Custom Docker options')" canGate="update"
+                    :canResource="$database" />
+            @endif
             <x-application.settings-subsection id="configuration-section" :title="__('Configuration')" :helper="__('Override only the Redis directives you need. All other defaults remain active.')">
                 @if ($isPasswordHiddenForMember)
                     <x-forms.input :label="__('Custom Redis configuration')" disabled value="Hidden (only admins can view)" />

@@ -68,7 +68,9 @@
             <form wire:submit.prevent='submit' class="flex w-full flex-col gap-4">
                 @can('manageEnvironment', $resource)
                     <x-callout type="info" :title="__('Note')">
-                        {!! __('Inline comments with space before # (e.g., :example) are stripped.', ['example' => '<code class="font-mono">KEY=value #comment</code>']) !!}
+                        {{ __('Inline comments with space before # (e.g.,') }} <code class="font-mono">KEY=value #comment</code>) are stripped.
+                        To set flags, put <code class="font-mono"># coolify: literal buildtime=false runtime=false</code>
+                        {{ __('directly above a variable line. Without this line, the flags of a variable do not change.') }}
                     </x-callout>
                     <x-forms.textarea rows="10" class="whitespace-pre-wrap font-sans" id="variables"
                         wire:model="variables" :label="__('Production')"></x-forms.textarea>

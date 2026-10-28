@@ -98,11 +98,15 @@
 
         <x-application.settings-section id="container-section" :title="__('Container')"
             :description="__('Docker options and log forwarding for the database container.')">
-            <x-forms.input
-                :helper="__('Add supported docker run options used when the container starts. Unsupported options can interfere with Coolify automation.')"
-                placeholder="--cap-add SYS_ADMIN --device=/dev/fuse"
-                id="customDockerRunOptions" :label="__('Custom Docker options')" canGate="update"
-                :canResource="$database" />
+            @if ($isPasswordHiddenForMember)
+                <x-forms.input :label="__('Custom Docker options')" disabled value="Hidden (only admins can view)" />
+            @else
+                <x-forms.input
+                    :helper="__('Add supported docker run options used when the container starts. Unsupported options can interfere with Coolify automation.')"
+                    placeholder="--cap-add SYS_ADMIN --device=/dev/fuse"
+                    id="customDockerRunOptions" :label="__('Custom Docker options')" canGate="update"
+                    :canResource="$database" />
+            @endif
             <x-application.settings-subsection id="log-delivery-section" :title="__('Log delivery')" :helper="__('Forward container logs to the drain configured on the server.')">
                 <x-forms.listbox canGate="update" :canResource="$database" id="isLogDrainEnabled" :label="__('Log drain')" live onChange="instantSaveAdvanced"
                     :disabled="! auth()->user()->can('update', $database)" :options="[

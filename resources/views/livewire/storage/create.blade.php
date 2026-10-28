@@ -6,8 +6,11 @@
                 <x-forms.input required :label="__('Name')" id="name" />
                 <x-forms.input :label="__('Description')" id="description" />
             </div>
-            <x-forms.domain-input id="endpointParts" errorId="endpoint" host-label="Host"
-                host-placeholder="minio.internal or 192.168.1.50" />
+            {{-- Sends the endpoint right away, so the URL style below follows the provider. --}}
+            <div x-on:change="$wire.$commit()">
+                <x-forms.domain-input id="endpointParts" errorId="endpoint" host-label="Host"
+                    host-placeholder="minio.internal or 192.168.1.50" />
+            </div>
             <div class="flex gap-2">
                 <x-forms.input required :label="__('Bucket')" id="bucket" />
                 <x-forms.input required :helper="__('Region only required for AWS. Leave it as-is for other providers.')"
@@ -16,6 +19,10 @@
             <div class="flex gap-2">
                 <x-forms.input required type="password" :label="__('Access Key')" id="key" />
                 <x-forms.input required type="password" :label="__('Secret Key')" id="secret" />
+            </div>
+            <div class="w-64">
+                <x-forms.checkbox id="usePathStyleEndpoint" :label="__('Use path-style URLs')"
+                    :helper="__('Turn this off for providers that only accept virtual-hosted-style URLs (bucket.endpoint). Coolify turns it off for Alibaba Cloud OSS, Tencent Cloud COS, and Volcengine TOS, and when the provider rejects path-style URLs.')" />
             </div>
 
             <x-forms.button class="mt-4" type="submit" wire:target="submit">

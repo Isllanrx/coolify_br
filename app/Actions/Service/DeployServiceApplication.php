@@ -3,6 +3,7 @@
 namespace App\Actions\Service;
 
 use App\Actions\Shared\EnsureContentFilesOnServer;
+use App\Events\ServiceStartFinished;
 use App\Models\ServiceApplication;
 use App\Models\ServiceDatabase;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -20,6 +21,7 @@ class DeployServiceApplication
         $composeServiceName = $serviceApplication->name;
 
         $service->parse();
+        StartService::queueFileStorageSync($service);
         $service->saveComposeConfigs();
         $service->isConfigurationChanged(save: true);
 
@@ -71,6 +73,6 @@ class DeployServiceApplication
 
         $commands->push("docker network connect {$safeProjectName} coolify-proxy >/dev/null 2>&1 || true");
 
-        return remote_process($commands->toArray(), $service->server, type_uuid: $service->uuid, callEventOnFinish: 'ServiceStartFinished', callEventData: $service->id, queue: deployment_queue());
+        return remote_process($commands->toArray(), $service->server, type_uuid: $service->uuid, callEventOnFinish: 'ServiceStartFinished', callEventData: ServiceStartFinished::dataFor($service), queue: deployment_queue());
     }
 }

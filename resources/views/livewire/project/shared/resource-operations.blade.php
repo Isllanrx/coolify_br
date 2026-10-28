@@ -1,4 +1,5 @@
-<div x-on:migrate-resource-confirmed.window="$wire.migrateTo(selectedMigrateDestination)" x-data="{
+<div x-on:migrate-resource-confirmed.window="$wire.migrateTo(selectedMigrateDestination)"
+    x-on:clone-resource-confirmed.window="$wire.cloneTo(selectedCloneDestination, selectedCloneEnvironment)" x-data="{
     selectedCloneServer: null,
     selectedCloneDestination: null,
     selectedCloneProject: null,
@@ -153,8 +154,8 @@
     @can('update', $resource)
         <x-application.settings-section id="clone-resource-section" :title="__('Clone resource')"
             :helper="__('Create a copy of this resource. Choose where it runs and where it belongs. The current values are selected by default.')">
-            <x-callout type="info" :title="__('Configuration only')">
-                {{ __('Cloning copies settings, environment variables, and resource configuration. Stored files, database records, and other persistent data are not copied.') }}
+            <x-callout type="info" :title="__('What is copied')">
+                {{ __('Cloning copies settings, environment variables, and resource configuration. Stored files, database records, and other persistent data are copied only when you select Clone volume data.') }}
             </x-callout>
 
             <div class="mt-4 grid gap-4 md:grid-cols-2">
@@ -178,15 +179,41 @@
                     :placeholder="__('Choose an environment…')" />
             </div>
 
+            <div class="mt-4">
+                <x-forms.checkbox id="cloneVolumeData" live :label="__('Clone volume data')"
+                    :helper="__('Copies the data of the persistent volumes to the clone. A running source resource is stopped while the data is copied and started again afterwards.')" />
+            </div>
+
             <div
                 class="mt-4 flex flex-col gap-3 border-t border-neutral-200 pt-4 sm:flex-row sm:items-center sm:justify-between dark:border-white/[0.07]">
-                <p class="text-[13px] text-neutral-500 dark:text-fg-dim">
-                    {{ __('The running resource will not be changed.') }}
-                </p>
-                <x-forms.button x-bind:disabled="!selectedCloneDestination || !selectedCloneEnvironment"
-                    @click="$wire.cloneTo(selectedCloneDestination, selectedCloneEnvironment)">
-                    {{ __('Clone resource') }}
-                </x-forms.button>
+                @if ($cloneVolumeData)
+                    <p class="text-[13px] text-neutral-500 dark:text-fg-dim">
+                        {{ __('A running resource is stopped while its volume data is copied.') }}
+                    </p>
+                    <x-modal-confirmation :title="__('Clone this resource with its volume data?')" submitAction="clone-resource-confirmed"
+                        dispatchAction :confirmWithText="false" :confirmWithPassword="false"
+                        :step2ButtonText="__('Clone resource')"
+                        :warningMessage="__('A running resource is unavailable while its volume data is copied.')"
+                        :actions="[
+                            __('If the resource is running, it is stopped while its volume data is copied.'),
+                            __('The resource is started again after the copy, also when the copy fails.'),
+                        ]">
+                        <x-slot:trigger>
+                            <x-forms.button x-bind:disabled="!selectedCloneDestination || !selectedCloneEnvironment">
+                                {{ __('Clone resource') }}
+                            </x-forms.button>
+                        </x-slot:trigger>
+                    </x-modal-confirmation>
+                @else
+                    <p class="text-[13px] text-neutral-500 dark:text-fg-dim">
+                        {{ __('The running resource will not be changed.') }}
+                    </p>
+                    <x-forms.button wire:key="clone-resource-without-volume-data"
+                        x-bind:disabled="!selectedCloneDestination || !selectedCloneEnvironment"
+                        @click="$wire.cloneTo(selectedCloneDestination, selectedCloneEnvironment)">
+                        {{ __('Clone resource') }}
+                    </x-forms.button>
+                @endif
             </div>
         </x-application.settings-section>
 
