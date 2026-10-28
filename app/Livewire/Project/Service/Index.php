@@ -278,15 +278,15 @@ class Index extends Component
             $this->authorize('delete', $this->serviceDatabase);
 
             if (! verifyPasswordConfirmation($password, $this)) {
-                return 'The provided password is incorrect.';
+                return __('The provided password is incorrect.');
             }
 
             $containerRemoved = app(DeleteService::class)->removeSubresourceContainer($this->serviceDatabase);
             $this->serviceDatabase->delete();
             $this->auditServiceSubResource('deleted', $this->serviceDatabase, ['container_removed' => $containerRemoved]);
             $containerRemoved
-                ? $this->dispatch('success', 'Database deleted.')
-                : $this->dispatch('warning', 'Database deleted from Coolify. The server does not respond, so its container is removed when the service starts again.');
+                ? $this->dispatch('success', __('Database deleted.'))
+                : $this->dispatch('warning', __('Database deleted from Coolify. The server does not respond, so its container is removed when the service starts again.'));
 
             return redirectRoute($this, 'project.service.configuration', $this->parameters);
         } catch (\Throwable $e) {
@@ -310,12 +310,12 @@ class Index extends Component
             $this->authorize('update', $this->serviceDatabase);
             if (! $this->serviceDatabase->service->destination->server->isLogDrainEnabled()) {
                 $this->isLogDrainEnabled = false;
-                $this->dispatch('error', 'Log drain is not enabled on the server. Please enable it first.');
+                $this->dispatch('error', __('Log drain is not enabled on the server. Please enable it first.'));
 
                 return;
             }
             $this->submitDatabase();
-            $this->dispatch('success', 'You need to restart the service for the changes to take effect.');
+            $this->dispatch('success', __('You need to restart the service for the changes to take effect.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -330,7 +330,7 @@ class Index extends Component
 
             // Check if application with same name already exists
             if ($service->applications()->where('name', $serviceDatabase->name)->exists()) {
-                throw new \Exception('An application with this name already exists.');
+                throw new \Exception(__('An application with this name already exists.'));
             }
 
             // Create new parameters removing database_uuid
@@ -381,13 +381,13 @@ class Index extends Component
         try {
             if ($this->isPublic) {
                 if (! $this->publicPort) {
-                    $this->dispatch('error', 'Public port is required.');
+                    $this->dispatch('error', __('Public port is required.'));
                     $this->isPublic = false;
 
                     return;
                 }
                 if (! str($this->serviceDatabase->status)->startsWith('running')) {
-                    $this->dispatch('error', 'Database must be started to be publicly accessible.');
+                    $this->dispatch('error', __('Database must be started to be publicly accessible.'));
                     $this->isPublic = false;
 
                     return;
@@ -395,12 +395,12 @@ class Index extends Component
                 $this->persistPublicAccess();
                 StartDatabaseProxy::run($this->serviceDatabase);
                 $this->db_url_public = $this->serviceDatabase->getServiceDatabaseUrl();
-                $this->dispatch('success', 'Database is now publicly accessible.');
+                $this->dispatch('success', __('Database is now publicly accessible.'));
             } else {
                 $this->persistPublicAccess();
                 StopDatabaseProxy::run($this->serviceDatabase);
                 $this->db_url_public = null;
-                $this->dispatch('success', 'Database is no longer publicly accessible.');
+                $this->dispatch('success', __('Database is no longer publicly accessible.'));
             }
         } catch (\Throwable $e) {
             $this->isPublic = ! $this->isPublic;
@@ -437,7 +437,7 @@ class Index extends Component
             $this->serviceDatabase->refresh();
             $this->syncDatabaseData(false);
             updateCompose($this->serviceDatabase);
-            $this->dispatch('success', 'Database saved.');
+            $this->dispatch('success', __('Database saved.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         } finally {
@@ -514,7 +514,7 @@ class Index extends Component
         $changedFields = auditChangedFields($this->serviceApplication);
         $this->serviceApplication->save();
         $this->auditServiceSubResourceUpdate($this->serviceApplication, $changedFields);
-        $this->dispatch('success', 'Max restart count saved.');
+        $this->dispatch('success', __('Max restart count saved.'));
     }
 
     public function instantSaveApplication()
@@ -537,7 +537,7 @@ class Index extends Component
             $changedFields = auditChangedFields($this->serviceApplication);
             $this->serviceApplication->save();
             $this->auditServiceSubResourceUpdate($this->serviceApplication, $changedFields);
-            $this->dispatch('success', 'Settings saved.');
+            $this->dispatch('success', __('Settings saved.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -549,7 +549,7 @@ class Index extends Component
             $this->authorize('update', $this->serviceApplication);
             if (! $this->serviceApplication->service->destination->server->isLogDrainEnabled()) {
                 $this->isLogDrainEnabled = false;
-                $this->dispatch('error', 'Log drain is not enabled on the server. Please enable it first.');
+                $this->dispatch('error', __('Log drain is not enabled on the server. Please enable it first.'));
 
                 return;
             }
@@ -558,7 +558,7 @@ class Index extends Component
             $changedFields = auditChangedFields($this->serviceApplication);
             $this->serviceApplication->save();
             $this->auditServiceSubResourceUpdate($this->serviceApplication, $changedFields);
-            $this->dispatch('success', 'You need to restart the service for the changes to take effect.');
+            $this->dispatch('success', __('You need to restart the service for the changes to take effect.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -570,15 +570,15 @@ class Index extends Component
             $this->authorize('delete', $this->serviceApplication);
 
             if (! verifyPasswordConfirmation($password, $this)) {
-                return 'The provided password is incorrect.';
+                return __('The provided password is incorrect.');
             }
 
             $containerRemoved = app(DeleteService::class)->removeSubresourceContainer($this->serviceApplication);
             $this->serviceApplication->delete();
             $this->auditServiceSubResource('deleted', $this->serviceApplication, ['container_removed' => $containerRemoved]);
             $containerRemoved
-                ? $this->dispatch('success', 'Application deleted.')
-                : $this->dispatch('warning', 'Application deleted from Coolify. The server does not respond, so its container is removed when the service starts again.');
+                ? $this->dispatch('success', __('Application deleted.'))
+                : $this->dispatch('warning', __('Application deleted from Coolify. The server does not respond, so its container is removed when the service starts again.'));
 
             return redirectRoute($this, 'project.service.configuration', $this->parameters);
         } catch (\Throwable $e) {
@@ -594,7 +594,7 @@ class Index extends Component
             $serviceApplication = $this->serviceApplication;
 
             if ($service->databases()->where('name', $serviceApplication->name)->exists()) {
-                throw new \Exception('A database with this name already exists.');
+                throw new \Exception(__('A database with this name already exists.'));
             }
 
             $redirectParams = collect($this->parameters)
@@ -712,9 +712,9 @@ class Index extends Component
             $this->syncApplicationData(false);
             updateCompose($this->serviceApplication);
             if (str($this->serviceApplication->fqdn)->contains(',')) {
-                $this->dispatch('warning', 'Some services do not support multiple domains, which can lead to problems and is NOT RECOMMENDED.<br><br>Only use multiple domains if you know what you are doing.');
+                $this->dispatch('warning', __('Some services do not support multiple domains, which can lead to problems and is NOT RECOMMENDED.<br><br>Only use multiple domains if you know what you are doing.'));
             } else {
-                ! $warning && $this->dispatch('success', 'Service saved.');
+                ! $warning && $this->dispatch('success', __('Service saved.'));
             }
             $this->dispatch('generateDockerCompose');
         } catch (\Throwable $e) {

@@ -225,7 +225,7 @@ class BackupEdit extends Component
         $this->authorize('manageBackups', $database);
 
         if (! verifyPasswordConfirmation($password, $this)) {
-            return 'The provided password is incorrect.';
+            return __('The provided password is incorrect.');
         }
 
         try {
@@ -279,7 +279,7 @@ class BackupEdit extends Component
                 ]);
             }
         } catch (Exception $e) {
-            $this->dispatch('error', 'Failed to delete backup: '.$e->getMessage());
+            $this->dispatch('error', __('Failed to delete backup: :error', ['error' => $e->getMessage()]));
 
             return handleError($e, $this);
         }
@@ -302,7 +302,7 @@ class BackupEdit extends Component
             $this->authorize('manageBackups', $this->backup->database);
 
             $this->auditBackupScheduleUpdated($this->syncData(true));
-            $this->dispatch('success', 'Backup updated successfully.');
+            $this->dispatch('success', __('Backup updated successfully.'));
         } catch (\Throwable $e) {
             $this->dispatch('error', $e->getMessage());
         }
@@ -331,7 +331,7 @@ class BackupEdit extends Component
     public function toggleS3(): void
     {
         if (! $this->saveS3 && $this->selectedAvailableS3StorageIds()->isEmpty()) {
-            $this->dispatch('error', 'Select a usable S3 storage before enabling S3 backups.');
+            $this->dispatch('error', __('Select a usable S3 storage before enabling S3 backups.'));
 
             return;
         }
@@ -353,7 +353,7 @@ class BackupEdit extends Component
         if ($this->availableS3StorageIds()->isEmpty()) {
             $this->backup->save_s3 = $this->saveS3 = false;
         } elseif ($this->backup->save_s3 && $storageIds->isEmpty()) {
-            $message = 'Select at least one usable S3 storage.';
+            $message = __('Select at least one usable S3 storage.');
             $this->addError('s3StorageIds', $message);
 
             throw new Exception($message);
@@ -366,7 +366,7 @@ class BackupEdit extends Component
 
         $isValid = validate_cron_expression($this->backup->frequency);
         if (! $isValid) {
-            throw new Exception('Invalid Cron / Human expression');
+            throw new Exception(__('Invalid Cron / Human expression'));
         }
         $this->validate();
 
@@ -431,7 +431,7 @@ class BackupEdit extends Component
             $this->authorize('manageBackups', $this->backup->database);
 
             $this->auditBackupScheduleUpdated($this->syncData(true));
-            $this->dispatch('success', 'Backup updated successfully.');
+            $this->dispatch('success', __('Backup updated successfully.'));
         } catch (\Throwable $e) {
             $this->dispatch('error', $e->getMessage());
         }
@@ -442,7 +442,7 @@ class BackupEdit extends Component
         return view('livewire.project.database.backup-edit', [
             'checkboxes' => [
                 ['id' => 'delete_associated_backups_locally', 'label' => __('database.delete_backups_locally')],
-                ['id' => 'delete_associated_backups_s3', 'label' => 'All backups will be permanently deleted (associated with this backup job) from every S3 storage of this schedule.'],
+                ['id' => 'delete_associated_backups_s3', 'label' => __('All backups will be permanently deleted (associated with this backup job) from every S3 storage of this schedule.')],
                 // ['id' => 'delete_associated_backups_sftp', 'label' => 'All backups associated with this backup job from this database will be permanently deleted from the selected SFTP Storage.']
             ],
         ]);

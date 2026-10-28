@@ -46,7 +46,7 @@ class ScheduledBackups extends Component
 
             $this->database->custom_type = $this->custom_type;
             $this->database->save();
-            $this->dispatch('success', 'Database type set.');
+            $this->dispatch('success', __('Database type set.'));
             $this->refreshScheduledBackups();
         } catch (\Throwable $e) {
             handleError($e, $this);
@@ -66,7 +66,7 @@ class ScheduledBackups extends Component
                 'database_name' => $this->database->name,
                 'backup_uuid' => $backup->uuid,
             ]);
-            $this->dispatch('success', 'Scheduled backup deleted.');
+            $this->dispatch('success', __('Scheduled backup deleted.'));
             $this->refreshScheduledBackups();
         } catch (\Throwable $e) {
             handleError($e, $this);

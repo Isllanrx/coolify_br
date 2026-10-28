@@ -73,7 +73,7 @@ class DiscordMessage
     private function addTimestampToFields(array $fields): array
     {
         $fields[] = [
-            'name' => 'Time',
+            'name' => __('Time'),
             'value' => '<t:'.now()->timestamp.':R>',
             'inline' => true,
         ];

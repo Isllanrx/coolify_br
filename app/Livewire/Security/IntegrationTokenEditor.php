@@ -91,8 +91,8 @@ class IntegrationTokenEditor extends Component
     protected function messages(): array
     {
         return [
-            'capabilities.required' => 'Select at least one capability.',
-            'capabilities.min' => 'Select at least one capability.',
+            'capabilities.required' => __('Select at least one capability.'),
+            'capabilities.min' => __('Select at least one capability.'),
         ];
     }
 
@@ -179,7 +179,7 @@ class IntegrationTokenEditor extends Component
                 name: $this->integrationToken->name,
                 capabilities: $this->integrationToken->capabilities,
             );
-            $this->dispatch('success', 'Integration token updated successfully.');
+            $this->dispatch('success', __('Integration token updated successfully.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -235,9 +235,9 @@ class IntegrationTokenEditor extends Component
     private function reenterSecretMessage(string $provider): string
     {
         return match ($provider) {
-            'infisical' => 'Enter the client secret again when you change the base URL or the client ID.',
-            'vault' => 'Enter the token again when you change the base URL or the namespace.',
-            default => 'Enter the token again when you change the connection settings.',
+            'infisical' => __('Enter the client secret again when you change the base URL or the client ID.'),
+            'vault' => __('Enter the token again when you change the base URL or the namespace.'),
+            default => __('Enter the token again when you change the connection settings.'),
         };
     }
 
@@ -246,13 +246,13 @@ class IntegrationTokenEditor extends Component
         $this->authorize('delete', $this->integrationToken);
 
         if ($this->integrationToken->secretManagerLinks()->exists()) {
-            $this->dispatch('error', 'This token is used by one or more resources as a secret manager source. Remove those links first.');
+            $this->dispatch('error', __('This token is used by one or more resources as a secret manager source. Remove those links first.'));
 
             return;
         }
 
         if ($this->integrationToken->managedDnsRecords()->exists()) {
-            $this->dispatch('error', 'This token manages DNS records. Remove those domains or records first.');
+            $this->dispatch('error', __('This token manages DNS records. Remove those domains or records first.'));
 
             return;
         }
@@ -271,7 +271,7 @@ class IntegrationTokenEditor extends Component
 
         $this->dispatch('integration-token-deleted', uuid: $this->integrationToken->uuid);
         $this->dispatch('close-modal');
-        $this->dispatch('success', 'Integration token deleted successfully.');
+        $this->dispatch('success', __('Integration token deleted successfully.'));
     }
 
     public function refreshZones(CloudflareDnsProvider $cloudflare): void
@@ -281,7 +281,7 @@ class IntegrationTokenEditor extends Component
             $cloudflare->syncZones($this->integrationToken);
             $this->integrationToken->refresh();
             $this->loadZones();
-            $this->dispatch('success', "Cloudflare zones refreshed. {$this->zoneCount} accessible zones found.");
+            $this->dispatch('success', __('Cloudflare zones refreshed. :count accessible zones found.', ['count' => $this->zoneCount]));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }

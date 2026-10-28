@@ -89,12 +89,12 @@ class ConnectApplication extends Component
 
         try {
             if (! $application) {
-                throw new \Exception('The selected application is not available on this server.');
+                throw new \Exception(__('The selected application is not available on this server.'));
             }
 
             if ($this->isComposeApplication($application)) {
                 if (in_array($this->volumeName, composeExternalVolumeDockerNames($application->docker_compose_raw), true)) {
-                    throw new \Exception("{$application->name} already mounts this database volume in its compose file.");
+                    throw new \Exception(__(':name already mounts this database volume in its compose file.', ['name' => $application->name]));
                 }
 
                 $this->composeApplicationName = $application->name;
@@ -108,7 +108,7 @@ class ConnectApplication extends Component
             }
 
             if ($application->persistentStorages()->where('standalone_sqlite_id', $this->database->id)->exists()) {
-                throw new \Exception("{$application->name} already mounts this database volume.");
+                throw new \Exception(__(':name already mounts this database volume.', ['name' => $application->name]));
             }
 
             $volume = LocalPersistentVolume::create([
@@ -164,7 +164,7 @@ class ConnectApplication extends Component
             $this->auditStorageChange($volume->resource, 'deleted', $volume, $this->sqliteAuditContext());
         }
 
-        $this->dispatch('success', 'Application unlinked. Redeploy it to apply the change.');
+        $this->dispatch('success', __('Application unlinked. Redeploy it to apply the change.'));
     }
 
     public function render()

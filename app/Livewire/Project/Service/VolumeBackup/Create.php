@@ -88,7 +88,7 @@ class Create extends Component
                     ...($backup->wasRecentlyCreated ? [] : ['changed_fields' => $changedFields]),
                 ]);
             }
-            $this->dispatch('success', $backup->wasRecentlyCreated ? 'Scheduled storage backup created.' : 'Scheduled storage backup updated.');
+            $this->dispatch('success', $backup->wasRecentlyCreated ? __('Scheduled storage backup created.') : __('Scheduled storage backup updated.'));
             redirectRoute($this, 'project.service.volume-backups.show', [
                 'project_uuid' => $this->service->project()->uuid,
                 'environment_uuid' => $this->service->environment->uuid,

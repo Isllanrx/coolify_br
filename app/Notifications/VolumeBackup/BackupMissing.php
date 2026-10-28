@@ -35,13 +35,13 @@ class BackupMissing extends CustomEmailNotification
 
     public function summary(): string
     {
-        return "The enabled storage backup schedule for {$this->target} ({$this->resourceName}) has produced no executions in the last {$this->backup->missing_backup_notification_days} day(s).";
+        return __('The enabled storage backup schedule for :target (:resource) has produced no executions in the last :days day(s).', ['target' => $this->target, 'resource' => $this->resourceName, 'days' => $this->backup->missing_backup_notification_days]);
     }
 
     public function toMail(): MailMessage
     {
         return (new MailMessage)
-            ->subject("Coolify: [ACTION REQUIRED] No recent storage backup for {$this->resourceName}")
+            ->subject(__('Coolify: [ACTION REQUIRED] No recent storage backup for :name', ['name' => $this->resourceName]))
             ->view('emails.volume-backup-missing', [
                 'summary' => $this->summary(),
                 'last_execution_at' => $this->lastExecutionAt?->toDateTimeString(),
@@ -52,14 +52,14 @@ class BackupMissing extends CustomEmailNotification
     public function toDiscord(): DiscordMessage
     {
         $message = new DiscordMessage(
-            title: ':warning: Scheduled storage backup missing',
+            title: ':warning: '.__('Scheduled storage backup missing'),
             description: $this->summary(),
             color: DiscordMessage::errorColor(),
             isCritical: true,
         );
 
         if ($this->url) {
-            $message->addField('Resource', '[Link]('.$this->url.')');
+            $message->addField(__('Resource'), '['.__('Link').']('.$this->url.')');
         }
 
         return $message;
@@ -67,10 +67,10 @@ class BackupMissing extends CustomEmailNotification
 
     public function toTelegram(): array
     {
-        $data = ['message' => "Coolify: {$this->summary()}"];
+        $data = ['message' => __('Coolify: :summary', ['summary' => $this->summary()])];
 
         if ($this->url) {
-            $data['buttons'] = [['text' => 'Open resource in Coolify', 'url' => $this->url]];
+            $data['buttons'] = [['text' => __('Open resource in Coolify'), 'url' => $this->url]];
         }
 
         return $data;
@@ -79,18 +79,18 @@ class BackupMissing extends CustomEmailNotification
     public function toPushover(): PushoverMessage
     {
         return new PushoverMessage(
-            title: 'Scheduled storage backup missing',
+            title: __('Scheduled storage backup missing'),
             level: 'error',
             message: $this->summary(),
-            buttons: $this->url ? [['text' => 'Open resource in Coolify', 'url' => $this->url]] : [],
+            buttons: $this->url ? [['text' => __('Open resource in Coolify'), 'url' => $this->url]] : [],
         );
     }
 
     public function toSlack(): SlackMessage
     {
         return new SlackMessage(
-            title: 'Scheduled storage backup missing',
-            description: $this->summary().($this->url ? "\n\n<{$this->url}|Open resource in Coolify>" : ''),
+            title: __('Scheduled storage backup missing'),
+            description: $this->summary().($this->url ? "\n\n<{$this->url}|".__('Open resource in Coolify').'>' : ''),
             color: SlackMessage::errorColor(),
         );
     }

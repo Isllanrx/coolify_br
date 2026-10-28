@@ -45,7 +45,7 @@ class Maintenance extends Component
             $this->resource->is_maintenance_enabled = $this->isMaintenanceEnabled;
             $this->resource->save();
             $this->resource->syncMaintenancePage();
-            $this->dispatch('success', $this->isMaintenanceEnabled ? 'Maintenance mode enabled.' : 'Maintenance mode disabled.');
+            $this->dispatch('success', $this->isMaintenanceEnabled ? __('Maintenance mode enabled.') : __('Maintenance mode disabled.'));
         } catch (\Throwable $e) {
             $this->isMaintenanceEnabled = (bool) $this->resource->fresh()?->is_maintenance_enabled;
             handleError($e, $this);
@@ -64,7 +64,7 @@ class Maintenance extends Component
             if ($this->resource->is_maintenance_enabled) {
                 $this->resource->syncMaintenancePage();
             }
-            $this->dispatch('success', 'Maintenance page saved.');
+            $this->dispatch('success', __('Maintenance page saved.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -80,7 +80,7 @@ class Maintenance extends Component
             if ($this->resource->is_maintenance_enabled) {
                 $this->resource->syncMaintenancePage();
             }
-            $this->dispatch('success', 'Default maintenance page restored.');
+            $this->dispatch('success', __('Default maintenance page restored.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }

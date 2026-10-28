@@ -101,7 +101,7 @@ class Destination extends Component
         try {
             $this->authorize('deploy', $this->resource);
             if ($this->resource->additional_servers->count() > 0 && str($this->resource->docker_registry_image_name)->isEmpty()) {
-                $this->dispatch('error', 'Failed to deploy.', 'Before deploying to multiple servers, you must first set a Docker image in the General tab.<br>More information here: <a target="_blank" class="underline" href="https://coolify.io/docs/knowledge-base/server/multiple-servers">documentation</a>');
+                $this->dispatch('error', __('Failed to deploy.'), __('Before deploying to multiple servers, you must first set a Docker image in the General tab.<br>More information here: <a target="_blank" class="underline" href="https://coolify.io/docs/knowledge-base/server/multiple-servers">documentation</a>'));
 
                 return;
             }
@@ -117,12 +117,12 @@ class Destination extends Component
                 no_questions_asked: true,
             );
             if ($result['status'] === 'queue_full') {
-                $this->dispatch('error', 'Deployment queue full', $result['message']);
+                $this->dispatch('error', __('Deployment queue full'), $result['message']);
 
                 return;
             }
             if ($result['status'] === 'skipped') {
-                $this->dispatch('success', 'Deployment skipped', $result['message']);
+                $this->dispatch('success', __('Deployment skipped'), $result['message']);
 
                 return;
             }
@@ -179,7 +179,7 @@ class Destination extends Component
                 ? $this->resource->additionalServersUnavailableReason($server)
                 : 'Only applications can use multiple servers.';
             if ($reason) {
-                $this->dispatch('error', 'Failed to add server.', $reason);
+                $this->dispatch('error', __('Failed to add server.'), $reason);
 
                 return;
             }
@@ -198,11 +198,11 @@ class Destination extends Component
         try {
             $this->authorize('update', $this->resource);
             if (! verifyPasswordConfirmation($password, $this)) {
-                return 'The provided password is incorrect.';
+                return __('The provided password is incorrect.');
             }
 
             if ($this->resource->destination->server->id == $server_id && $this->resource->destination->id == $network_id) {
-                $this->dispatch('error', 'You are trying to remove the main server.');
+                $this->dispatch('error', __('You are trying to remove the main server.'));
 
                 return;
             }

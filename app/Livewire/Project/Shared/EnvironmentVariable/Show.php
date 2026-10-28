@@ -356,7 +356,7 @@ class Show extends Component
                 $storedKey = $this->env->fresh()?->key;
                 if ($storedKey === null || $this->key !== $storedKey) {
                     $this->key = $storedKey ?? $this->key;
-                    $this->dispatch('error', 'Compose-linked environment variable names cannot be changed.');
+                    $this->dispatch('error', __('Compose-linked environment variable names cannot be changed.'));
 
                     return;
                 }
@@ -367,7 +367,7 @@ class Show extends Component
                 if (! $this->env->is_shown_once) {
                     $this->value = $this->env->getOriginal('value');
                 }
-                $this->dispatch('error', 'Required environment variables cannot be empty.');
+                $this->dispatch('error', __('Required environment variables cannot be empty.'));
 
                 return;
             }
@@ -375,7 +375,7 @@ class Show extends Component
             $this->serialize();
             $this->syncData(true);
             $this->syncData(false);
-            $this->dispatch('success', 'Environment variable updated.');
+            $this->dispatch('success', __('Environment variable updated.'));
             $this->dispatch('environment-variable-updated', envId: $this->env->id);
             $this->dispatch('envsUpdated');
             $this->dispatch('configurationChanged');
@@ -575,7 +575,7 @@ class Show extends Component
                 [$isUsed, $reason] = $this->isEnvironmentVariableUsedInDockerCompose($this->env->key, $this->env->resourceable?->docker_compose);
 
                 if ($isUsed) {
-                    $this->dispatch('error', "Cannot delete environment variable '{$this->env->key}' <br><br>Please remove it from the Docker Compose file first.");
+                    $this->dispatch('error', __('Cannot delete environment variable \':key\' <br><br>Please remove it from the Docker Compose file first.', ['key' => $this->env->key]));
 
                     return;
                 }
@@ -583,7 +583,7 @@ class Show extends Component
 
             $this->env->delete();
             $this->dispatch('environmentVariableDeleted');
-            $this->dispatch('success', 'Environment variable deleted successfully.');
+            $this->dispatch('success', __('Environment variable deleted successfully.'));
         } catch (\Exception $e) {
             return handleError($e);
         }

@@ -65,7 +65,7 @@ class Previews extends Component
         $this->application->settings->is_pr_deployments_public_enabled = $this->isPrDeploymentsPublicEnabled;
         $this->saveApplicationSettingsWithAudit($this->application);
 
-        $this->dispatch('success', 'Settings saved.');
+        $this->dispatch('success', __('Settings saved.'));
         $this->dispatch('configurationChanged');
     }
 
@@ -96,7 +96,7 @@ class Previews extends Component
         try {
             $this->authorize('update', $this->application);
             if (! $this->application->isGithubAppSource()) {
-                throw new \Exception('Loading pull requests is only supported for GitHub App sources.');
+                throw new \Exception(__('Loading pull requests is only supported for GitHub App sources.'));
             }
             ['rate_limit_remaining' => $rate_limit_remaining, 'data' => $data] = githubApi(source: $this->application->source, endpoint: "/repos/{$this->application->git_repository}/pulls");
             $this->rate_limit_remaining = $rate_limit_remaining;
@@ -115,7 +115,7 @@ class Previews extends Component
             $preview = $this->application->previews->find($preview_id);
 
             if (! $preview) {
-                throw new \Exception('Preview not found');
+                throw new \Exception(__('Preview not found'));
             }
 
             $this->validateOnly("previewDockerTags.{$preview->id}");
@@ -125,7 +125,7 @@ class Previews extends Component
             if ($changedFields !== []) {
                 $this->auditPreviewEvent('ui.application.preview_updated', $preview->pull_request_id, $changedFields);
             }
-            $this->dispatch('success', 'Preview saved.<br><br>Do not forget to redeploy the preview to apply the changes.');
+            $this->dispatch('success', __('Preview saved.<br><br>Do not forget to redeploy the preview to apply the changes.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -169,7 +169,7 @@ class Previews extends Component
                 $this->application->refresh();
                 $this->syncDockerTags();
                 $this->dispatch('update_links');
-                $this->dispatch('success', 'Preview added.');
+                $this->dispatch('success', __('Preview added.'));
             }
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -233,12 +233,12 @@ class Previews extends Component
                 docker_registry_image_tag: $docker_registry_image_tag,
             );
             if ($result['status'] === 'queue_full') {
-                $this->dispatch('error', 'Deployment queue full', $result['message']);
+                $this->dispatch('error', __('Deployment queue full'), $result['message']);
 
                 return;
             }
             if ($result['status'] === 'skipped') {
-                $this->dispatch('success', 'Deployment skipped', $result['message']);
+                $this->dispatch('success', __('Deployment skipped'), $result['message']);
 
                 return;
             }
@@ -289,13 +289,13 @@ class Previews extends Component
         $this->validateOnly('manualDockerTag');
 
         if ($this->application->build_pack !== 'dockerimage') {
-            $this->dispatch('error', 'Manual Docker Image previews are only available for Docker Image applications.');
+            $this->dispatch('error', __('Manual Docker Image previews are only available for Docker Image applications.'));
 
             return;
         }
 
         if ($this->manualPullRequestId === null || str($this->manualDockerTag)->isEmpty()) {
-            $this->dispatch('error', 'Both pull request id and docker tag are required.');
+            $this->dispatch('error', __('Both pull request id and docker tag are required.'));
 
             return;
         }
@@ -348,7 +348,7 @@ class Previews extends Component
             GetContainersStatus::run($server);
             $this->application->refresh();
             $this->dispatch('containerStatusUpdated');
-            $this->dispatch('success', 'Preview Deployment stopped.');
+            $this->dispatch('success', __('Preview Deployment stopped.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -363,7 +363,7 @@ class Previews extends Component
                 ->first();
 
             if (! $preview) {
-                $this->dispatch('error', 'Preview not found.');
+                $this->dispatch('error', __('Preview not found.'));
 
                 return;
             }
@@ -379,7 +379,7 @@ class Previews extends Component
             $this->application->load('previews');
             unset($this->previewDockerTags[$preview->id]);
             $this->dispatch('update_links');
-            $this->dispatch('success', 'Preview deletion started. It may take a few moments to complete.');
+            $this->dispatch('success', __('Preview deletion started. It may take a few moments to complete.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }

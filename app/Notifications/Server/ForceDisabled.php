@@ -24,7 +24,7 @@ class ForceDisabled extends CustomEmailNotification
     public function toMail(): MailMessage
     {
         $mail = new MailMessage;
-        $mail->subject("Coolify: Server ({$this->server->name}) disabled because it is not paid!");
+        $mail->subject(__('Coolify: Server (:name) disabled because it is not paid!', ['name' => $this->server->name]));
         $mail->view('emails.server-force-disabled', [
             'name' => $this->server->name,
         ]);
@@ -35,12 +35,12 @@ class ForceDisabled extends CustomEmailNotification
     public function toDiscord(): DiscordMessage
     {
         $message = new DiscordMessage(
-            title: ':cross_mark: Server disabled',
-            description: "Server ({$this->server->name}) disabled because it is not paid!",
+            title: ':cross_mark: '.__('Server disabled'),
+            description: __('Server (:name) disabled because it is not paid!', ['name' => $this->server->name]),
             color: DiscordMessage::errorColor(),
         );
 
-        $message->addField('Please update your subscription to enable the server again!', '[Link](https://app.coolify.io/subscription)');
+        $message->addField(__('Please update your subscription to enable the server again!'), '['.__('Link').'](https://app.coolify.io/subscription)');
 
         return $message;
     }
@@ -48,25 +48,25 @@ class ForceDisabled extends CustomEmailNotification
     public function toTelegram(): array
     {
         return [
-            'message' => "Coolify: Server ({$this->server->name}) disabled because it is not paid!\n All automations and integrations are stopped.\nPlease update your subscription to enable the server again [here](https://app.coolify.io/subscription).",
+            'message' => __('Coolify: Server (:name) disabled because it is not paid!', ['name' => $this->server->name])."\n ".__('All automations and integrations are stopped.')."\n".__('Please update your subscription to enable the server again').' ['.__('here').'](https://app.coolify.io/subscription).',
         ];
     }
 
     public function toPushover(): PushoverMessage
     {
         return new PushoverMessage(
-            title: 'Server disabled',
+            title: __('Server disabled'),
             level: 'error',
-            message: "Server ({$this->server->name}) disabled because it is not paid!\n All automations and integrations are stopped.<br/>Please update your subscription to enable the server again [here](https://app.coolify.io/subscription).",
+            message: __('Server (:name) disabled because it is not paid!', ['name' => $this->server->name])."\n ".__('All automations and integrations are stopped.').'<br/>'.__('Please update your subscription to enable the server again').' ['.__('here').'](https://app.coolify.io/subscription).',
         );
     }
 
     public function toSlack(): SlackMessage
     {
-        $title = 'Server disabled';
-        $description = "Server ({$this->server->name}) disabled because it is not paid!\n";
-        $description .= "All automations and integrations are stopped.\n\n";
-        $description .= 'Please update your subscription to enable the server again: https://app.coolify.io/subscription';
+        $title = __('Server disabled');
+        $description = __('Server (:name) disabled because it is not paid!', ['name' => $this->server->name])."\n";
+        $description .= __('All automations and integrations are stopped.')."\n\n";
+        $description .= __('Please update your subscription to enable the server again:').' https://app.coolify.io/subscription';
 
         return new SlackMessage(
             title: $title,

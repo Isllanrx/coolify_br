@@ -217,13 +217,13 @@ class GetLogs extends Component
     private function singleContainerDenial(): string
     {
         if (! $this->canReadLogs() || ! Server::ownedByCurrentTeam()->where('id', $this->server->id)->exists()) {
-            return 'Unauthorized.';
+            return __('Unauthorized.');
         }
         if (! $this->server->isFunctional() || ! $this->container) {
             return '';
         }
         if (! ValidationPatterns::isValidContainerName($this->container)) {
-            return 'Invalid container name.';
+            return __('Invalid container name.');
         }
 
         return '';

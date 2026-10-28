@@ -43,12 +43,12 @@ class ServerRegistries extends Component
 
         $loggedIn = [];
         if (! $this->server->isFunctional()) {
-            $this->error = 'The server is not reachable. Validate the server to read its registry logins.';
+            $this->error = __('The server is not reachable. Validate the server to read its registry logins.');
         } else {
             try {
                 $loggedIn = DockerRegistryLogins::forServer($this->server);
             } catch (Throwable) {
-                $this->error = 'Could not read the Docker configuration on this server.';
+                $this->error = __('Could not read the Docker configuration on this server.');
             }
         }
 
@@ -74,11 +74,11 @@ class ServerRegistries extends Component
 
         try {
             DockerRegistryLogins::checkLogin($this->server, $registry);
-            $this->loginChecks[$registry] = ['ok' => true, 'message' => 'The login works.'];
-            $this->dispatch('success', "The login for {$registry} works.");
+            $this->loginChecks[$registry] = ['ok' => true, 'message' => __('The login works.')];
+            $this->dispatch('success', __('The login for :registry works.', ['registry' => $registry]));
         } catch (Throwable $exception) {
             $this->loginChecks[$registry] = ['ok' => false, 'message' => $exception->getMessage()];
-            $this->dispatch('error', "The login for {$registry} does not work.", e($exception->getMessage()));
+            $this->dispatch('error', __('The login for :registry does not work.', ['registry' => $registry]), e($exception->getMessage()));
         }
     }
 
@@ -87,7 +87,7 @@ class ServerRegistries extends Component
         $this->authorize('update', $this->server);
         $registry = DockerRegistryLogins::normalizeRegistry($registry);
         if (! preg_match(DockerRegistryLogins::REGISTRY_PATTERN, $registry)) {
-            $this->dispatch('error', 'Logout failed.', 'The registry name is not valid.');
+            $this->dispatch('error', __('Logout failed.'), __('The registry name is not valid.'));
 
             return;
         }
@@ -95,13 +95,13 @@ class ServerRegistries extends Component
         try {
             DockerRegistryLogins::logout($this->server, $registry);
         } catch (Throwable $exception) {
-            $this->dispatch('error', 'Logout failed.', e($exception->getMessage()));
+            $this->dispatch('error', __('Logout failed.'), e($exception->getMessage()));
 
             return;
         }
 
         DockerRegistryLogins::audit($this->server, 'logout', $registry);
-        $this->dispatch('success', "Deleted the login for {$registry}.");
+        $this->dispatch('success', __('Deleted the login for :registry.', ['registry' => $registry]));
         $this->loadRegistries();
     }
 

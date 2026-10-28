@@ -46,7 +46,7 @@ class StatusChanged extends CustomEmailNotification
     {
         $mail = new MailMessage;
         $fqdn = $this->fqdn;
-        $mail->subject("Coolify: {$this->resource_name} has been stopped");
+        $mail->subject(__('Coolify: :name has been stopped', ['name' => $this->resource_name]));
         $mail->view('emails.application-status-changes', [
             'name' => $this->resource_name,
             'fqdn' => $fqdn,
@@ -59,8 +59,8 @@ class StatusChanged extends CustomEmailNotification
     public function toDiscord(): DiscordMessage
     {
         return new DiscordMessage(
-            title: ':cross_mark: Application stopped',
-            description: '[Open Application in Coolify]('.$this->resource_url.')',
+            title: ':cross_mark: '.__('Application stopped'),
+            description: '['.__('Open Application in Coolify').']('.$this->resource_url.')',
             color: DiscordMessage::errorColor(),
             isCritical: true,
         );
@@ -68,13 +68,13 @@ class StatusChanged extends CustomEmailNotification
 
     public function toTelegram(): array
     {
-        $message = 'Coolify: '.$this->resource_name.' has been stopped.';
+        $message = __('Coolify: :name has been stopped.', ['name' => $this->resource_name]);
 
         return [
             'message' => $message,
             'buttons' => [
                 [
-                    'text' => 'Open Application in Coolify',
+                    'text' => __('Open Application in Coolify'),
                     'url' => $this->resource_url,
                 ],
             ],
@@ -83,15 +83,15 @@ class StatusChanged extends CustomEmailNotification
 
     public function toPushover(): PushoverMessage
     {
-        $message = $this->resource_name.' has been stopped.';
+        $message = __(':name has been stopped.', ['name' => $this->resource_name]);
 
         return new PushoverMessage(
-            title: 'Application stopped',
+            title: __('Application stopped'),
             level: 'error',
             message: $message,
             buttons: [
                 [
-                    'text' => 'Open Application in Coolify',
+                    'text' => __('Open Application in Coolify'),
                     'url' => $this->resource_url,
                 ],
             ],
@@ -100,12 +100,12 @@ class StatusChanged extends CustomEmailNotification
 
     public function toSlack(): SlackMessage
     {
-        $title = 'Application stopped';
-        $description = "{$this->resource_name} has been stopped";
+        $title = __('Application stopped');
+        $description = __(':name has been stopped', ['name' => $this->resource_name]);
 
-        $description .= "\n\n*Project:* ".data_get($this->resource, 'environment.project.name');
-        $description .= "\n*Environment:* {$this->environment_name}";
-        $description .= "\n*Application URL:* {$this->resource_url}";
+        $description .= "\n\n*".__('Project:').'* '.data_get($this->resource, 'environment.project.name');
+        $description .= "\n*".__('Environment:').'* '.$this->environment_name;
+        $description .= "\n*".__('Application URL:').'* '.$this->resource_url;
 
         return new SlackMessage(
             title: $title,

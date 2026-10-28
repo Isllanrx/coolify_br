@@ -123,7 +123,7 @@ class Source extends Component
             $this->getPrivateKeys();
             $this->application->refresh();
             $this->privateKeyName = $this->application->private_key->name;
-            $this->dispatch('success', 'Private key updated!');
+            $this->dispatch('success', __('Private key updated!'));
             $this->dispatch('configurationChanged');
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -139,7 +139,7 @@ class Source extends Component
                 $this->gitCommitSha = 'HEAD';
             }
             $this->syncData(true);
-            $this->dispatch('success', 'Application source updated!');
+            $this->dispatch('success', __('Application source updated!'));
             $this->dispatch('configurationChanged');
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -189,7 +189,7 @@ class Source extends Component
 
             $this->application->refresh();
             $this->getSources();
-            $this->dispatch('success', 'Source updated!');
+            $this->dispatch('success', __('Source updated!'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }

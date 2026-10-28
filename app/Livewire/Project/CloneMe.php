@@ -101,11 +101,11 @@ class CloneMe extends Component
             ]);
             $teamId = $this->project->team_id;
             if (! $this->environment || (int) $this->environment->project_id !== (int) $this->project->id) {
-                throw new \Exception('Environment not found.');
+                throw new \Exception(__('Environment not found.'));
             }
             $selectedDestination = $this->findProjectTeamDestination($this->selectedDestination);
             if (! $selectedDestination) {
-                throw new \Exception('Destination not found.');
+                throw new \Exception(__('Destination not found.'));
             }
             auditLog('ui.project.clone_started', [
                 'team_id' => $this->project->team_id,
@@ -136,7 +136,7 @@ class CloneMe extends Component
         if ($type === 'project') {
             $foundProject = Project::query()->where('team_id', $teamId)->where('name', $this->newName)->first();
             if ($foundProject) {
-                throw new \Exception('Project with the same name already exists.');
+                throw new \Exception(__('Project with the same name already exists.'));
             }
             $project = Project::create([
                 'name' => $this->newName,
@@ -153,7 +153,7 @@ class CloneMe extends Component
         } else {
             $foundEnv = $this->project->environments()->where('name', $this->newName)->first();
             if ($foundEnv) {
-                throw new \Exception('Environment with the same name already exists.');
+                throw new \Exception(__('Environment with the same name already exists.'));
             }
             $project = $this->project;
             $environment = $this->project->environments()->create([

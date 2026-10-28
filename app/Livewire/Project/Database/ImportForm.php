@@ -425,20 +425,20 @@ class ImportForm extends Component
         if (filled($this->customLocation)) {
             // Validate the custom location to prevent command injection
             if (! $this->validateServerPath($this->customLocation)) {
-                $this->dispatch('error', 'Invalid file path. Path must be absolute and contain only safe characters (alphanumerics, dots, dashes, underscores, slashes).');
+                $this->dispatch('error', __('Invalid file path. Path must be absolute and contain only safe characters (alphanumerics, dots, dashes, underscores, slashes).'));
 
                 return;
             }
 
             if (! $this->server) {
-                $this->dispatch('error', 'Server not found. Please refresh the page.');
+                $this->dispatch('error', __('Server not found. Please refresh the page.'));
 
                 return;
             }
 
             try {
                 if (! $this->serverFileExists($this->customLocation)) {
-                    $this->dispatch('error', 'The file does not exist or has been deleted.');
+                    $this->dispatch('error', __('The file does not exist or has been deleted.'));
 
                     return;
                 }
@@ -446,7 +446,7 @@ class ImportForm extends Component
                 $this->fileSource = 'server';
                 $this->discardStagedUpload();
                 $this->selectSqliteDatabaseFor($this->customLocation);
-                $this->dispatch('success', 'The file exists.');
+                $this->dispatch('success', __('The file exists.'));
             } catch (\Throwable $e) {
                 return handleError($e, $this);
             }
@@ -469,7 +469,7 @@ class ImportForm extends Component
 
         if (! Storage::exists($this->stagedUploadPath())) {
             $this->fileSource = null;
-            $this->dispatch('error', 'The uploaded file was not found. Please upload it again.');
+            $this->dispatch('error', __('The uploaded file was not found. Please upload it again.'));
 
             return;
         }
@@ -512,25 +512,25 @@ class ImportForm extends Component
     public function runImport(string $password = ''): bool|string
     {
         if (! verifyPasswordConfirmation($password, $this)) {
-            return 'The provided password is incorrect.';
+            return __('The provided password is incorrect.');
         }
 
         $this->authorize('update', $this->resource);
 
         if (! ValidationPatterns::isValidContainerName($this->container)) {
-            $this->dispatch('error', 'Invalid container name.');
+            $this->dispatch('error', __('Invalid container name.'));
 
             return true;
         }
 
         if (! in_array($this->fileSource, ['upload', 'server'], true)) {
-            $this->dispatch('error', 'Please select a file to import.');
+            $this->dispatch('error', __('Please select a file to import.'));
 
             return true;
         }
 
         if (! $this->server) {
-            $this->dispatch('error', 'Server not found. Please refresh the page.');
+            $this->dispatch('error', __('Server not found. Please refresh the page.'));
 
             return true;
         }
@@ -606,13 +606,13 @@ class ImportForm extends Component
         $this->authorize('update', $this->resource);
 
         if (! $this->s3StorageId) {
-            $this->dispatch('error', 'Please select an S3 storage.');
+            $this->dispatch('error', __('Please select an S3 storage.'));
 
             return;
         }
 
         if (blank($this->s3Path)) {
-            $this->dispatch('error', 'Please provide an S3 path.');
+            $this->dispatch('error', __('Please provide an S3 path.'));
 
             return;
         }
@@ -622,7 +622,7 @@ class ImportForm extends Component
 
         // Validate the S3 path early to prevent command injection in subsequent operations
         if (! $this->validateS3Path($cleanPath)) {
-            $this->dispatch('error', 'Invalid S3 path. Path must contain only safe characters (alphanumerics, dots, dashes, underscores, slashes).');
+            $this->dispatch('error', __('Invalid S3 path. Path must contain only safe characters (alphanumerics, dots, dashes, underscores, slashes).'));
 
             return;
         }
@@ -632,7 +632,7 @@ class ImportForm extends Component
 
             // Validate bucket name early
             if (! $this->validateBucketName($s3Storage->bucket)) {
-                $this->dispatch('error', 'Invalid S3 bucket name. Bucket name must contain only letters, numbers, dots, and dashes, and must follow S3 bucket naming rules.');
+                $this->dispatch('error', __('Invalid S3 bucket name. Bucket name must contain only letters, numbers, dots, and dashes, and must follow S3 bucket naming rules.'));
 
                 return;
             }
@@ -654,7 +654,7 @@ class ImportForm extends Component
 
             // Check if file exists
             if (! $disk->exists($cleanPath)) {
-                $this->dispatch('error', 'File not found in S3. Please check the path.');
+                $this->dispatch('error', __('File not found in S3. Please check the path.'));
 
                 return;
             }
@@ -663,7 +663,7 @@ class ImportForm extends Component
             $this->s3FileSize = $disk->size($cleanPath);
             $this->selectSqliteDatabaseFor($cleanPath);
 
-            $this->dispatch('success', 'File found in S3. Size: '.formatBytes($this->s3FileSize));
+            $this->dispatch('success', __('File found in S3. Size: :size', ['size' => formatBytes($this->s3FileSize)]));
         } catch (\Throwable $e) {
             $this->s3FileSize = null;
 
@@ -674,31 +674,31 @@ class ImportForm extends Component
     public function restoreFromS3(string $password = ''): bool|string
     {
         if (! verifyPasswordConfirmation($password, $this)) {
-            return 'The provided password is incorrect.';
+            return __('The provided password is incorrect.');
         }
 
         $this->authorize('update', $this->resource);
 
         if (! ValidationPatterns::isValidContainerName($this->container)) {
-            $this->dispatch('error', 'Invalid container name.');
+            $this->dispatch('error', __('Invalid container name.'));
 
             return true;
         }
 
         if (! $this->s3StorageId || blank($this->s3Path)) {
-            $this->dispatch('error', 'Please select S3 storage and provide a path first.');
+            $this->dispatch('error', __('Please select S3 storage and provide a path first.'));
 
             return true;
         }
 
         if (is_null($this->s3FileSize)) {
-            $this->dispatch('error', 'Please check the file first by clicking "Check File".');
+            $this->dispatch('error', __('Please check the file first by clicking "Check File".'));
 
             return true;
         }
 
         if (! $this->server) {
-            $this->dispatch('error', 'Server not found. Please refresh the page.');
+            $this->dispatch('error', __('Server not found. Please refresh the page.'));
 
             return true;
         }
@@ -719,7 +719,7 @@ class ImportForm extends Component
                 'replace_existing' => $this->replaceExisting,
                 'storage_id' => $this->s3StorageId,
             ]);
-            $this->dispatch('info', 'Restoring database from S3. Progress will be shown in the activity monitor...');
+            $this->dispatch('info', __('Restoring database from S3. Progress will be shown in the activity monitor...'));
         } catch (DatabaseImportException $e) {
             $this->importRunning = false;
             $this->dispatch('error', $e->getMessage());

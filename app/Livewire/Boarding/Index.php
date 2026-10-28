@@ -191,7 +191,7 @@ class Index extends Component
             $this->createdServer = Server::find(0);
             $this->selectedExistingServer = 0;
             if (! $this->createdServer) {
-                return $this->dispatch('error', 'Localhost server is not found. Something went wrong during installation. Please try to reinstall or contact support.');
+                return $this->dispatch('error', __('Localhost server is not found. Something went wrong during installation. Please try to reinstall or contact support.'));
             }
             $this->authorize('update', $this->createdServer);
             $this->serverPublicKey = $this->createdServer->privateKey->getPublicKey();
@@ -242,7 +242,7 @@ class Index extends Component
     public function selectExistingPrivateKey()
     {
         if (is_null($this->selectedExistingPrivateKey)) {
-            $this->dispatch('error', 'Please select a private key.');
+            $this->dispatch('error', __('Please select a private key.'));
 
             return;
         }
@@ -292,7 +292,7 @@ class Index extends Component
             $this->createdPrivateKey = $privateKey;
             $this->currentState = 'create-server';
         } catch (\Exception $e) {
-            $this->addError('privateKey', 'Failed to save private key: '.$e->getMessage());
+            $this->addError('privateKey', __('Failed to save private key: :error', ['error' => $e->getMessage()]));
         }
     }
 
@@ -304,7 +304,7 @@ class Index extends Component
 
         $foundServer = Server::whereIp(Server::normalizeIp($this->remoteServerHost))->first();
         if ($foundServer) {
-            return $this->dispatch('error', 'A server with this IP/Domain already exists.');
+            return $this->dispatch('error', __('A server with this IP/Domain already exists.'));
         }
         $privateKeyId = $this->createdPrivateKey?->id ?? $this->selectedExistingPrivateKey;
         $this->createdPrivateKey = PrivateKey::ownedByCurrentTeam(['team_id'])->findOrFail($privateKeyId);
@@ -321,7 +321,7 @@ class Index extends Component
                 'team_id' => currentTeam()->id,
             ]);
         } catch (ValidationException) {
-            return $this->dispatch('error', 'You have reached the server limit for your subscription.');
+            return $this->dispatch('error', __('You have reached the server limit for your subscription.'));
         }
         $this->createdServer->settings->is_cloudflare_tunnel = $this->isCloudflareTunnel;
         $this->createdServer->settings->save();
@@ -363,7 +363,7 @@ class Index extends Component
                 // Check if we've exceeded max attempts
                 if ($this->prerequisiteInstallAttempts >= $this->maxPrerequisiteInstallAttempts) {
                     $missingCommands = implode(', ', $validationResult['missing']);
-                    throw new \Exception("Prerequisites ({$missingCommands}) could not be installed after {$this->maxPrerequisiteInstallAttempts} attempts. Please install them manually.");
+                    throw new \Exception(__('Prerequisites (:commands) could not be installed after :attempts attempts. Please install them manually.', ['commands' => $missingCommands, 'attempts' => $this->maxPrerequisiteInstallAttempts]));
                 }
 
                 // Start async installation and wait for completion via ActivityMonitor
@@ -394,7 +394,7 @@ class Index extends Component
                 $missingCommands = implode(', ', $validationResult['missing']);
 
                 if ($this->prerequisiteInstallAttempts >= $this->maxPrerequisiteInstallAttempts) {
-                    throw new \Exception("Prerequisites ({$missingCommands}) could not be installed after {$this->maxPrerequisiteInstallAttempts} attempts. Please install them manually.");
+                    throw new \Exception(__('Prerequisites (:commands) could not be installed after :attempts attempts. Please install them manually.', ['commands' => $missingCommands, 'attempts' => $this->maxPrerequisiteInstallAttempts]));
                 }
 
                 // Try again
@@ -419,7 +419,7 @@ class Index extends Component
             $dockerVersion = checkMinimumDockerEngineVersion($dockerVersion);
             if (is_null($dockerVersion)) {
                 $this->currentState = 'validate-server';
-                throw new \Exception('Docker not found or old version is installed.');
+                throw new \Exception(__('Docker not found or old version is installed.'));
             }
             $this->createdServer->settings()->update([
                 'is_usable' => true,
@@ -462,7 +462,7 @@ class Index extends Component
     {
         $this->createdProject = Project::ownedByCurrentTeam()->find($this->selectedProject);
         if (! $this->createdProject) {
-            return $this->dispatch('error', 'Project not found.');
+            return $this->dispatch('error', __('Project not found.'));
         }
         $this->currentState = 'create-resource';
     }

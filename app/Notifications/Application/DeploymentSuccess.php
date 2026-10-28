@@ -63,10 +63,10 @@ class DeploymentSuccess extends CustomEmailNotification
         $pull_request_id = data_get($this->preview, 'pull_request_id', 0);
         $fqdn = $this->fqdn;
         if ($pull_request_id === 0) {
-            $mail->subject("Coolify: New version is deployed of {$this->application_name}");
+            $mail->subject(__('Coolify: New version is deployed of :name', ['name' => $this->application_name]));
         } else {
             $fqdn = $this->preview->fqdn;
-            $mail->subject("Coolify: Pull request #{$pull_request_id} of {$this->application_name} deployed successfully");
+            $mail->subject(__('Coolify: Pull request #:id of :name deployed successfully', ['id' => $pull_request_id, 'name' => $this->application_name]));
         }
         $mail->view('emails.application-deployment-success', [
             'commit' => $this->deploymentCommitDetailsForMail($notifiable),
@@ -83,35 +83,35 @@ class DeploymentSuccess extends CustomEmailNotification
     {
         if ($this->preview) {
             $message = new DiscordMessage(
-                title: ':white_check_mark: Preview deployment successful',
-                description: 'Pull request: '.$this->preview->pull_request_id,
+                title: ':white_check_mark: '.__('Preview deployment successful'),
+                description: __('Pull request: :id', ['id' => $this->preview->pull_request_id]),
                 color: DiscordMessage::successColor(),
             );
 
             if ($this->preview->fqdn) {
-                $message->addField('Application', '[Link]('.$this->preview->fqdn.')');
+                $message->addField(__('Application'), '['.__('Link').']('.$this->preview->fqdn.')');
             }
 
-            $message->addField('Project', data_get($this->application, 'environment.project.name'), true);
-            $message->addField('Environment', $this->environment_name, true);
-            $message->addField('Name', $this->application_name, true);
-            $message->addField('Deployment logs', '[Link]('.$this->deployment_url.')');
+            $message->addField(__('Project'), data_get($this->application, 'environment.project.name'), true);
+            $message->addField(__('Environment'), $this->environment_name, true);
+            $message->addField(__('Name'), $this->application_name, true);
+            $message->addField(__('Deployment logs'), '['.__('Link').']('.$this->deployment_url.')');
         } else {
             if ($this->fqdn) {
-                $description = '[Open application]('.$this->fqdn.')';
+                $description = '['.__('Open application').']('.$this->fqdn.')';
             } else {
                 $description = '';
             }
             $message = new DiscordMessage(
-                title: ':white_check_mark: New version successfully deployed',
+                title: ':white_check_mark: '.__('New version successfully deployed'),
                 description: $description,
                 color: DiscordMessage::successColor(),
             );
-            $message->addField('Project', data_get($this->application, 'environment.project.name'), true);
-            $message->addField('Environment', $this->environment_name, true);
-            $message->addField('Name', $this->application_name, true);
+            $message->addField(__('Project'), data_get($this->application, 'environment.project.name'), true);
+            $message->addField(__('Environment'), $this->environment_name, true);
+            $message->addField(__('Name'), $this->application_name, true);
 
-            $message->addField('Deployment logs', '[Link]('.$this->deployment_url.')');
+            $message->addField(__('Deployment logs'), '['.__('Link').']('.$this->deployment_url.')');
         }
 
         return $message;
@@ -120,24 +120,24 @@ class DeploymentSuccess extends CustomEmailNotification
     public function toTelegram(): array
     {
         if ($this->preview) {
-            $message = 'Coolify: New PR'.$this->preview->pull_request_id.' version successfully deployed of '.$this->application_name.'';
+            $message = __('Coolify: New PR:id version successfully deployed of :name', ['id' => $this->preview->pull_request_id, 'name' => $this->application_name]);
             if ($this->preview->fqdn) {
                 $buttons[] = [
-                    'text' => 'Open Application',
+                    'text' => __('Open Application'),
                     'url' => $this->preview->fqdn,
                 ];
             }
         } else {
-            $message = '✅ New version successfully deployed of '.$this->application_name.'';
+            $message = '✅ '.__('New version successfully deployed of :name', ['name' => $this->application_name]);
             if ($this->fqdn) {
                 $buttons[] = [
-                    'text' => 'Open Application',
+                    'text' => __('Open Application'),
                     'url' => $this->fqdn,
                 ];
             }
         }
         $buttons[] = [
-            'text' => 'Deployment logs',
+            'text' => __('Deployment logs'),
             'url' => $this->deployment_url,
         ];
 
@@ -152,26 +152,26 @@ class DeploymentSuccess extends CustomEmailNotification
     public function toPushover(): PushoverMessage
     {
         if ($this->preview) {
-            $title = "Pull request #{$this->preview->pull_request_id} successfully deployed";
-            $message = 'New PR'.$this->preview->pull_request_id.' version successfully deployed of '.$this->application_name.'';
+            $title = __('Pull request #:id successfully deployed', ['id' => $this->preview->pull_request_id]);
+            $message = __('New PR:id version successfully deployed of :name', ['id' => $this->preview->pull_request_id, 'name' => $this->application_name]);
             if ($this->preview->fqdn) {
                 $buttons[] = [
-                    'text' => 'Open Application',
+                    'text' => __('Open Application'),
                     'url' => $this->preview->fqdn,
                 ];
             }
         } else {
-            $title = 'New version successfully deployed';
-            $message = 'New version successfully deployed of '.$this->application_name.'';
+            $title = __('New version successfully deployed');
+            $message = __('New version successfully deployed of :name', ['name' => $this->application_name]);
             if ($this->fqdn) {
                 $buttons[] = [
-                    'text' => 'Open Application',
+                    'text' => __('Open Application'),
                     'url' => $this->fqdn,
                 ];
             }
         }
         $buttons[] = [
-            'text' => 'Deployment logs',
+            'text' => __('Deployment logs'),
             'url' => $this->deployment_url,
         ];
 
@@ -188,22 +188,22 @@ class DeploymentSuccess extends CustomEmailNotification
     public function toSlack(): SlackMessage
     {
         if ($this->preview) {
-            $title = "Pull request #{$this->preview->pull_request_id} successfully deployed";
-            $description = "New version successfully deployed for {$this->application_name}";
+            $title = __('Pull request #:id successfully deployed', ['id' => $this->preview->pull_request_id]);
+            $description = __('New version successfully deployed for :name', ['name' => $this->application_name]);
             if ($this->preview->fqdn) {
-                $description .= "\nPreview URL: {$this->preview->fqdn}";
+                $description .= "\n".__('Preview URL: :url', ['url' => $this->preview->fqdn]);
             }
         } else {
-            $title = 'New version successfully deployed';
-            $description = "New version successfully deployed for {$this->application_name}";
+            $title = __('New version successfully deployed');
+            $description = __('New version successfully deployed for :name', ['name' => $this->application_name]);
             if ($this->fqdn) {
-                $description .= "\nApplication URL: {$this->fqdn}";
+                $description .= "\n".__('Application URL: :url', ['url' => $this->fqdn]);
             }
         }
 
-        $description .= "\n\n*Project:* ".data_get($this->application, 'environment.project.name');
-        $description .= "\n*Environment:* {$this->environment_name}";
-        $description .= "\n*<{$this->deployment_url}|Deployment Logs>*";
+        $description .= "\n\n*".__('Project:').'* '.data_get($this->application, 'environment.project.name');
+        $description .= "\n*".__('Environment:').'* '.$this->environment_name;
+        $description .= "\n*<{$this->deployment_url}|".__('Deployment Logs').'>*';
 
         return new SlackMessage(
             title: $title,

@@ -53,7 +53,7 @@ class TraefikVersionOutdated extends CustomEmailNotification
             ];
         });
 
-        $mail->subject("Coolify: Traefik proxy outdated on {$count} server(s)");
+        $mail->subject(__('Coolify: Traefik proxy outdated on :count server(s)', ['count' => $count]));
         $mail->view('emails.traefik-version-outdated', [
             'servers' => $serversWithUrls,
             'count' => $count,
@@ -69,8 +69,8 @@ class TraefikVersionOutdated extends CustomEmailNotification
             isset($s->outdatedInfo['newer_branch_target'])
         );
 
-        $description = "**{$count} server(s)** running outdated Traefik proxy. Update recommended for security and features.\n\n";
-        $description .= "**Affected servers:**\n";
+        $description = '**'.__(':count server(s)', ['count' => $count]).'** '.__('running outdated Traefik proxy. Update recommended for security and features.')."\n\n";
+        $description .= '**'.__('Affected servers:')."**\n";
 
         foreach ($this->servers as $server) {
             $info = $server->outdatedInfo ?? [];
@@ -83,23 +83,23 @@ class TraefikVersionOutdated extends CustomEmailNotification
             if ($isPatch && $hasNewerBranch) {
                 $newerBranchTarget = $info['newer_branch_target'];
                 $newerBranchLatest = $this->formatVersion($info['newer_branch_latest']);
-                $description .= "• {$server->name}: {$current} → {$upgradeTarget} (patch update available)\n";
-                $description .= "  ↳ Also available: {$newerBranchTarget} (latest patch: {$newerBranchLatest}) - new minor version\n";
+                $description .= __('• :name: :current → :target (patch update available)', ['name' => $server->name, 'current' => $current, 'target' => $upgradeTarget])."\n";
+                $description .= '  ↳ '.__('Also available: :branch (latest patch: :branchLatest) - new minor version', ['branch' => $newerBranchTarget, 'branchLatest' => $newerBranchLatest])."\n";
             } elseif ($isPatch) {
-                $description .= "• {$server->name}: {$current} → {$upgradeTarget} (patch update available)\n";
+                $description .= __('• :name: :current → :target (patch update available)', ['name' => $server->name, 'current' => $current, 'target' => $upgradeTarget])."\n";
             } else {
-                $description .= "• {$server->name}: {$current} (latest patch: {$latest}) → {$upgradeTarget} (new minor version available)\n";
+                $description .= __('• :name: :current (latest patch: :latest) → :target (new minor version available)', ['name' => $server->name, 'current' => $current, 'target' => $upgradeTarget, 'latest' => $latest])."\n";
             }
         }
 
-        $description .= "\n⚠️ It is recommended to test before switching the production version.";
+        $description .= "\n⚠️ ".__('It is recommended to test before switching the production version.');
 
         if ($hasUpgrades) {
-            $description .= "\n\n📖 **For minor version upgrades**: Read the Traefik changelog before upgrading to understand breaking changes and new features.";
+            $description .= "\n\n📖 **".__('For minor version upgrades').'**: '.__('Read the Traefik changelog before upgrading to understand breaking changes and new features.');
         }
 
         return new DiscordMessage(
-            title: ':warning: Coolify: Traefik proxy outdated',
+            title: ':warning: '.__('Coolify: Traefik proxy outdated'),
             description: $description,
             color: DiscordMessage::warningColor(),
         );
@@ -112,9 +112,9 @@ class TraefikVersionOutdated extends CustomEmailNotification
             isset($s->outdatedInfo['newer_branch_target'])
         );
 
-        $message = "⚠️ Coolify: Traefik proxy outdated on {$count} server(s)!\n\n";
-        $message .= "Update recommended for security and features.\n";
-        $message .= "📊 Affected servers:\n";
+        $message = '⚠️ '.__('Coolify: Traefik proxy outdated on :count server(s)!', ['count' => $count])."\n\n";
+        $message .= __('Update recommended for security and features.')."\n";
+        $message .= '📊 '.__('Affected servers:')."\n";
 
         foreach ($this->servers as $server) {
             $info = $server->outdatedInfo ?? [];
@@ -127,19 +127,19 @@ class TraefikVersionOutdated extends CustomEmailNotification
             if ($isPatch && $hasNewerBranch) {
                 $newerBranchTarget = $info['newer_branch_target'];
                 $newerBranchLatest = $this->formatVersion($info['newer_branch_latest']);
-                $message .= "• {$server->name}: {$current} → {$upgradeTarget} (patch update available)\n";
-                $message .= "  ↳ Also available: {$newerBranchTarget} (latest patch: {$newerBranchLatest}) - new minor version\n";
+                $message .= __('• :name: :current → :target (patch update available)', ['name' => $server->name, 'current' => $current, 'target' => $upgradeTarget])."\n";
+                $message .= '  ↳ '.__('Also available: :branch (latest patch: :branchLatest) - new minor version', ['branch' => $newerBranchTarget, 'branchLatest' => $newerBranchLatest])."\n";
             } elseif ($isPatch) {
-                $message .= "• {$server->name}: {$current} → {$upgradeTarget} (patch update available)\n";
+                $message .= __('• :name: :current → :target (patch update available)', ['name' => $server->name, 'current' => $current, 'target' => $upgradeTarget])."\n";
             } else {
-                $message .= "• {$server->name}: {$current} (latest patch: {$latest}) → {$upgradeTarget} (new minor version available)\n";
+                $message .= __('• :name: :current (latest patch: :latest) → :target (new minor version available)', ['name' => $server->name, 'current' => $current, 'target' => $upgradeTarget, 'latest' => $latest])."\n";
             }
         }
 
-        $message .= "\n⚠️ It is recommended to test before switching the production version.";
+        $message .= "\n⚠️ ".__('It is recommended to test before switching the production version.');
 
         if ($hasUpgrades) {
-            $message .= "\n\n📖 For minor version upgrades: Read the Traefik changelog before upgrading to understand breaking changes and new features.";
+            $message .= "\n\n📖 ".__('For minor version upgrades: Read the Traefik changelog before upgrading to understand breaking changes and new features.');
         }
 
         return [
@@ -155,8 +155,8 @@ class TraefikVersionOutdated extends CustomEmailNotification
             isset($s->outdatedInfo['newer_branch_target'])
         );
 
-        $message = "Traefik proxy outdated on {$count} server(s)!\n";
-        $message .= "Affected servers:\n";
+        $message = __('Traefik proxy outdated on :count server(s)!', ['count' => $count])."\n";
+        $message .= __('Affected servers:')."\n";
 
         foreach ($this->servers as $server) {
             $info = $server->outdatedInfo ?? [];
@@ -169,23 +169,23 @@ class TraefikVersionOutdated extends CustomEmailNotification
             if ($isPatch && $hasNewerBranch) {
                 $newerBranchTarget = $info['newer_branch_target'];
                 $newerBranchLatest = $this->formatVersion($info['newer_branch_latest']);
-                $message .= "• {$server->name}: {$current} → {$upgradeTarget} (patch update available)\n";
-                $message .= "  Also: {$newerBranchTarget} (latest: {$newerBranchLatest}) - new minor version\n";
+                $message .= __('• :name: :current → :target (patch update available)', ['name' => $server->name, 'current' => $current, 'target' => $upgradeTarget])."\n";
+                $message .= '  '.__('Also: :branch (latest: :branchLatest) - new minor version', ['branch' => $newerBranchTarget, 'branchLatest' => $newerBranchLatest])."\n";
             } elseif ($isPatch) {
-                $message .= "• {$server->name}: {$current} → {$upgradeTarget} (patch update available)\n";
+                $message .= __('• :name: :current → :target (patch update available)', ['name' => $server->name, 'current' => $current, 'target' => $upgradeTarget])."\n";
             } else {
-                $message .= "• {$server->name}: {$current} (latest patch: {$latest}) → {$upgradeTarget} (new minor version available)\n";
+                $message .= __('• :name: :current (latest patch: :latest) → :target (new minor version available)', ['name' => $server->name, 'current' => $current, 'target' => $upgradeTarget, 'latest' => $latest])."\n";
             }
         }
 
-        $message .= "\nIt is recommended to test before switching the production version.";
+        $message .= "\n".__('It is recommended to test before switching the production version.');
 
         if ($hasUpgrades) {
-            $message .= "\n\nFor minor version upgrades: Read the Traefik changelog before upgrading.";
+            $message .= "\n\n".__('For minor version upgrades: Read the Traefik changelog before upgrading.');
         }
 
         return new PushoverMessage(
-            title: 'Traefik proxy outdated',
+            title: __('Traefik proxy outdated'),
             level: 'warning',
             message: $message,
         );
@@ -198,8 +198,8 @@ class TraefikVersionOutdated extends CustomEmailNotification
             isset($s->outdatedInfo['newer_branch_target'])
         );
 
-        $description = "Traefik proxy outdated on {$count} server(s)!\n";
-        $description .= "*Affected servers:*\n";
+        $description = __('Traefik proxy outdated on :count server(s)!', ['count' => $count])."\n";
+        $description .= '*'.__('Affected servers:')."*\n";
 
         foreach ($this->servers as $server) {
             $info = $server->outdatedInfo ?? [];
@@ -212,23 +212,23 @@ class TraefikVersionOutdated extends CustomEmailNotification
             if ($isPatch && $hasNewerBranch) {
                 $newerBranchTarget = $info['newer_branch_target'];
                 $newerBranchLatest = $this->formatVersion($info['newer_branch_latest']);
-                $description .= "• `{$server->name}`: {$current} → {$upgradeTarget} (patch update available)\n";
-                $description .= "  ↳ Also available: {$newerBranchTarget} (latest patch: {$newerBranchLatest}) - new minor version\n";
+                $description .= __('• `:name`: :current → :target (patch update available)', ['name' => $server->name, 'current' => $current, 'target' => $upgradeTarget])."\n";
+                $description .= '  ↳ '.__('Also available: :branch (latest patch: :branchLatest) - new minor version', ['branch' => $newerBranchTarget, 'branchLatest' => $newerBranchLatest])."\n";
             } elseif ($isPatch) {
-                $description .= "• `{$server->name}`: {$current} → {$upgradeTarget} (patch update available)\n";
+                $description .= __('• `:name`: :current → :target (patch update available)', ['name' => $server->name, 'current' => $current, 'target' => $upgradeTarget])."\n";
             } else {
-                $description .= "• `{$server->name}`: {$current} (latest patch: {$latest}) → {$upgradeTarget} (new minor version available)\n";
+                $description .= __('• `:name`: :current (latest patch: :latest) → :target (new minor version available)', ['name' => $server->name, 'current' => $current, 'target' => $upgradeTarget, 'latest' => $latest])."\n";
             }
         }
 
-        $description .= "\n:warning: It is recommended to test before switching the production version.";
+        $description .= "\n:warning: ".__('It is recommended to test before switching the production version.');
 
         if ($hasUpgrades) {
-            $description .= "\n\n:book: For minor version upgrades: Read the Traefik changelog before upgrading to understand breaking changes and new features.";
+            $description .= "\n\n:book: ".__('For minor version upgrades: Read the Traefik changelog before upgrading to understand breaking changes and new features.');
         }
 
         return new SlackMessage(
-            title: 'Coolify: Traefik proxy outdated',
+            title: __('Coolify: Traefik proxy outdated'),
             description: $description,
             color: SlackMessage::warningColor()
         );

@@ -24,7 +24,7 @@ class ForceEnabled extends CustomEmailNotification
     public function toMail(): MailMessage
     {
         $mail = new MailMessage;
-        $mail->subject("Coolify: Server ({$this->server->name}) enabled again!");
+        $mail->subject(__('Coolify: Server (:name) enabled again!', ['name' => $this->server->name]));
         $mail->view('emails.server-force-enabled', [
             'name' => $this->server->name,
         ]);
@@ -35,8 +35,8 @@ class ForceEnabled extends CustomEmailNotification
     public function toDiscord(): DiscordMessage
     {
         return new DiscordMessage(
-            title: ':white_check_mark: Server enabled',
-            description: "Server '{$this->server->name}' enabled again!",
+            title: ':white_check_mark: '.__('Server enabled'),
+            description: __("Server ':name' enabled again!", ['name' => $this->server->name]),
             color: DiscordMessage::successColor(),
         );
     }
@@ -44,24 +44,24 @@ class ForceEnabled extends CustomEmailNotification
     public function toTelegram(): array
     {
         return [
-            'message' => "Coolify: Server ({$this->server->name}) enabled again!",
+            'message' => __('Coolify: Server (:name) enabled again!', ['name' => $this->server->name]),
         ];
     }
 
     public function toPushover(): PushoverMessage
     {
         return new PushoverMessage(
-            title: 'Server enabled',
+            title: __('Server enabled'),
             level: 'success',
-            message: "Server ({$this->server->name}) enabled again!",
+            message: __('Server (:name) enabled again!', ['name' => $this->server->name]),
         );
     }
 
     public function toSlack(): SlackMessage
     {
         return new SlackMessage(
-            title: 'Server enabled',
-            description: "Server '{$this->server->name}' enabled again!",
+            title: __('Server enabled'),
+            description: __("Server ':name' enabled again!", ['name' => $this->server->name]),
             color: SlackMessage::successColor()
         );
     }

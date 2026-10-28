@@ -101,7 +101,7 @@ class Webhooks extends Component
                 'manual_webhook_secret_gitea' => $this->giteaManualWebhookSecret,
             ]);
             $this->syncSavedSecrets();
-            $this->dispatch('success', 'Webhook secrets saved.');
+            $this->dispatch('success', __('Webhook secrets saved.'));
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
@@ -119,7 +119,7 @@ class Webhooks extends Component
             $this->authorize('update', $this->resource);
 
             if (! array_key_exists($provider, self::SECRET_FIELDS)) {
-                throw new \InvalidArgumentException('Unknown webhook provider.');
+                throw new \InvalidArgumentException(__('Unknown webhook provider.'));
             }
 
             $field = self::SECRET_FIELDS[$provider];
@@ -127,7 +127,7 @@ class Webhooks extends Component
             $this->resource->update([$field['attribute'] => $secret]);
             $this->{$field['property']} = $secret;
             $this->savedSecrets[$field['property']] = $secret;
-            $this->dispatch('success', "New {$field['label']} generated and saved.");
+            $this->dispatch('success', __('New :label generated and saved.', ['label' => $field['label']]));
         } catch (\Exception $e) {
             handleError($e, $this);
         }

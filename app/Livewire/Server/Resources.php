@@ -53,12 +53,12 @@ class Resources extends Component
         try {
             $this->authorize('update', $this->server);
             if (! ValidationPatterns::isValidContainerName($id)) {
-                $this->dispatch('error', 'Invalid container identifier.');
+                $this->dispatch('error', __('Invalid container identifier.'));
 
                 return;
             }
             $this->server->startUnmanaged($id);
-            $this->dispatch('success', 'Container started.');
+            $this->dispatch('success', __('Container started.'));
             $this->loadUnmanagedContainers();
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -70,12 +70,12 @@ class Resources extends Component
         try {
             $this->authorize('update', $this->server);
             if (! ValidationPatterns::isValidContainerName($id)) {
-                $this->dispatch('error', 'Invalid container identifier.');
+                $this->dispatch('error', __('Invalid container identifier.'));
 
                 return;
             }
             $this->server->restartUnmanaged($id);
-            $this->dispatch('success', 'Container restarted.');
+            $this->dispatch('success', __('Container restarted.'));
             $this->loadUnmanagedContainers();
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -87,12 +87,12 @@ class Resources extends Component
         try {
             $this->authorize('update', $this->server);
             if (! ValidationPatterns::isValidContainerName($id)) {
-                $this->dispatch('error', 'Invalid container identifier.');
+                $this->dispatch('error', __('Invalid container identifier.'));
 
                 return;
             }
             $this->server->stopUnmanaged($id);
-            $this->dispatch('success', 'Container stopped.');
+            $this->dispatch('success', __('Container stopped.'));
             $this->loadUnmanagedContainers();
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -107,7 +107,7 @@ class Resources extends Component
         } else {
             $this->loadUnmanagedContainers();
         }
-        $this->dispatch('success', 'Resource statuses refreshed.');
+        $this->dispatch('success', __('Resource statuses refreshed.'));
     }
 
     public function loadManagedContainers()

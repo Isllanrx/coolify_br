@@ -176,7 +176,7 @@ class FileBrowser extends Component
         try {
             $this->service()->makeDirectory($this->childPath($name));
             $this->loadEntries();
-            $this->dispatch('success', 'Folder created.');
+            $this->dispatch('success', __('Folder created.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -188,7 +188,7 @@ class FileBrowser extends Component
         try {
             $this->service()->createFile($this->childPath($name));
             $this->loadEntries();
-            $this->dispatch('success', 'File created.');
+            $this->dispatch('success', __('File created.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -200,7 +200,7 @@ class FileBrowser extends Component
         try {
             $this->service()->chmod($this->childPath($name), $mode);
             $this->loadEntries();
-            $this->dispatch('success', 'Permissions updated.');
+            $this->dispatch('success', __('Permissions updated.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -212,7 +212,7 @@ class FileBrowser extends Component
         try {
             $this->service()->rename($this->childPath($from), $this->childPath($newName));
             $this->loadEntries();
-            $this->dispatch('success', 'Renamed.');
+            $this->dispatch('success', __('Renamed.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -224,7 +224,7 @@ class FileBrowser extends Component
         try {
             $this->service()->delete($this->childPath($name));
             $this->loadEntries();
-            $this->dispatch('success', 'Deleted.');
+            $this->dispatch('success', __('Deleted.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -247,7 +247,7 @@ class FileBrowser extends Component
             // behind wire:ignore, so a dispatched event is how it receives them.
             $this->dispatch('load-file-editor', content: $this->editorContent, language: $this->editorLanguage);
         } catch (\RuntimeException $e) {
-            $this->dispatch('error', "Can't edit this file - it's binary or larger than 5 MB. Download it instead.");
+            $this->dispatch('error', __("Can't edit this file - it's binary or larger than 5 MB. Download it instead."));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -265,7 +265,7 @@ class FileBrowser extends Component
             $this->editorOpen = false;
             $this->editorContent = '';
             $this->loadEntries();
-            $this->dispatch('success', 'Saved.');
+            $this->dispatch('success', __('Saved.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -288,7 +288,7 @@ class FileBrowser extends Component
             $this->service()->upload($localTmp, $this->childPath($filename));
             $this->upload = null;
             $this->loadEntries();
-            $this->dispatch('success', 'Uploaded.');
+            $this->dispatch('success', __('Uploaded.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -307,7 +307,7 @@ class FileBrowser extends Component
             $s3Storage = FileDownloadStorageService::configuredStorage();
             $maxSize = $s3Storage ? FileDownloadStorageService::MAX_SIZE : ContainerFilesystemService::MAX_DOWNLOAD_SIZE;
             if ($target['size'] > $maxSize) {
-                $this->dispatch('error', ($target['isDir'] ? 'This folder' : 'This file').' is larger than '.formatBytes($maxSize).' and cannot be downloaded here. Use the terminal or a volume backup instead.');
+                $this->dispatch('error', $target['isDir'] ? __('This folder is larger than :size and cannot be downloaded here. Use the terminal or a volume backup instead.', ['size' => formatBytes($maxSize)]) : __('This file is larger than :size and cannot be downloaded here. Use the terminal or a volume backup instead.', ['size' => formatBytes($maxSize)]));
 
                 return;
             }
@@ -315,14 +315,14 @@ class FileBrowser extends Component
             if ($s3Storage) {
                 if (count($this->pendingDownloads) >= self::MAX_PENDING_S3_DOWNLOADS
                     || ! RateLimiter::attempt('file-browser-s3-download:'.auth()->id(), 10, fn () => true, 3600)) {
-                    $this->dispatch('error', 'Too many downloads are in progress. Wait for them to finish, then try again.');
+                    $this->dispatch('error', __('Too many downloads are in progress. Wait for them to finish, then try again.'));
 
                     return;
                 }
                 $downloadId = (string) Str::uuid();
                 $this->pendingDownloads[] = $downloadId;
                 PrepareFileDownloadJob::dispatch($downloadId, auth()->id(), $this->server()->id, $this->container, $path, $target['isDir'], $downloadName, $s3Storage->id, $this->useHelper);
-                $this->dispatch('info', 'Preparing '.$downloadName.'. The download starts when it is ready.');
+                $this->dispatch('info', __('Preparing :name. The download starts when it is ready.', ['name' => $downloadName]));
 
                 return;
             }
@@ -377,7 +377,7 @@ class FileBrowser extends Component
     {
         $name = basename(str_replace('\\', '/', $name));
         if ($name === '' || preg_match('/^\.+$/', $name) === 1) {
-            throw new \RuntimeException('Invalid file name.');
+            throw new \RuntimeException(__('Invalid file name.'));
         }
 
         return $name;
@@ -424,7 +424,7 @@ class FileBrowser extends Component
     protected function childPath(string $name): string
     {
         if ($name === '' || $name === '.' || $name === '..' || str_contains($name, '/') || str_contains($name, '\\') || str_contains($name, "\0")) {
-            throw new \InvalidArgumentException('Invalid file name.');
+            throw new \InvalidArgumentException(__('Invalid file name.'));
         }
         validateShellSafePath($name, 'file name');
 
@@ -446,7 +446,7 @@ class FileBrowser extends Component
         $this->containerRunning = (bool) $this->resource->isRunning();
         $this->availableContainers = $this->containerRunning ? $this->resolveContainers() : [];
         if (! $this->containerRunning || is_null($this->container) || ! in_array($this->container, $this->availableContainers, true)) {
-            throw new \RuntimeException('Container is not running.');
+            throw new \RuntimeException(__('Container is not running.'));
         }
     }
 
@@ -511,7 +511,7 @@ class FileBrowser extends Component
         if (! $this->useHelper || ! collect($this->entries)->contains(fn (array $entry) => $entry['name'] === $name && $entry['type'] === 'symlink')) {
             return false;
         }
-        $this->dispatch('error', 'Symlinks cannot be opened in a container without a shell. Open the target path instead.');
+        $this->dispatch('error', __('Symlinks cannot be opened in a container without a shell. Open the target path instead.'));
 
         return true;
     }

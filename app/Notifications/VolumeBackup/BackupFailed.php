@@ -37,13 +37,13 @@ class BackupFailed extends CustomEmailNotification
 
     public function summary(): string
     {
-        return "Storage backup of {$this->target} ({$this->resourceName}) has FAILED.";
+        return __('Storage backup of :target (:resource) has FAILED.', ['target' => $this->target, 'resource' => $this->resourceName]);
     }
 
     public function toMail(): MailMessage
     {
         $mail = new MailMessage;
-        $mail->subject("Coolify: [ACTION REQUIRED] Storage backup FAILED for {$this->resourceName}");
+        $mail->subject(__('Coolify: [ACTION REQUIRED] Storage backup FAILED for :name', ['name' => $this->resourceName]));
         $mail->view('emails.volume-backup-result', [
             'summary' => $this->summary(),
             'frequency' => $this->frequency,
@@ -57,16 +57,16 @@ class BackupFailed extends CustomEmailNotification
     public function toDiscord(): DiscordMessage
     {
         $message = new DiscordMessage(
-            title: ':cross_mark: Storage backup failed',
+            title: ':cross_mark: '.__('Storage backup failed'),
             description: $this->summary(),
             color: DiscordMessage::errorColor(),
             isCritical: true,
         );
 
-        $message->addField('Frequency', $this->frequency, true);
-        $message->addField('Output', $this->output);
+        $message->addField(__('Frequency'), $this->frequency, true);
+        $message->addField(__('Output'), $this->output);
         if ($this->url) {
-            $message->addField('Resource', '[Link]('.$this->url.')');
+            $message->addField(__('Resource'), '['.__('Link').']('.$this->url.')');
         }
 
         return $message;
@@ -74,10 +74,10 @@ class BackupFailed extends CustomEmailNotification
 
     public function toTelegram(): array
     {
-        $data = ['message' => "Coolify: {$this->summary()}\n\nFrequency: {$this->frequency}\n\nReason:\n{$this->output}"];
+        $data = ['message' => __('Coolify: :summary', ['summary' => $this->summary()])."\n\n".__('Frequency:')." {$this->frequency}\n\n".__('Reason:')."\n{$this->output}"];
 
         if ($this->url) {
-            $data['buttons'] = [['text' => 'Open resource in Coolify', 'url' => $this->url]];
+            $data['buttons'] = [['text' => __('Open resource in Coolify'), 'url' => $this->url]];
         }
 
         return $data;
@@ -86,18 +86,18 @@ class BackupFailed extends CustomEmailNotification
     public function toPushover(): PushoverMessage
     {
         return new PushoverMessage(
-            title: 'Storage backup failed',
+            title: __('Storage backup failed'),
             level: 'error',
-            message: "{$this->summary()}<br/><br/><b>Frequency:</b> {$this->frequency}.<br/><b>Reason:</b> {$this->output}",
-            buttons: $this->url ? [['text' => 'Open resource in Coolify', 'url' => $this->url]] : [],
+            message: $this->summary().'<br/><br/><b>'.__('Frequency:').'</b> '.$this->frequency.'.<br/><b>'.__('Reason:').'</b> '.$this->output,
+            buttons: $this->url ? [['text' => __('Open resource in Coolify'), 'url' => $this->url]] : [],
         );
     }
 
     public function toSlack(): SlackMessage
     {
         return new SlackMessage(
-            title: 'Storage backup failed',
-            description: $this->summary()."\n\n*Frequency:* {$this->frequency}\n\n*Error Output:* {$this->output}".($this->url ? "\n\n<{$this->url}|Open resource in Coolify>" : ''),
+            title: __('Storage backup failed'),
+            description: $this->summary()."\n\n*".__('Frequency:')."* {$this->frequency}\n\n*".__('Error Output:')."* {$this->output}".($this->url ? "\n\n<{$this->url}|".__('Open resource in Coolify').'>' : ''),
             color: SlackMessage::errorColor(),
         );
     }

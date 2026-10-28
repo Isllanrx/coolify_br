@@ -21,7 +21,7 @@ class Passkeys extends Component
     public function registered(): void
     {
         $this->show_form = false;
-        $this->dispatch('success', 'Passkey added.');
+        $this->dispatch('success', __('Passkey added.'));
     }
 
     public function rename(int $id, string $name): bool
@@ -36,7 +36,7 @@ class Passkeys extends Component
         )->validate();
 
         $passkey->update(['name' => $validated['name']]);
-        $this->dispatch('success', 'Passkey renamed.');
+        $this->dispatch('success', __('Passkey renamed.'));
 
         return true;
     }
@@ -48,11 +48,11 @@ class Passkeys extends Component
         $passkey = Auth::user()->passkeys()->findOrFail($id);
 
         if (! verifyPasswordConfirmation($password, $this)) {
-            return 'The provided password is incorrect.';
+            return __('The provided password is incorrect.');
         }
 
         app(DeletePasskey::class)(Auth::user(), $passkey);
-        $this->dispatch('success', 'Passkey deleted.');
+        $this->dispatch('success', __('Passkey deleted.'));
 
         return true;
     }

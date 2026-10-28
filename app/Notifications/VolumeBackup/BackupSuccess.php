@@ -37,17 +37,17 @@ class BackupSuccess extends CustomEmailNotification
 
     public function summary(): string
     {
-        $summary = "Storage backup of {$this->target} ({$this->resourceName}) was successful.";
+        $summary = __('Storage backup of :target (:resource) was successful.', ['target' => $this->target, 'resource' => $this->resourceName]);
 
-        return $this->warning ? $summary." Warning: {$this->warning}" : $summary;
+        return $this->warning ? $summary.' '.__('Warning: :warning', ['warning' => $this->warning]) : $summary;
     }
 
     public function toMail(): MailMessage
     {
         $mail = new MailMessage;
         $mail->subject($this->warning
-            ? "Coolify: Storage backup succeeded with a warning for {$this->resourceName}"
-            : "Coolify: Storage backup successfully done for {$this->resourceName}");
+            ? __('Coolify: Storage backup succeeded with a warning for :name', ['name' => $this->resourceName])
+            : __('Coolify: Storage backup successfully done for :name', ['name' => $this->resourceName]));
         $mail->view('emails.volume-backup-result', [
             'summary' => $this->summary(),
             'frequency' => $this->frequency,
@@ -60,14 +60,14 @@ class BackupSuccess extends CustomEmailNotification
     public function toDiscord(): DiscordMessage
     {
         $message = new DiscordMessage(
-            title: $this->warning ? ':warning: Storage backup succeeded with a warning' : ':white_check_mark: Storage backup successful',
+            title: $this->warning ? ':warning: '.__('Storage backup succeeded with a warning') : ':white_check_mark: '.__('Storage backup successful'),
             description: $this->summary(),
             color: $this->warning ? DiscordMessage::warningColor() : DiscordMessage::successColor(),
         );
 
-        $message->addField('Frequency', $this->frequency, true);
+        $message->addField(__('Frequency'), $this->frequency, true);
         if ($this->url) {
-            $message->addField('Resource', '[Link]('.$this->url.')');
+            $message->addField(__('Resource'), '['.__('Link').']('.$this->url.')');
         }
 
         return $message;
@@ -75,10 +75,10 @@ class BackupSuccess extends CustomEmailNotification
 
     public function toTelegram(): array
     {
-        $data = ['message' => "Coolify: {$this->summary()}\n\nFrequency: {$this->frequency}"];
+        $data = ['message' => __('Coolify: :summary', ['summary' => $this->summary()])."\n\n".__('Frequency:')." {$this->frequency}"];
 
         if ($this->url) {
-            $data['buttons'] = [['text' => 'Open resource in Coolify', 'url' => $this->url]];
+            $data['buttons'] = [['text' => __('Open resource in Coolify'), 'url' => $this->url]];
         }
 
         return $data;
@@ -87,18 +87,18 @@ class BackupSuccess extends CustomEmailNotification
     public function toPushover(): PushoverMessage
     {
         return new PushoverMessage(
-            title: $this->warning ? 'Storage backup succeeded with a warning' : 'Storage backup successful',
+            title: $this->warning ? __('Storage backup succeeded with a warning') : __('Storage backup successful'),
             level: $this->warning ? 'warning' : 'success',
-            message: "{$this->summary()}<br/><br/><b>Frequency:</b> {$this->frequency}.",
-            buttons: $this->url ? [['text' => 'Open resource in Coolify', 'url' => $this->url]] : [],
+            message: $this->summary().'<br/><br/><b>'.__('Frequency:').'</b> '.$this->frequency.'.',
+            buttons: $this->url ? [['text' => __('Open resource in Coolify'), 'url' => $this->url]] : [],
         );
     }
 
     public function toSlack(): SlackMessage
     {
         return new SlackMessage(
-            title: $this->warning ? 'Storage backup succeeded with a warning' : 'Storage backup successful',
-            description: $this->summary()."\n\n*Frequency:* {$this->frequency}".($this->url ? "\n\n<{$this->url}|Open resource in Coolify>" : ''),
+            title: $this->warning ? __('Storage backup succeeded with a warning') : __('Storage backup successful'),
+            description: $this->summary()."\n\n*".__('Frequency:')."* {$this->frequency}".($this->url ? "\n\n<{$this->url}|".__('Open resource in Coolify').'>' : ''),
             color: $this->warning ? SlackMessage::warningColor() : SlackMessage::successColor(),
         );
     }

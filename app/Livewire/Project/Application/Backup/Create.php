@@ -99,13 +99,13 @@ class Create extends Component
 
         $target = $this->selectedTarget();
         if (! $target) {
-            $this->addError('targetKey', 'Select a volume or directory owned by this application.');
+            $this->addError('targetKey', __('Select a volume or directory owned by this application.'));
 
             return;
         }
 
         if (! validate_cron_expression($this->frequency)) {
-            $this->addError('frequency', 'The frequency must be a valid cron or human expression.');
+            $this->addError('frequency', __('The frequency must be a valid cron or human expression.'));
 
             return;
         }
@@ -132,7 +132,7 @@ class Create extends Component
                 ]);
             }
 
-            $this->dispatch('success', $backup->wasRecentlyCreated ? 'Scheduled storage backup created.' : 'Scheduled storage backup updated.');
+            $this->dispatch('success', $backup->wasRecentlyCreated ? __('Scheduled storage backup created.') : __('Scheduled storage backup updated.'));
             redirectRoute($this, 'project.application.backup.show', [
                 'project_uuid' => $this->application->project()->uuid,
                 'environment_uuid' => $this->application->environment->uuid,

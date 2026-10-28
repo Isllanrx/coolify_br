@@ -68,16 +68,16 @@ class AdminView extends Component
         }
 
         if (! verifyPasswordConfirmation($password, $this)) {
-            return 'The provided password is incorrect.';
+            return __('The provided password is incorrect.');
         }
 
         if (! auth()->user()->isInstanceAdmin()) {
-            return $this->dispatch('error', 'You are not authorized to delete users');
+            return $this->dispatch('error', __('You are not authorized to delete users'));
         }
 
         $user = User::find($id);
         if (! $user) {
-            return $this->dispatch('error', 'User not found');
+            return $this->dispatch('error', __('User not found'));
         }
 
         if ($error = $this->deletionError(auth()->user(), $user)) {
@@ -109,18 +109,18 @@ class AdminView extends Component
     private function deletionError(User $actor, User $target): ?string
     {
         if ($target->id === 0) {
-            return 'The root user cannot be deleted.';
+            return __('The root user cannot be deleted.');
         }
 
         if ($target->id === $actor->id) {
-            return 'Delete your own account from your profile.';
+            return __('Delete your own account from your profile.');
         }
 
         $actorRole = $this->rootTeamRole($actor);
         $targetRole = $this->rootTeamRole($target);
 
         if (! $actorRole || ($targetRole && $targetRole->gt($actorRole))) {
-            return 'You cannot delete a user with a higher role in the root team.';
+            return __('You cannot delete a user with a higher role in the root team.');
         }
 
         return null;

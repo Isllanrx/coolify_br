@@ -33,7 +33,7 @@ class Reachable extends CustomEmailNotification
     public function toMail(): MailMessage
     {
         $mail = new MailMessage;
-        $mail->subject("Coolify: Server ({$this->server->name}) revived.");
+        $mail->subject(__('Coolify: Server (:name) revived.', ['name' => $this->server->name]));
         $mail->view('emails.server-revived', [
             'name' => $this->server->name,
         ]);
@@ -44,8 +44,8 @@ class Reachable extends CustomEmailNotification
     public function toDiscord(): DiscordMessage
     {
         return new DiscordMessage(
-            title: ":white_check_mark: Server '{$this->server->name}' revived",
-            description: 'All automations & integrations are turned on again!',
+            title: ':white_check_mark: '.__("Server ':name' revived", ['name' => $this->server->name]),
+            description: __('All automations & integrations are turned on again!'),
             color: DiscordMessage::successColor(),
         );
     }
@@ -53,8 +53,8 @@ class Reachable extends CustomEmailNotification
     public function toPushover(): PushoverMessage
     {
         return new PushoverMessage(
-            title: 'Server revived',
-            message: "Server '{$this->server->name}' revived. All automations & integrations are turned on again!",
+            title: __('Server revived'),
+            message: __("Server ':name' revived. All automations & integrations are turned on again!", ['name' => $this->server->name]),
             level: 'success',
         );
     }
@@ -62,15 +62,15 @@ class Reachable extends CustomEmailNotification
     public function toTelegram(): array
     {
         return [
-            'message' => "Coolify: Server '{$this->server->name}' revived. All automations & integrations are turned on again!",
+            'message' => __("Coolify: Server ':name' revived. All automations & integrations are turned on again!", ['name' => $this->server->name]),
         ];
     }
 
     public function toSlack(): SlackMessage
     {
         return new SlackMessage(
-            title: 'Server revived',
-            description: "Server '{$this->server->name}' revived.\nAll automations & integrations are turned on again!",
+            title: __('Server revived'),
+            description: __("Server ':name' revived.", ['name' => $this->server->name])."\n".__('All automations & integrations are turned on again!'),
             color: SlackMessage::successColor()
         );
     }

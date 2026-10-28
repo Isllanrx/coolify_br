@@ -139,7 +139,7 @@ class SecretManagerLinks extends Component
 
             $this->resetKeys();
             $this->loadData();
-            $this->dispatch('success', 'Secret manager source saved. References resolve at the next deployment.');
+            $this->dispatch('success', __('Secret manager source saved. References resolve at the next deployment.'));
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Throwable $e) {
@@ -183,7 +183,7 @@ class SecretManagerLinks extends Component
             $this->auditSecretManagerAction('settings_updated');
             $this->resetKeys();
             $this->loadData();
-            $this->dispatch('success', 'Secret manager settings saved.');
+            $this->dispatch('success', __('Secret manager settings saved.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -204,7 +204,7 @@ class SecretManagerLinks extends Component
             $this->settings = [];
             $this->resetKeys();
             $this->loadData();
-            $this->dispatch('success', 'Secret manager source removed. Existing {{vault.*}} references will fail the next deployment until they are removed too.');
+            $this->dispatch('success', __('Secret manager source removed. Existing {{vault.*}} references will fail the next deployment until they are removed too.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -226,7 +226,7 @@ class SecretManagerLinks extends Component
             $this->keysLoaded = true;
             $this->auditSecretManagerAction('keys_viewed', ['key_count' => count($keys)]);
         } catch (\Throwable $e) {
-            $this->dispatch('error', 'Could not fetch keys: '.$e->getMessage());
+            $this->dispatch('error', __('Could not fetch keys: :error', ['error' => $e->getMessage()]));
         }
     }
 
@@ -240,13 +240,13 @@ class SecretManagerLinks extends Component
             }
 
             if (! ValidationPatterns::isValidEnvironmentVariableKey($key)) {
-                $this->dispatch('error', "{$key} is not a valid variable name.");
+                $this->dispatch('error', __(':key is not a valid variable name.', ['key' => $key]));
 
                 return;
             }
 
             if ($this->resource->environment_variables()->where('key', $key)->exists()) {
-                $this->dispatch('error', "A variable with the key {$key} already exists.");
+                $this->dispatch('error', __('A variable with the key :key already exists.', ['key' => $key]));
 
                 return;
             }
@@ -258,7 +258,7 @@ class SecretManagerLinks extends Component
             $this->auditSecretManagerAction('reference_created', ['secret_key' => $key]);
 
             $this->dispatch('refreshEnvs')->to(All::class);
-            $this->dispatch('success', "Added {$key} as {{vault.{$key}}}.");
+            $this->dispatch('success', __('Added :key as :reference.', ['key' => $key, 'reference' => '{{vault.'.$key.'}}']));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -294,12 +294,12 @@ class SecretManagerLinks extends Component
     private function importResultMessage(array $imported, array $skipped): string
     {
         if ($imported === [] && $skipped === []) {
-            return 'All remote keys already exist as variables.';
+            return __('All remote keys already exist as variables.');
         }
 
         $message = $imported === []
-            ? 'No keys imported.'
-            : 'Imported '.count($imported).' keys as {{vault.KEY}} references.';
+            ? __('No keys imported.')
+            : __('Imported :count keys as {{vault.KEY}} references.', ['count' => count($imported)]);
 
         if ($skipped === []) {
             return $message;
@@ -307,11 +307,11 @@ class SecretManagerLinks extends Component
 
         $shownNames = array_map(fn (string $key): string => e($key), array_slice($skipped, 0, 10));
         $moreCount = count($skipped) - count($shownNames);
-        $names = implode(', ', $shownNames).($moreCount > 0 ? " and {$moreCount} more" : '');
+        $names = $moreCount > 0 ? __(':names and :count more', ['names' => implode(', ', $shownNames), 'count' => $moreCount]) : implode(', ', $shownNames);
 
         return $message.' '.(count($skipped) === 1
-            ? "Skipped 1 key that is not a valid variable name: {$names}."
-            : 'Skipped '.count($skipped)." keys that are not valid variable names: {$names}.");
+            ? __('Skipped 1 key that is not a valid variable name: :names.', ['names' => $names])
+            : __('Skipped :count keys that are not valid variable names: :names.', ['count' => count($skipped), 'names' => $names]));
     }
 
     private function resetKeys(): void

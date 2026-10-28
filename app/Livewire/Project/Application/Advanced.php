@@ -229,7 +229,7 @@ class Advanced extends Component
                 if (! $this->application->destination->server->isLogDrainEnabled()) {
                     $this->isLogDrainEnabled = false;
                     $this->syncData(true);
-                    $this->dispatch('error', 'Log drain is not enabled on this server.');
+                    $this->dispatch('error', __('Log drain is not enabled on this server.'));
 
                     return;
                 }
@@ -252,7 +252,7 @@ class Advanced extends Component
                 $this->resetDefaultLabels();
             }
 
-            $this->dispatch('success', 'Settings saved.');
+            $this->dispatch('success', __('Settings saved.'));
             $this->dispatch('configurationChanged');
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -267,22 +267,22 @@ class Advanced extends Component
             $settings = $this->application->settings;
             $gpuSelectionChanged = $this->gpuCount !== $settings->gpu_count || $this->gpuDeviceIds !== $settings->gpu_device_ids;
             if ($gpuSelectionChanged && filled($this->gpuCount) && filled($this->gpuDeviceIds)) {
-                $this->dispatch('error', 'You cannot set both GPU count and GPU device IDs.');
+                $this->dispatch('error', __('You cannot set both GPU count and GPU device IDs.'));
 
                 return;
             }
             if ($this->gpuCount !== $settings->gpu_count && filled($this->gpuCount) && ! preg_match(ApplicationSetting::GPU_COUNT_PATTERN, trim($this->gpuCount))) {
-                $this->dispatch('error', 'GPU count must be a number or "all".');
+                $this->dispatch('error', __('GPU count must be a number or "all".'));
 
                 return;
             }
             if ($this->gpuOptions !== $settings->gpu_options && ApplicationSetting::parseGpuOptions($this->gpuOptions) === null) {
-                $this->dispatch('error', 'GPU options must be key=value pairs (one per line) or a YAML mapping.');
+                $this->dispatch('error', __('GPU options must be key=value pairs (one per line) or a YAML mapping.'));
 
                 return;
             }
             $this->syncData(true);
-            $this->dispatch('success', 'Settings saved.');
+            $this->dispatch('success', __('Settings saved.'));
             $this->dispatch('configurationChanged');
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -301,7 +301,7 @@ class Advanced extends Component
             }
             if (is_null($this->customInternalName)) {
                 $this->syncData(true);
-                $this->dispatch('success', 'Custom name saved.');
+                $this->dispatch('success', __('Custom name saved.'));
                 $this->dispatch('configurationChanged');
 
                 return;
@@ -314,12 +314,12 @@ class Advanced extends Component
             });
             if ($foundSameInternalName->isNotEmpty()) {
                 $this->customInternalName = $this->application->settings->custom_internal_name;
-                $this->dispatch('error', 'This custom container name is already in use by another application on this server.');
+                $this->dispatch('error', __('This custom container name is already in use by another application on this server.'));
 
                 return;
             }
             $this->syncData(true);
-            $this->dispatch('success', 'Custom name saved.');
+            $this->dispatch('success', __('Custom name saved.'));
             $this->dispatch('configurationChanged');
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -335,13 +335,13 @@ class Advanced extends Component
 
             if ($this->customContainerNamePrefix && ApplicationSetting::isContainerNamePrefixInUse($this->customContainerNamePrefix, $this->application->destination->server, $this->application->id)) {
                 $this->customContainerNamePrefix = $this->application->settings->custom_container_name_prefix;
-                $this->dispatch('error', 'This container name prefix is already in use by another application on this Coolify instance.');
+                $this->dispatch('error', __('This container name prefix is already in use by another application on this Coolify instance.'));
 
                 return;
             }
 
             $this->syncData(true);
-            $this->dispatch('success', 'Container name prefix saved.');
+            $this->dispatch('success', __('Container name prefix saved.'));
             $this->dispatch('configurationChanged');
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -398,7 +398,7 @@ class Advanced extends Component
                 $this->resetDefaultLabels();
             }
 
-            $this->dispatch('success', 'Certificate resolver saved.');
+            $this->dispatch('success', __('Certificate resolver saved.'));
             $this->dispatch('configurationChanged');
         } catch (ValidationException $e) {
             throw $e;
@@ -426,7 +426,7 @@ class Advanced extends Component
             $this->application->settings->save();
             $this->auditSettingsUpdate($changedFields);
 
-            $this->dispatch('success', 'Stop grace period updated.');
+            $this->dispatch('success', __('Stop grace period updated.'));
             $this->dispatch('configurationChanged');
         } catch (ValidationException $e) {
             throw $e;
@@ -451,7 +451,7 @@ class Advanced extends Component
             $this->application->settings->save();
             $this->auditSettingsUpdate($changedFields);
 
-            $this->dispatch('success', 'Rolling update drain time updated.');
+            $this->dispatch('success', __('Rolling update drain time updated.'));
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Throwable $e) {
@@ -468,7 +468,7 @@ class Advanced extends Component
             ]);
             $this->application->max_restart_count = $this->maxRestartCount;
             $this->application->save();
-            $this->dispatch('success', 'Max restart count saved.');
+            $this->dispatch('success', __('Max restart count saved.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -483,7 +483,7 @@ class Advanced extends Component
             }
             $functionalServers = $servers->filter(fn ($server) => $server->isFunctional());
             if ($functionalServers->isEmpty()) {
-                $this->dispatch('error', 'Validate the server connection before you refresh GPUs.');
+                $this->dispatch('error', __('Validate the server connection before you refresh GPUs.'));
 
                 return;
             }
@@ -491,11 +491,11 @@ class Advanced extends Component
             $failed = $functionalServers->reject(fn ($server) => $server->gatherServerMetadata())->pluck('name');
             $this->application->unsetRelation('destination')->unsetRelation('additional_servers');
             if ($failed->isNotEmpty()) {
-                $this->dispatch('error', 'Could not collect GPUs from '.$failed->implode(', ').'. Check the application logs for the remote command output.');
+                $this->dispatch('error', __('Could not collect GPUs from :servers. Check the application logs for the remote command output.', ['servers' => $failed->implode(', ')]));
 
                 return;
             }
-            $this->dispatch('success', 'GPUs refreshed.');
+            $this->dispatch('success', __('GPUs refreshed.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }

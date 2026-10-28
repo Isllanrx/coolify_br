@@ -45,7 +45,7 @@ class DockerCompose extends Component
             ]);
             $services = data_get(parseDockerComposeYaml($this->dockerComposeRaw), 'services');
             if (! is_array($services) || $services === [] || array_is_list($services)) {
-                throw new \Exception('The Docker Compose file must define at least one service under "services".');
+                throw new \Exception(__('The Docker Compose file must define at least one service under "services".'));
             }
 
             // Validate for command injection BEFORE saving to database
@@ -57,7 +57,7 @@ class DockerCompose extends Component
             $destination_uuid = $this->query['destination'] ?? null;
             $destination = find_resource_destination_for_current_team($destination_uuid);
             if (! $destination) {
-                throw new \Exception('Destination not found.');
+                throw new \Exception(__('Destination not found.'));
             }
             $destination_class = $destination->getMorphClass();
 

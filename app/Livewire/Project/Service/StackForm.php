@@ -171,7 +171,7 @@ class StackForm extends Component
             $this->service->refresh()->update([
                 'connect_to_docker_network' => $this->connectToDockerNetwork,
             ]);
-            $this->dispatch('success', 'Service settings saved.');
+            $this->dispatch('success', __('Service settings saved.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -203,7 +203,7 @@ class StackForm extends Component
             $this->dispatch('refreshEnvs')->to(EditCompose::class);
             $this->dispatch('refreshEnvs')->to(All::class);
             $this->dispatch('refreshServices');
-            $notify && $this->dispatch('success', 'Service saved.');
+            $notify && $this->dispatch('success', __('Service saved.'));
         } catch (\Throwable $e) {
             // On error, refresh from database to restore clean state
             $this->service->refresh();

@@ -38,7 +38,7 @@ class TerminalAccess extends Component
 
             // Verify password
             if (! verifyPasswordConfirmation($password, $this)) {
-                return 'The provided password is incorrect.';
+                return __('The provided password is incorrect.');
             }
 
             // Toggle the terminal setting
@@ -54,7 +54,7 @@ class TerminalAccess extends Component
                 'server_uuid' => $this->server->uuid,
                 'server_name' => $this->server->name,
             ]);
-            $this->dispatch('success', "Terminal access has been {$status}.");
+            $this->dispatch('success', $this->isTerminalEnabled ? __('Terminal access has been enabled.') : __('Terminal access has been disabled.'));
 
             return true;
         } catch (\Throwable $e) {

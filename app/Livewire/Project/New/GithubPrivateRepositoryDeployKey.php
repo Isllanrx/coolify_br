@@ -158,7 +158,7 @@ class GithubPrivateRepositoryDeployKey extends Component
             $destination_uuid = $this->query['destination'] ?? null;
             $destination = find_resource_destination_for_current_team($destination_uuid);
             if (! $destination) {
-                throw new \Exception('Destination not found.');
+                throw new \Exception(__('Destination not found.'));
             }
             $destination_class = $destination->getMorphClass();
 
@@ -238,7 +238,7 @@ class GithubPrivateRepositoryDeployKey extends Component
         ]);
 
         if ($validator->fails()) {
-            throw new \RuntimeException('Invalid repository URL: '.$validator->errors()->first('repository_url'));
+            throw new \RuntimeException(__('Invalid repository URL: :error', ['error' => $validator->errors()->first('repository_url')]));
         }
 
         if (($scp = parseScpStyleGitUrl($this->repository_url)) !== null) {

@@ -28,14 +28,14 @@ class BackupMissing extends CustomEmailNotification
     public function toMail(): MailMessage
     {
         return (new MailMessage)
-            ->subject("Coolify: [ACTION REQUIRED] No recent backup for {$this->databaseName}")
+            ->subject(__('Coolify: [ACTION REQUIRED] No recent backup for :name', ['name' => $this->databaseName]))
             ->view('emails.backup-missing', $this->messageData());
     }
 
     public function toDiscord(): DiscordMessage
     {
         return new DiscordMessage(
-            title: ':warning: Scheduled database backup missing',
+            title: ':warning: '.__('Scheduled database backup missing'),
             description: $this->description(),
             color: DiscordMessage::errorColor(),
             isCritical: true,
@@ -49,12 +49,12 @@ class BackupMissing extends CustomEmailNotification
 
     public function toPushover(): PushoverMessage
     {
-        return new PushoverMessage(title: 'Scheduled database backup missing', level: 'error', message: $this->description());
+        return new PushoverMessage(title: __('Scheduled database backup missing'), level: 'error', message: $this->description());
     }
 
     public function toSlack(): SlackMessage
     {
-        return new SlackMessage(title: 'Scheduled database backup missing', description: $this->description(), color: SlackMessage::errorColor());
+        return new SlackMessage(title: __('Scheduled database backup missing'), description: $this->description(), color: SlackMessage::errorColor());
     }
 
     public function toWebhook(): array
@@ -69,7 +69,7 @@ class BackupMissing extends CustomEmailNotification
 
     private function description(): string
     {
-        return "The enabled backup schedule for {$this->databaseName} has produced no executions in the last {$this->backup->missing_backup_notification_days} day(s).";
+        return __('The enabled backup schedule for :name has produced no executions in the last :days day(s).', ['name' => $this->databaseName, 'days' => $this->backup->missing_backup_notification_days]);
     }
 
     private function messageData(): array

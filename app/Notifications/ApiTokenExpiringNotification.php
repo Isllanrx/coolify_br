@@ -32,7 +32,7 @@ class ApiTokenExpiringNotification extends CustomEmailNotification
     public function toMail(): MailMessage
     {
         $mail = new MailMessage;
-        $mail->subject("Coolify: API token '{$this->tokenName}' expires in 24 hours");
+        $mail->subject(__("Coolify: API token ':name' expires in 24 hours", ['name' => $this->tokenName]));
         $mail->view('emails.api-token-expiring', [
             'tokenName' => $this->tokenName,
             'expiresAt' => $this->expiresAt,
@@ -45,25 +45,25 @@ class ApiTokenExpiringNotification extends CustomEmailNotification
     public function toDiscord(): DiscordMessage
     {
         $message = new DiscordMessage(
-            title: '🔑 API token expiring soon',
-            description: "API token **{$this->tokenName}** expires on {$this->expiresAt}.\n\n**Action Required:** Rotate this token before it expires to avoid API outages.",
+            title: '🔑 '.__('API token expiring soon'),
+            description: __('API token **:name** expires on :date.', ['name' => $this->tokenName, 'date' => $this->expiresAt])."\n\n**".__('Action Required:').'** '.__('Rotate this token before it expires to avoid API outages.'),
             color: DiscordMessage::warningColor(),
         );
 
-        $message->addField('Manage tokens', "[Open API Tokens]({$this->manageUrl})");
+        $message->addField(__('Manage tokens'), '['.__('Open API Tokens')."]({$this->manageUrl})");
 
         return $message;
     }
 
     public function toTelegram(): array
     {
-        $message = "Coolify: API token '{$this->tokenName}' expires on {$this->expiresAt}.\n\nAction Required: Rotate this token before it expires to avoid API outages.";
+        $message = __("Coolify: API token ':name' expires on :date.", ['name' => $this->tokenName, 'date' => $this->expiresAt])."\n\n".__('Action Required:').' '.__('Rotate this token before it expires to avoid API outages.');
 
         return [
             'message' => $message,
             'buttons' => [
                 [
-                    'text' => 'Manage API tokens',
+                    'text' => __('Manage API tokens'),
                     'url' => $this->manageUrl,
                 ],
             ],
@@ -72,16 +72,16 @@ class ApiTokenExpiringNotification extends CustomEmailNotification
 
     public function toPushover(): PushoverMessage
     {
-        $message = "API token <b>{$this->tokenName}</b> expires on {$this->expiresAt}.<br/><br/>";
-        $message .= '<b>Action Required:</b> Rotate this token before it expires to avoid API outages.';
+        $message = __('API token <b>:name</b> expires on :date.', ['name' => $this->tokenName, 'date' => $this->expiresAt]).'<br/><br/>';
+        $message .= '<b>'.__('Action Required:').'</b> '.__('Rotate this token before it expires to avoid API outages.');
 
         return new PushoverMessage(
-            title: 'API token expiring soon',
+            title: __('API token expiring soon'),
             level: 'warning',
             message: $message,
             buttons: [
                 [
-                    'text' => 'Manage API tokens',
+                    'text' => __('Manage API tokens'),
                     'url' => $this->manageUrl,
                 ],
             ],
@@ -90,12 +90,12 @@ class ApiTokenExpiringNotification extends CustomEmailNotification
 
     public function toSlack(): SlackMessage
     {
-        $description = "API token *{$this->tokenName}* expires on {$this->expiresAt}.\n\n";
-        $description .= "*Action Required:* Rotate this token before it expires to avoid API outages.\n\n";
-        $description .= "Manage tokens: {$this->manageUrl}";
+        $description = __('API token *:name* expires on :date.', ['name' => $this->tokenName, 'date' => $this->expiresAt])."\n\n";
+        $description .= '*'.__('Action Required:').'* '.__('Rotate this token before it expires to avoid API outages.')."\n\n";
+        $description .= __('Manage tokens:')." {$this->manageUrl}";
 
         return new SlackMessage(
-            title: '🔑 API token expiring soon',
+            title: '🔑 '.__('API token expiring soon'),
             description: $description,
             color: SlackMessage::warningColor(),
         );

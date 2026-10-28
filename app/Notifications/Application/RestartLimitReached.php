@@ -75,7 +75,7 @@ class RestartLimitReached extends CustomEmailNotification
     public function toMail(): MailMessage
     {
         $mail = new MailMessage;
-        $mail->subject("Coolify: {$this->resource_name} stopped - restart limit reached ({$this->restart_count}/{$this->max_restart_count})");
+        $mail->subject(__('Coolify: :name stopped - restart limit reached (:count/:max)', ['name' => $this->resource_name, 'count' => $this->restart_count, 'max' => $this->max_restart_count]));
         $mail->view('emails.application-restart-limit-reached', [
             'name' => $this->resource_name,
             'fqdn' => $this->fqdn,
@@ -90,8 +90,8 @@ class RestartLimitReached extends CustomEmailNotification
     public function toDiscord(): DiscordMessage
     {
         return new DiscordMessage(
-            title: ':warning: Restart limit reached',
-            description: "{$this->resource_name} has been stopped after {$this->restart_count} restarts (limit: {$this->max_restart_count}).\n\n[Open Resource in Coolify]({$this->resource_url})",
+            title: ':warning: '.__('Restart limit reached'),
+            description: __(':name has been stopped after :count restarts (limit: :max).', ['name' => $this->resource_name, 'count' => $this->restart_count, 'max' => $this->max_restart_count])."\n\n[".__('Open Resource in Coolify')."]({$this->resource_url})",
             color: DiscordMessage::errorColor(),
             isCritical: true,
         );
@@ -99,13 +99,13 @@ class RestartLimitReached extends CustomEmailNotification
 
     public function toTelegram(): array
     {
-        $message = "Coolify: {$this->resource_name} has been stopped after {$this->restart_count} restarts (limit: {$this->max_restart_count}).";
+        $message = __('Coolify: :name has been stopped after :count restarts (limit: :max).', ['name' => $this->resource_name, 'count' => $this->restart_count, 'max' => $this->max_restart_count]);
 
         return [
             'message' => $message,
             'buttons' => [
                 [
-                    'text' => 'Open Resource in Coolify',
+                    'text' => __('Open Resource in Coolify'),
                     'url' => $this->resource_url,
                 ],
             ],
@@ -114,15 +114,15 @@ class RestartLimitReached extends CustomEmailNotification
 
     public function toPushover(): PushoverMessage
     {
-        $message = "{$this->resource_name} has been stopped after {$this->restart_count} restarts (limit: {$this->max_restart_count}).";
+        $message = __(':name has been stopped after :count restarts (limit: :max).', ['name' => $this->resource_name, 'count' => $this->restart_count, 'max' => $this->max_restart_count]);
 
         return new PushoverMessage(
-            title: 'Restart limit reached',
+            title: __('Restart limit reached'),
             level: 'error',
             message: $message,
             buttons: [
                 [
-                    'text' => 'Open Resource in Coolify',
+                    'text' => __('Open Resource in Coolify'),
                     'url' => $this->resource_url,
                 ],
             ],
@@ -131,15 +131,15 @@ class RestartLimitReached extends CustomEmailNotification
 
     public function toSlack(): SlackMessage
     {
-        $title = 'Restart limit reached';
-        $description = "{$this->resource_name} has been stopped after {$this->restart_count} restarts (limit: {$this->max_restart_count})";
+        $title = __('Restart limit reached');
+        $description = __(':name has been stopped after :count restarts (limit: :max)', ['name' => $this->resource_name, 'count' => $this->restart_count, 'max' => $this->max_restart_count]);
         $environment = data_get($this->resource, 'environment')
             ?? data_get($this->resource, 'application.environment')
             ?? data_get($this->resource, 'service.environment');
 
-        $description .= "\n\n*Project:* ".data_get($environment, 'project.name');
-        $description .= "\n*Environment:* {$this->environment_name}";
-        $description .= "\n*Resource URL:* {$this->resource_url}";
+        $description .= "\n\n*".__('Project:').'* '.data_get($environment, 'project.name');
+        $description .= "\n*".__('Environment:').'* '.$this->environment_name;
+        $description .= "\n*".__('Resource URL:').'* '.$this->resource_url;
 
         return new SlackMessage(
             title: $title,

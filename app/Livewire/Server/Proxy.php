@@ -173,7 +173,7 @@ class Proxy extends Component
             $this->authorize('update', $this->server);
             $this->validate();
             $this->saveSettings();
-            $this->dispatch('success', 'Settings saved.');
+            $this->dispatch('success', __('Settings saved.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -202,7 +202,7 @@ class Proxy extends Component
             $this->server->save();
             $this->auditProxyUpdate($redirectChanged ? ['redirect_enabled'] : []);
             $this->server->setupDefaultRedirect();
-            $this->dispatch('success', 'Proxy configuration saved.');
+            $this->dispatch('success', __('Proxy configuration saved.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -216,7 +216,7 @@ class Proxy extends Component
             $this->server->save();
             $this->customErrorPage = null;
             $this->server->setupDefaultRedirect();
-            $this->dispatch('success', 'Default error page restored.');
+            $this->dispatch('success', __('Default error page restored.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -235,7 +235,7 @@ class Proxy extends Component
             auditLog('ui.server.proxy.configuration_saved', $this->proxyAuditContext());
             $this->server->setupDefaultRedirect();
             $this->dispatch('refreshServerShow');
-            $this->dispatch('success', 'Proxy configuration saved.');
+            $this->dispatch('success', __('Proxy configuration saved.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -251,7 +251,7 @@ class Proxy extends Component
             $this->server->save();
             auditLog('ui.server.proxy.configuration_reset', $this->proxyAuditContext());
             $this->dispatch('refreshServerShow');
-            $this->dispatch('success', 'Proxy configuration reset to default.');
+            $this->dispatch('success', __('Proxy configuration reset to default.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }

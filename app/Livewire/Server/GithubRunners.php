@@ -158,13 +158,13 @@ class GithubRunners extends Component
 
         foreach ($labels as $label) {
             if (! preg_match('/\A[a-z0-9][a-z0-9._-]{0,99}\z/', $label)) {
-                throw ValidationException::withMessages(['labels' => "The label \"{$label}\" can only contain letters, numbers, dots, dashes, and underscores."]);
+                throw ValidationException::withMessages(['labels' => __('The label ":label" can only contain letters, numbers, dots, dashes, and underscores.', ['label' => $label])]);
             }
         }
 
         $custom = $labels->reject(fn (string $label) => in_array($label, self::RESERVED_LABELS, true))->values();
         if ($custom->isEmpty()) {
-            throw ValidationException::withMessages(['labels' => 'Add at least one custom label, for example "coolify". Coolify only takes jobs that ask for a custom label.']);
+            throw ValidationException::withMessages(['labels' => __('Add at least one custom label, for example "coolify". Coolify only takes jobs that ask for a custom label.')]);
         }
 
         return $custom->all();
@@ -179,12 +179,12 @@ class GithubRunners extends Component
         $this->authorize('update', $githubApp);
         if ($this->dockerMode === GithubRunnerDockerMode::Sysbox->value && ! InstallSysbox::isInstalled($this->server)) {
             $this->isSysboxInstalled = false;
-            throw ValidationException::withMessages(['dockerMode' => 'Sysbox is not installed on this server. Install it, then save again.']);
+            throw ValidationException::withMessages(['dockerMode' => __('Sysbox is not installed on this server. Install it, then save again.')]);
         }
 
         try {
             if (! $this->server->canBuildApplications()) {
-                throw new \RuntimeException('GitHub Actions runners need a server with the Builds only or Deployments and builds role.');
+                throw new \RuntimeException(__('GitHub Actions runners need a server with the Builds only or Deployments and builds role.'));
             }
 
             if ($this->config?->is_enabled ?? true) {
@@ -211,7 +211,7 @@ class GithubRunners extends Component
             $this->auditConfigSaved($config, $githubApp, $changedFields);
             unset($this->config);
             $this->syncData();
-            $this->dispatch('success', 'GitHub runner settings saved.');
+            $this->dispatch('success', __('GitHub runner settings saved.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -240,17 +240,17 @@ class GithubRunners extends Component
                         $execution->finish(GithubRunnerStatus::Cancelled, 'Runners were disabled on this server.');
                         CleanupGithubRunnerJob::dispatch($execution->id);
                     });
-                $this->dispatch('success', 'GitHub runners disabled. Running jobs continue until they finish.');
+                $this->dispatch('success', __('GitHub runners disabled. Running jobs continue until they finish.'));
             } else {
                 if (! $this->server->canBuildApplications()) {
-                    throw new \RuntimeException('GitHub Actions runners need a server with the Builds only or Deployments and builds role.');
+                    throw new \RuntimeException(__('GitHub Actions runners need a server with the Builds only or Deployments and builds role.'));
                 }
                 $this->authorize('update', $config->githubApp);
                 $this->prepareRunnerGroup($config->githubApp);
                 $config->update(['is_enabled' => true]);
                 auditLog('ui.server.github_runners.enabled', $this->auditContext());
                 ProvisionGithubRunnerJob::dispatchQueued($config->github_app_id);
-                $this->dispatch('success', 'GitHub runners enabled.');
+                $this->dispatch('success', __('GitHub runners enabled.'));
             }
             unset($this->config);
         } catch (\Throwable $e) {
@@ -284,14 +284,14 @@ class GithubRunners extends Component
     private function prepareRunnerGroup(GithubApp $githubApp): void
     {
         if ($githubApp->missingRunnerRequirements() !== []) {
-            $this->dispatch('warning', 'The GitHub App is not ready for runners. Coolify cannot take workflow jobs until you update its permissions on GitHub.');
+            $this->dispatch('warning', __('The GitHub App is not ready for runners. Coolify cannot take workflow jobs until you update its permissions on GitHub.'));
 
             return;
         }
 
         $group = (new GithubRunnerApi($githubApp))->ensureRunnerGroup();
         if ($group['is_default']) {
-            $this->dispatch('warning', 'Runners use the Default runner group of the organization. Check which repositories can use that group on GitHub.');
+            $this->dispatch('warning', __('Runners use the Default runner group of the organization. Check which repositories can use that group on GitHub.'));
         }
     }
 

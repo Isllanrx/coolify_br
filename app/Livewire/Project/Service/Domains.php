@@ -201,9 +201,9 @@ class Domains extends Component
         $host = parse_url($url, PHP_URL_HOST) ?: $url;
 
         match ($status) {
-            'ok' => $this->dispatch('success', "DNS is configured correctly for {$host}."),
-            'failed' => $this->dispatch('error', "DNS is not configured for {$host}. Review the required DNS record. If you changed it recently, DNS propagation can take some time, so please try again later."),
-            default => $this->dispatch('info', "DNS check skipped for {$host}."),
+            'ok' => $this->dispatch('success', __('DNS is configured correctly for :host.', ['host' => $host])),
+            'failed' => $this->dispatch('error', __('DNS is not configured for :host. Review the required DNS record. If you changed it recently, DNS propagation can take some time, so please try again later.', ['host' => $host])),
+            default => $this->dispatch('info', __('DNS check skipped for :host.', ['host' => $host])),
         };
     }
 
@@ -223,7 +223,7 @@ class Domains extends Component
         $this->service->parse();
         $this->refreshDomains();
         $this->dispatch('configurationChanged')->to(ConfigurationChecker::class);
-        $this->dispatch('success', 'Search engine indexing updated.');
+        $this->dispatch('success', __('Search engine indexing updated.'));
     }
 
     public function updateForceHttps(int $serviceApplicationId, bool $enabled): void
@@ -241,7 +241,7 @@ class Domains extends Component
         $this->service->parse();
         $this->refreshDomains();
         $this->dispatch('configurationChanged')->to(ConfigurationChecker::class);
-        $this->dispatch('success', 'HTTP to HTTPS redirect updated.');
+        $this->dispatch('success', __('HTTP to HTTPS redirect updated.'));
     }
 
     public function updatePermanentRedirect(int $serviceApplicationId, bool $enabled): void
@@ -259,7 +259,7 @@ class Domains extends Component
         $this->service->parse();
         $this->refreshDomains();
         $this->dispatch('configurationChanged')->to(ConfigurationChecker::class);
-        $this->dispatch('success', 'Redirect type updated.');
+        $this->dispatch('success', __('Redirect type updated.'));
     }
 
     public function loadDomainState(): void
@@ -388,7 +388,7 @@ class Domains extends Component
             'internal_port' => $port['internal_port'],
             'has_port_override' => $port['has_port_override'],
             'dns_status' => 'pending',
-            'dns_message' => 'Not checked yet.',
+            'dns_message' => __('Not checked yet.'),
             'expected_ip' => $this->serverIp,
             'checked_at' => null,
             'check_id' => null,
@@ -772,32 +772,32 @@ class Domains extends Component
      */
     protected function suggestedDomainMeta(bool $suggestedIsWww, ?string $redirectOverride = null): array
     {
-        $pendingMessage = 'Not configured yet.';
+        $pendingMessage = __('Not configured yet.');
         $redirect = $this->normalizeRedirect($redirectOverride);
 
         return match ($redirect) {
             'www' => $suggestedIsWww
                 ? [
-                    'label' => 'Not added · canonical www',
+                    'label' => __('Not added · canonical www'),
                     'role' => 'canonical',
                     'pending_message' => $pendingMessage,
                     'dns_suffix' => '',
                 ]
                 : [
-                    'label' => 'Not added · redirect source',
+                    'label' => __('Not added · redirect source'),
                     'role' => 'redirect_source',
                     'pending_message' => $pendingMessage,
                     'dns_suffix' => '',
                 ],
             'non-www' => $suggestedIsWww
                 ? [
-                    'label' => 'Not added · redirect source',
+                    'label' => __('Not added · redirect source'),
                     'role' => 'redirect_source',
                     'pending_message' => $pendingMessage,
                     'dns_suffix' => '',
                 ]
                 : [
-                    'label' => 'Not added · canonical non-www',
+                    'label' => __('Not added · canonical non-www'),
                     'role' => 'canonical',
                     'pending_message' => $pendingMessage,
                     'dns_suffix' => '',
@@ -827,7 +827,7 @@ class Domains extends Component
 
             $app = $this->findServiceApp($serviceApplicationId);
             if (! $app) {
-                $this->dispatch('error', 'Service application not found.');
+                $this->dispatch('error', __('Service application not found.'));
 
                 return;
             }
@@ -874,7 +874,7 @@ class Domains extends Component
             $this->forceSaveDomains = false;
             $this->forceRemovePort = false;
             if ($this->notifyRedirectUpdate) {
-                $this->dispatch('success', 'Redirect updated.');
+                $this->dispatch('success', __('Redirect updated.'));
             }
             $this->dispatch('configurationChanged');
             $this->pruneDomainDnsStatusesToCurrentDomains();
@@ -1077,7 +1077,7 @@ class Domains extends Component
 
             $app = $this->findServiceApp($this->newServiceApplicationId);
             if (! $app) {
-                $this->dispatch('error', 'Select a service application.');
+                $this->dispatch('error', __('Select a service application.'));
 
                 return;
             }
@@ -1129,7 +1129,7 @@ class Domains extends Component
             $this->refreshDomains();
             $addedUrls = array_values(array_unique(array_merge($newUrls, $pairedUrls)));
             if ($this->configureDnsAfterDomainAdd($addedUrls)) {
-                $this->dispatch('success', 'Domain added.');
+                $this->dispatch('success', __('Domain added.'));
 
                 return;
             }
@@ -1164,12 +1164,12 @@ class Domains extends Component
 
             if ($failedDnsChecks > 0) {
                 $this->persistAllDomainDnsStatuses();
-                $this->dispatch('error', 'Some DNS checks could not be started. Try again from the Domains page.');
+                $this->dispatch('error', __('Some DNS checks could not be started. Try again from the Domains page.'));
             }
 
             $this->dispatch('success', $failedDnsChecks === $dnsChecks->count()
-                ? 'Domain added.'
-                : 'Domain added. DNS check started.');
+                ? __('Domain added.')
+                : __('Domain added. DNS check started.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -1192,7 +1192,7 @@ class Domains extends Component
             }
 
             $this->domainRows[$index]['dns_status'] = 'checking';
-            $this->domainRows[$index]['dns_message'] = 'Checking DNS...';
+            $this->domainRows[$index]['dns_message'] = __('Checking DNS...');
             $this->domainRows[$index]['check_id'] = $checkId;
         }
     }
@@ -1214,7 +1214,7 @@ class Domains extends Component
             }
 
             $this->domainRows[$index]['dns_status'] = 'skipped';
-            $this->domainRows[$index]['dns_message'] = 'DNS check could not be started.';
+            $this->domainRows[$index]['dns_message'] = __('DNS check could not be started.');
             $this->domainRows[$index]['checked_at'] = now()->toIso8601String();
         }
     }
@@ -1374,7 +1374,7 @@ class Domains extends Component
             $this->forceSaveDomains = false;
             $this->forceRemovePort = false;
             $this->pendingAction = null;
-            $this->dispatch('success', 'Domain updated.');
+            $this->dispatch('success', __('Domain updated.'));
             $this->refreshDomains();
             if ($urlsToCheck !== []) {
                 $this->queueUrlsDns($urlsToCheck, $app);
@@ -1411,7 +1411,7 @@ class Domains extends Component
 
             $this->forceSaveDomains = false;
             $this->forceRemovePort = false;
-            $this->dispatch('success', 'Domain removed.');
+            $this->dispatch('success', __('Domain removed.'));
             $this->pruneDomainDnsStatusesToCurrentDomains();
             $this->refreshDomains();
         } catch (\Throwable $e) {
@@ -1511,7 +1511,7 @@ class Domains extends Component
             $this->pendingAction = null;
             $this->forceSaveDomains = false;
             $this->forceRemovePort = false;
-            $this->dispatch('success', 'Domain added.');
+            $this->dispatch('success', __('Domain added.'));
             $this->refreshDomains();
             $this->checkUrlsDns($newUrls, (int) $app->id);
         } catch (\Throwable $e) {
@@ -1527,7 +1527,7 @@ class Domains extends Component
             $app = $this->findServiceApp($this->newServiceApplicationId);
             $server = $this->service->server;
             if (! $app || ! $server) {
-                $this->dispatch('error', 'Service application or server not found.');
+                $this->dispatch('error', __('Service application or server not found.'));
 
                 return;
             }
@@ -1641,7 +1641,7 @@ class Domains extends Component
         $this->auditServiceApplicationUpdate($app, $changedFields);
 
         if (str($app->fqdn)->contains(',')) {
-            $this->dispatch('warning', 'Some services do not support multiple domains, which can lead to problems and is NOT RECOMMENDED.<br><br>Only use multiple domains if you know what you are doing.');
+            $this->dispatch('warning', __('Some services do not support multiple domains, which can lead to problems and is NOT RECOMMENDED.<br><br>Only use multiple domains if you know what you are doing.'));
         }
 
         $this->dispatch('configurationChanged');
@@ -1722,7 +1722,7 @@ class Domains extends Component
             } catch (\Throwable) {
                 $this->markUrlsDnsCheckUnavailable([$url], (int) $application->id, $checkId);
                 $this->persistAllDomainDnsStatuses();
-                $this->dispatch('error', 'The DNS check could not be started. Try again from the Domains page.');
+                $this->dispatch('error', __('The DNS check could not be started. Try again from the Domains page.'));
             }
         }
     }

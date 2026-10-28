@@ -322,7 +322,7 @@ class ResourceOperations extends Component
 
             $new_destination = $this->findResourceTeamDestination($destination_uuid);
             if (! $new_destination) {
-                return $this->dispatch('error', 'Destination not found.');
+                return $this->dispatch('error', __('Destination not found.'));
             }
 
             $result = MigrateResourceToDestination::run(
@@ -375,7 +375,7 @@ class ResourceOperations extends Component
 
     private function resourceTeamId(): int
     {
-        return $this->resource->team()?->id ?? throw new RuntimeException('The resource has no team.');
+        return $this->resource->team()?->id ?? throw new RuntimeException(__('The resource has no team.'));
     }
 
     /** Cloning and moving stay inside the resource team; the session team can differ after a team switch. */

@@ -36,7 +36,7 @@ class PushoverMessage
 
         foreach ($this->buttons as $button) {
             $buttonUrl = data_get($button, 'url');
-            $text = data_get($button, 'text', 'Click here');
+            $text = data_get($button, 'text', __('Click here'));
             if ($buttonUrl && str_contains($buttonUrl, 'http://localhost')) {
                 $buttonUrl = str_replace('http://localhost', config('app.url'), $buttonUrl);
             }

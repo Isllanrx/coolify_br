@@ -66,7 +66,7 @@ class ValidateAndInstall extends Component
             ]);
             $this->dispatch(
                 'error',
-                'Cannot revalidate',
+                __('Cannot revalidate'),
                 $this->error
             );
 
@@ -293,7 +293,7 @@ class ValidateAndInstall extends Component
         if ($this->server->isSwarm()) {
             $swarmInstalled = $this->server->validateDockerSwarm();
             if ($swarmInstalled) {
-                $this->dispatch('success', 'Docker Swarm is initiated.');
+                $this->dispatch('success', __('Docker Swarm is initiated.'));
             }
         } else {
             $this->docker_version = $this->server->validateDockerEngineVersion();
@@ -311,11 +311,11 @@ class ValidateAndInstall extends Component
                     CheckAndStartSentinelJob::dispatch($this->server);
                 }
                 if (! $this->server->isProxyShouldRun()) {
-                    $this->dispatch('success', 'Server validated.');
+                    $this->dispatch('success', __('Server validated.'));
 
                     return;
                 }
-                $this->dispatch('success', 'Server validated, proxy is starting in a moment.');
+                $this->dispatch('success', __('Server validated, proxy is starting in a moment.'));
                 $proxyShouldRun = CheckProxy::run($this->server, true);
                 if (! $proxyShouldRun) {
                     return;

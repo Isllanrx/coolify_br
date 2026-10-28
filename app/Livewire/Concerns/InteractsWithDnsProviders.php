@@ -32,7 +32,7 @@ trait InteractsWithDnsProviders
         $this->authorizeDnsProviderChange();
         $this->loadDnsProviderProposals();
         if ($this->dnsProviderProposals === []) {
-            $this->dispatch('error', 'No connected DNS provider can manage the configured domains.');
+            $this->dispatch('error', __('No connected DNS provider can manage the configured domains.'));
 
             return;
         }
@@ -57,7 +57,7 @@ trait InteractsWithDnsProviders
         $zone = $this->findTeamZone($zoneId, $hostname);
         $content = $this->dnsRecordContent($content);
         if ($zone === null || $content === null || ! $this->isDnsHostnameOfResource($hostname)) {
-            $this->dispatch('error', 'No connected DNS provider or public server IP is available for this domain.');
+            $this->dispatch('error', __('No connected DNS provider or public server IP is available for this domain.'));
 
             return;
         }
@@ -175,7 +175,7 @@ trait InteractsWithDnsProviders
         $zone = $this->findTeamZone($zoneId, $hostname);
         $content = $this->dnsRecordContent($conflict['proposed'] ?? null);
         if ($conflict === null || $zone === null || $content === null || ! $this->isDnsHostnameOfResource($hostname)) {
-            $this->dispatch('error', 'The DNS conflict is no longer available. Check the record again.');
+            $this->dispatch('error', __('The DNS conflict is no longer available. Check the record again.'));
 
             return;
         }

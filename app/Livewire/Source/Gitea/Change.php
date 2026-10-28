@@ -281,7 +281,7 @@ class Change extends Component
 
             $this->syncData(true);
             $this->gitea_app->save();
-            $this->dispatch('success', 'Gitea App updated.');
+            $this->dispatch('success', __('Gitea App updated.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -297,7 +297,7 @@ class Change extends Component
 
             $this->gitea_app->is_system_wide = $this->isSystemWide;
             $this->gitea_app->save();
-            $this->dispatch('success', 'Gitea App updated.');
+            $this->dispatch('success', __('Gitea App updated.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -309,7 +309,7 @@ class Change extends Component
             $this->authorize('view', $this->gitea_app);
 
             if (! $this->gitea_app->isConnected()) {
-                $this->dispatch('error', 'Gitea App is not connected. Please complete the OAuth flow first.');
+                $this->dispatch('error', __('Gitea App is not connected. Please complete the OAuth flow first.'));
 
                 return;
             }
@@ -323,10 +323,10 @@ class Change extends Component
 
             if ($response->successful()) {
                 $login = data_get($response->json(), 'login', 'unknown');
-                $this->dispatch('success', "Connection successful! Authenticated as: {$login}");
+                $this->dispatch('success', __('Connection successful! Authenticated as: :name', ['name' => $login]));
             } else {
-                $error = data_get($response->json(), 'message', 'Unknown error');
-                $this->dispatch('error', "Connection failed: {$error}");
+                $error = data_get($response->json(), 'message', __('Unknown error'));
+                $this->dispatch('error', __('Connection failed: :error', ['error' => $error]));
             }
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -339,7 +339,7 @@ class Change extends Component
             $this->authorize('delete', $this->gitea_app);
 
             if ($this->gitea_app->applications->isNotEmpty()) {
-                $this->dispatch('error', 'This source is being used by an application. Please delete all applications first.');
+                $this->dispatch('error', __('This source is being used by an application. Please delete all applications first.'));
 
                 return;
             }

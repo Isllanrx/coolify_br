@@ -165,9 +165,9 @@ class BackupExecutions extends Component
                 ->map(fn ($storage) => $storage->name.' (bucket: '.$storage->bucket.')')
                 ->implode(', ') ?: 'Unavailable';
             if ($isDatabase && ! $schedule->save_s3) {
-                $storageLabel = 'Not configured';
+                $storageLabel = __('Not configured');
             } elseif (! $isDatabase && ! $execution->s3_storage_id && ! $execution->s3_uploaded && ! $execution->s3_storage_deleted) {
-                $storageLabel = 'No destination recorded';
+                $storageLabel = __('No destination recorded');
             }
 
             return [

@@ -44,12 +44,12 @@ class Tags extends Component
             foreach ($tags as $tag) {
                 $tag = strip_tags($tag);
                 if (strlen($tag) < 2) {
-                    $this->dispatch('error', 'Invalid tag.', "Tag <span class='dark:text-warning'>$tag</span> is invalid. Min length is 2.");
+                    $this->dispatch('error', __('Invalid tag.'), "Tag <span class='dark:text-warning'>$tag</span> is invalid. Min length is 2.");
 
                     continue;
                 }
                 if ($this->resource->tags()->where('name', $tag)->exists()) {
-                    $this->dispatch('error', 'Duplicate tags.', "Tag <span class='dark:text-warning'>$tag</span> already added.");
+                    $this->dispatch('error', __('Duplicate tags.'), "Tag <span class='dark:text-warning'>$tag</span> already added.");
 
                     continue;
                 }
@@ -72,13 +72,13 @@ class Tags extends Component
             $this->authorize('update', $this->resource);
             $tag = $this->resourceTags()->findOrFail($id);
             if ($this->resource->tags()->whereKey($tag->id)->exists()) {
-                $this->dispatch('error', 'Duplicate tags.', 'Tag <span class=\'dark:text-warning\'>'.e($tag->name).'</span> already added.');
+                $this->dispatch('error', __('Duplicate tags.'), 'Tag <span class=\'dark:text-warning\'>'.e($tag->name).'</span> already added.');
 
                 return;
             }
             $this->resource->tags()->attach($tag->id);
             $this->refresh();
-            $this->dispatch('success', 'Tag added.');
+            $this->dispatch('success', __('Tag added.'));
         } catch (\Exception $e) {
             return handleError($e, $this);
         }
@@ -91,7 +91,7 @@ class Tags extends Component
             // The tag stays, also without resources. Delete it on the Tags page.
             $this->resource->tags()->detach($id);
             $this->refresh();
-            $this->dispatch('success', 'Tag removed.');
+            $this->dispatch('success', __('Tag removed.'));
         } catch (\Exception $e) {
             return handleError($e, $this);
         }

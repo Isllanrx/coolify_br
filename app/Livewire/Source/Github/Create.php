@@ -71,7 +71,7 @@ class Create extends Component
                 'use_for_pull_request_previews' => 'required|bool',
                 'use_for_github_runners' => 'required|bool',
             ], [
-                'organization.required' => 'GitHub Actions runners are registered at organization level. Enter the organization.',
+                'organization.required' => __('GitHub Actions runners are registered at organization level. Enter the organization.'),
             ]);
             $payload = [
                 'name' => $this->name,

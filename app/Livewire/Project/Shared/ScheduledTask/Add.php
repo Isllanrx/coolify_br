@@ -74,7 +74,7 @@ class Add extends Component
                 $this->resource = StandalonePostgresql::ownedByCurrentTeam()->findOrFail($this->id);
                 break;
             default:
-                throw new \Exception('Invalid resource type');
+                throw new \Exception(__('Invalid resource type'));
         }
 
         $this->serverTimezone = getServerTimezone($this->resource->destination?->server);
@@ -91,7 +91,7 @@ class Add extends Component
             $this->validate();
             $isValid = validate_cron_expression($this->frequency);
             if (! $isValid) {
-                $this->dispatch('error', 'Invalid Cron / Human expression.');
+                $this->dispatch('error', __('Invalid Cron / Human expression.'));
 
                 return;
             }
@@ -139,7 +139,7 @@ class Add extends Component
                 'resource_name' => $this->resource->name,
             ]);
             $this->dispatch('refreshTasks');
-            $this->dispatch('success', 'Scheduled task added.');
+            $this->dispatch('success', __('Scheduled task added.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }

@@ -30,7 +30,7 @@ class BackupFailed extends CustomEmailNotification
     public function toMail(): MailMessage
     {
         $mail = new MailMessage;
-        $mail->subject("Coolify: [ACTION REQUIRED] Database Backup FAILED for {$this->database->name}");
+        $mail->subject(__('Coolify: [ACTION REQUIRED] Database Backup FAILED for :name', ['name' => $this->database->name]));
         $mail->view('emails.backup-failed', [
             'name' => $this->name,
             'database_name' => $this->database_name,
@@ -44,21 +44,21 @@ class BackupFailed extends CustomEmailNotification
     public function toDiscord(): DiscordMessage
     {
         $message = new DiscordMessage(
-            title: ':cross_mark: Database backup failed',
-            description: "Database backup for {$this->name} (db:{$this->database_name}) has FAILED.",
+            title: ':cross_mark: '.__('Database backup failed'),
+            description: __('Database backup for :name (db::db) has FAILED.', ['name' => $this->name, 'db' => $this->database_name]),
             color: DiscordMessage::errorColor(),
             isCritical: true,
         );
 
-        $message->addField('Frequency', $this->frequency, true);
-        $message->addField('Output', $this->output);
+        $message->addField(__('Frequency'), $this->frequency, true);
+        $message->addField(__('Output'), $this->output);
 
         return $message;
     }
 
     public function toTelegram(): array
     {
-        $message = "Coolify: Database backup for {$this->name} (db:{$this->database_name}) with frequency of {$this->frequency} was FAILED.\n\nReason:\n{$this->output}";
+        $message = __('Coolify: Database backup for :name (db::db) with frequency of :frequency was FAILED.', ['name' => $this->name, 'db' => $this->database_name, 'frequency' => $this->frequency])."\n\n".__('Reason:')."\n{$this->output}";
 
         return [
             'message' => $message,
@@ -68,19 +68,19 @@ class BackupFailed extends CustomEmailNotification
     public function toPushover(): PushoverMessage
     {
         return new PushoverMessage(
-            title: 'Database backup failed',
+            title: __('Database backup failed'),
             level: 'error',
-            message: "Database backup for {$this->name} (db:{$this->database_name}) was FAILED<br/><br/><b>Frequency:</b> {$this->frequency} .<br/><b>Reason:</b> {$this->output}",
+            message: __('Database backup for :name (db::db) was FAILED', ['name' => $this->name, 'db' => $this->database_name]).'<br/><br/><b>'.__('Frequency:').'</b> '.$this->frequency.' .<br/><b>'.__('Reason:').'</b> '.$this->output,
         );
     }
 
     public function toSlack(): SlackMessage
     {
-        $title = 'Database backup failed';
-        $description = "Database backup for {$this->name} (db:{$this->database_name}) has FAILED.";
+        $title = __('Database backup failed');
+        $description = __('Database backup for :name (db::db) has FAILED.', ['name' => $this->name, 'db' => $this->database_name]);
 
-        $description .= "\n\n*Frequency:* {$this->frequency}";
-        $description .= "\n\n*Error Output:* {$this->output}";
+        $description .= "\n\n*".__('Frequency:').'* '.$this->frequency;
+        $description .= "\n\n*".__('Error Output:').'* '.$this->output;
 
         return new SlackMessage(
             title: $title,

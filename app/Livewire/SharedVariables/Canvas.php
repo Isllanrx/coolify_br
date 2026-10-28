@@ -82,10 +82,10 @@ class Canvas extends Component
             $this->authorize('update', $owner);
 
             if ($this->scope === 'server' && in_array($data['key'], ['COOLIFY_SERVER_UUID', 'COOLIFY_SERVER_NAME'])) {
-                throw new \Exception('Cannot create predefined variable.');
+                throw new \Exception(__('Cannot create predefined variable.'));
             }
             if ($owner->environment_variables()->where('key', $data['key'])->exists()) {
-                throw new \Exception('Variable already exists.');
+                throw new \Exception(__('Variable already exists.'));
             }
             $owner->environment_variables()->create([
                 'key' => $data['key'],

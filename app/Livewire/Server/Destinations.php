@@ -33,7 +33,7 @@ class Destinations extends Component
         if ($this->server->isSwarm()) {
             $found = $this->server->swarmDockers()->where('network', $name)->first();
             if ($found) {
-                $this->dispatch('error', 'Network already added to this server.');
+                $this->dispatch('error', __('Network already added to this server.'));
 
                 return;
             } else {
@@ -47,7 +47,7 @@ class Destinations extends Component
         } else {
             $found = $this->server->standaloneDockers()->where('network', $name)->first();
             if ($found) {
-                $this->dispatch('error', 'Network already added to this server.');
+                $this->dispatch('error', __('Network already added to this server.'));
 
                 return;
             } else {
@@ -80,11 +80,11 @@ class Destinations extends Component
             return ! $alreadyAddedNetworks->contains('network', $network['Name']);
         });
         if ($this->networks->count() === 0) {
-            $this->dispatch('success', 'No new destinations found on this server.');
+            $this->dispatch('success', __('No new destinations found on this server.'));
 
             return;
         }
-        $this->dispatch('success', 'Scan done.');
+        $this->dispatch('success', __('Scan done.'));
     }
 
     private function auditDestinationCreated(StandaloneDocker|SwarmDocker $destination, string $type): void

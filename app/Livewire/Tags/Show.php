@@ -121,7 +121,7 @@ class Show extends Component
                 $deploy = new DeployController;
                 $message->push($deploy->deploy_resource($resource));
             });
-            $this->dispatch('success', 'Mass deployment started.');
+            $this->dispatch('success', __('Mass deployment started.'));
         } catch (\Exception $e) {
             return handleError($e, $this);
         }
@@ -140,7 +140,7 @@ class Show extends Component
         try {
             $resource = app(TagCanvas::class)->resources($this->tag->team_id)->get($uuid);
             if (! $resource) {
-                $this->dispatch('error', 'Resource not found.');
+                $this->dispatch('error', __('Resource not found.'));
 
                 return;
             }

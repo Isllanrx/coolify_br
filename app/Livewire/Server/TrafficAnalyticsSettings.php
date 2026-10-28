@@ -107,7 +107,7 @@ class TrafficAnalyticsSettings extends Component
             auditLog('ui.server.traffic_analytics.updated', $this->auditContext([
                 'changed_fields' => ['traffic_topn', 'traffic_sample_threshold', 'traffic_retention_1h_days', 'traffic_retention_1d_days', 'is_geoip_enabled', 'geoip_refresh_days', 'geoip_maxmind_license_key', 'traffic_ip_mode'],
             ]));
-            $this->dispatch('success', 'Traffic analytics settings updated. Restarting Sentinel.');
+            $this->dispatch('success', __('Traffic analytics settings updated. Restarting Sentinel.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -128,7 +128,7 @@ class TrafficAnalyticsSettings extends Component
     private function caddyRedeployNote(): ?string
     {
         return $this->server->proxyType() === ProxyTypes::CADDY->value
-            ? 'Caddy logs a resource only after you redeploy it.'
+            ? __('Caddy logs a resource only after you redeploy it.')
             : null;
     }
 
@@ -142,17 +142,17 @@ class TrafficAnalyticsSettings extends Component
 
     private function proxyToggleMessage(bool $enabled, bool $proxyRestarted): string
     {
-        $state = $enabled ? 'enabled' : 'disabled';
+        $state = $enabled ? __('enabled') : __('disabled');
 
         if ($proxyRestarted) {
-            return "Traffic analytics {$state}. Restarting proxy and Sentinel.";
+            return __('Traffic analytics :state. Restarting proxy and Sentinel.', ['state' => $state]);
         }
 
         if ($this->server->hasTrafficAnalyticsProxy()) {
-            return "Traffic analytics {$state}. The proxy is stopped, so the new configuration applies the next time you start it.";
+            return __('Traffic analytics :state. The proxy is stopped, so the new configuration applies the next time you start it.', ['state' => $state]);
         }
 
-        return "Traffic analytics {$state}.";
+        return __('Traffic analytics :state.', ['state' => $state]);
     }
 
     private function auditContext(array $context = []): array

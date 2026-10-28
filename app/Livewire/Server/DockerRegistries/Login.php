@@ -98,7 +98,7 @@ class Login extends Component
             return collect([$this->server]);
         }
 
-        $this->validate(['selectedServers' => ['required', 'array', 'min:1']], ['selectedServers.required' => 'Choose at least one server.']);
+        $this->validate(['selectedServers' => ['required', 'array', 'min:1']], ['selectedServers.required' => __('Choose at least one server.')]);
         $servers = Server::ownedByCurrentTeam()->whereIn('uuid', $this->selectedServers)->get();
         abort_if($servers->count() !== count(array_unique($this->selectedServers)), 403);
         $servers->each(fn (Server $server) => $this->authorize('update', $server));
@@ -146,9 +146,9 @@ class Login extends Component
             'password' => ['required', 'string', 'max:20000'],
         ], [
             'registry.regex' => $hostRules
-                ? "Enter a valid {$preset['label']} host, for example {$preset['placeholder']}. Choose Other for a different registry."
-                : 'Enter a registry host, for example ghcr.io or registry.example.com:5000.',
-            'username.regex' => 'The username must not contain spaces.',
+                ? __('Enter a valid :label host, for example :placeholder. Choose Other for a different registry.', ['label' => $preset['label'], 'placeholder' => $preset['placeholder']])
+                : __('Enter a registry host, for example ghcr.io or registry.example.com:5000.'),
+            'username.regex' => __('The username must not contain spaces.'),
         ]);
 
         $failures = [];
@@ -166,12 +166,12 @@ class Login extends Component
 
         if ($failures !== []) {
             $details = collect($failures)->map(fn (string $error, string $name) => count($servers) > 1 ? e($name).': '.e($error) : e($error))->implode('<br>');
-            $this->dispatch('error', count($failures) === count($servers) ? 'Login failed.' : 'Login failed on some servers.', $details);
+            $this->dispatch('error', count($failures) === count($servers) ? __('Login failed.') : __('Login failed on some servers.'), $details);
 
             return;
         }
 
-        $this->dispatch('success', $this->editRegistry ? "Updated the login for {$this->registry}." : "Logged in to {$this->registry}.");
+        $this->dispatch('success', $this->editRegistry ? __('Updated the login for :registry.', ['registry' => $this->registry]) : __('Logged in to :registry.', ['registry' => $this->registry]));
         if ($this->editRegistry === null) {
             $this->reset('provider', 'registry', 'username', 'selectedServers');
         }
@@ -189,7 +189,7 @@ class Login extends Component
             'serverOptions' => $this->server === null ? $this->availableServers() : collect(),
             'preset' => $this->preset(),
             'providerOptions' => collect(self::PROVIDERS)
-                ->map(fn (array $preset, string $value) => ['value' => $value, 'label' => $preset['label']])
+                ->map(fn (array $preset, string $value) => ['value' => $value, 'label' => __($preset['label'])])
                 ->values()
                 ->all(),
         ]);

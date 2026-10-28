@@ -76,7 +76,7 @@ class Actions extends Component
         $team = $this->authorizedTeam();
 
         if ($this->quantity < UpdateSubscriptionQuantity::MIN_SERVER_LIMIT) {
-            $this->dispatch('error', 'Minimum server limit is '.UpdateSubscriptionQuantity::MIN_SERVER_LIMIT.'.');
+            $this->dispatch('error', __('Minimum server limit is :count.', ['count' => UpdateSubscriptionQuantity::MIN_SERVER_LIMIT]));
             $this->quantity = UpdateSubscriptionQuantity::MIN_SERVER_LIMIT;
 
             return true;
@@ -96,12 +96,12 @@ class Actions extends Component
             ]);
             $this->server_limits = $this->quantity;
             $this->pricePreview = null;
-            $this->dispatch('success', 'Server limit updated to '.$this->quantity.'.');
+            $this->dispatch('success', __('Server limit updated to :count.', ['count' => $this->quantity]));
 
             return true;
         }
 
-        $this->dispatch('error', $result['error'] ?? 'Failed to update server limit.');
+        $this->dispatch('error', $result['error'] ?? __('Failed to update server limit.'));
         $this->quantity = (int) $this->server_limits;
 
         return true;
@@ -125,20 +125,20 @@ class Actions extends Component
         $team = $this->authorizedTeam();
 
         if (! shouldSkipPasswordConfirmation() && ! Hash::check($password, auth()->user()->password)) {
-            return 'Invalid password.';
+            return __('Invalid password.');
         }
 
         $result = app(RefundSubscription::class)->execute($team);
 
         if ($result['success']) {
             $this->auditSubscriptionChange('refunded');
-            $this->dispatch('success', 'Subscription refunded successfully.');
+            $this->dispatch('success', __('Subscription refunded successfully.'));
             $this->redirect(route('subscription.index'), navigate: true);
 
             return true;
         }
 
-        $this->dispatch('error', 'Something went wrong with the refund. Please <a href="'.config('constants.urls.contact').'" target="_blank" class="underline">contact us</a>.');
+        $this->dispatch('error', __('Something went wrong with the refund. Please :link.', ['link' => '<a href="'.config('constants.urls.contact').'" target="_blank" class="underline">'.__('contact us').'</a>']));
 
         return true;
     }
@@ -148,7 +148,7 @@ class Actions extends Component
         $team = $this->authorizedTeam();
 
         if (! shouldSkipPasswordConfirmation() && ! Hash::check($password, auth()->user()->password)) {
-            return 'Invalid password.';
+            return __('Invalid password.');
         }
 
         $deleteAccount = in_array('deleteAccount', $selectedActions, true);
@@ -158,7 +158,7 @@ class Actions extends Component
 
         $refund = in_array('refundLatestPayment', $selectedActions, true);
         if (! $this->cancelSubscriptionNow($team, $refund)) {
-            $this->dispatch('error', 'Something went wrong with the '.($refund ? 'refund' : 'cancellation').'. Please <a href="'.config('constants.urls.contact').'" target="_blank" class="underline">contact us</a>.');
+            $this->dispatch('error', ($refund ? __('Something went wrong with the refund. Please :link.', ['link' => '<a href="'.config('constants.urls.contact').'" target="_blank" class="underline">'.__('contact us').'</a>']) : __('Something went wrong with the cancellation. Please :link.', ['link' => '<a href="'.config('constants.urls.contact').'" target="_blank" class="underline">'.__('contact us').'</a>'])));
 
             return true;
         }
@@ -167,7 +167,7 @@ class Actions extends Component
             return $this->deleteAccountAfterCancellation();
         }
 
-        $this->dispatch('success', $refund ? 'Subscription refunded and cancelled successfully.' : 'Subscription cancelled successfully.');
+        $this->dispatch('success', $refund ? __('Subscription refunded and cancelled successfully.') : __('Subscription cancelled successfully.'));
         $this->redirect(route('subscription.index'), navigate: true);
 
         return true;
@@ -178,19 +178,19 @@ class Actions extends Component
         $team = $this->authorizedTeam();
 
         if (! shouldSkipPasswordConfirmation() && ! Hash::check($password, auth()->user()->password)) {
-            return 'Invalid password.';
+            return __('Invalid password.');
         }
 
         $result = (new CancelSubscriptionAtPeriodEnd)->execute($team);
 
         if ($result['success']) {
             $this->auditSubscriptionChange('cancellation_scheduled', ['cancel_at_period_end' => true]);
-            $this->dispatch('success', 'Subscription will be cancelled at the end of the billing period.');
+            $this->dispatch('success', __('Subscription will be cancelled at the end of the billing period.'));
 
             return true;
         }
 
-        $this->dispatch('error', 'Something went wrong with the cancellation. Please <a href="'.config('constants.urls.contact').'" target="_blank" class="underline">contact us</a>.');
+        $this->dispatch('error', __('Something went wrong with the cancellation. Please :link.', ['link' => '<a href="'.config('constants.urls.contact').'" target="_blank" class="underline">'.__('contact us').'</a>']));
 
         return true;
     }
@@ -202,12 +202,12 @@ class Actions extends Component
 
         if ($result['success']) {
             $this->auditSubscriptionChange('resumed');
-            $this->dispatch('success', 'Subscription resumed successfully.');
+            $this->dispatch('success', __('Subscription resumed successfully.'));
 
             return true;
         }
 
-        $this->dispatch('error', 'Something went wrong resuming the subscription. Please <a href="'.config('constants.urls.contact').'" target="_blank" class="underline">contact us</a>.');
+        $this->dispatch('error', __('Something went wrong resuming the subscription. Please :link.', ['link' => '<a href="'.config('constants.urls.contact').'" target="_blank" class="underline">'.__('contact us').'</a>']));
 
         return true;
     }
@@ -267,7 +267,7 @@ class Actions extends Component
             app(DeleteUserAccount::class)->handle(Auth::user(), removeTeamResources: true);
         } catch (\Throwable $e) {
             report($e);
-            $this->dispatch('error', 'Your subscription was cancelled, but your account could not be deleted. Delete it from your profile page or <a href="'.config('constants.urls.contact').'" target="_blank" class="underline">contact us</a>.');
+            $this->dispatch('error', __('Your subscription was cancelled, but your account could not be deleted. Delete it from your profile page or :link.', ['link' => '<a href="'.config('constants.urls.contact').'" target="_blank" class="underline">'.__('contact us').'</a>']));
             $this->redirect(route('subscription.index'), navigate: true);
 
             return true;

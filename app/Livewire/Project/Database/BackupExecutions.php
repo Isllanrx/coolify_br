@@ -54,7 +54,7 @@ class BackupExecutions extends Component
             if ($this->backup) {
                 $this->backup->executions()->where('status', 'failed')->delete();
                 $this->refreshBackupExecutions();
-                $this->dispatch('success', 'Failed backups cleaned up.');
+                $this->dispatch('success', __('Failed backups cleaned up.'));
             }
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -70,9 +70,9 @@ class BackupExecutions extends Component
                 if ($deletedCount > 0) {
                     $this->backup->executions()->where('local_storage_deleted', true)->delete();
                     $this->refreshBackupExecutions();
-                    $this->dispatch('success', "Cleaned up {$deletedCount} backup entries deleted from local storage.");
+                    $this->dispatch('success', __('Cleaned up :count backup entries deleted from local storage.', ['count' => $deletedCount]));
                 } else {
-                    $this->dispatch('info', 'No backup entries found that are deleted from local storage.');
+                    $this->dispatch('info', __('No backup entries found that are deleted from local storage.'));
                 }
             }
         } catch (\Throwable $e) {
@@ -89,12 +89,12 @@ class BackupExecutions extends Component
         }
 
         if (! verifyPasswordConfirmation($password, $this)) {
-            return 'The provided password is incorrect.';
+            return __('The provided password is incorrect.');
         }
 
         $execution = $this->backup->executions()->where('id', $executionId)->first();
         if (is_null($execution)) {
-            $this->dispatch('error', 'Backup execution not found.');
+            $this->dispatch('error', __('Backup execution not found.'));
 
             return;
         }
@@ -105,7 +105,7 @@ class BackupExecutions extends Component
             if ($execution->filename && ! $execution->local_storage_deleted) {
                 $server = $this->backup->server();
                 if (! $server) {
-                    throw new \RuntimeException('The backup server is unavailable.');
+                    throw new \RuntimeException(__('The backup server is unavailable.'));
                 }
 
                 deleteBackupsLocally($execution->filename, $server, throwError: true);
@@ -117,10 +117,10 @@ class BackupExecutions extends Component
 
             $execution->delete();
             $this->delete_backup_s3 = false;
-            $this->dispatch('success', 'Backup deleted.');
+            $this->dispatch('success', __('Backup deleted.'));
             $this->refreshBackupExecutions();
         } catch (\Exception $e) {
-            $this->dispatch('error', 'Failed to delete backup: '.$e->getMessage());
+            $this->dispatch('error', __('Failed to delete backup: :error', ['error' => $e->getMessage()]));
 
             return false;
         }
@@ -134,7 +134,7 @@ class BackupExecutions extends Component
             $this->authorize('manageBackups', $this->database);
             $execution = $this->backup->executions()->whereKey($executionId)->first();
             if (! $execution) {
-                $this->dispatch('error', 'Backup execution not found.');
+                $this->dispatch('error', __('Backup execution not found.'));
 
                 return;
             }

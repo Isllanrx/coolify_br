@@ -53,7 +53,7 @@ class EmailChannel
 
             // Validate team membership for all recipients
             if (count($recipients) === 0) {
-                throw new Exception('No email recipients found');
+                throw new Exception(__('No email recipients found'));
             }
 
             // Skip team membership validation for test notifications
@@ -72,7 +72,7 @@ class EmailChannel
                             get_class($notifiable),
                             json_encode($emailSettings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
                         ));
-                        throw new Exception('Recipient is not part of the team');
+                        throw new Exception(__('Recipient is not part of the team'));
                     }
                 }
             }
@@ -119,11 +119,11 @@ class EmailChannel
             // Map HTTP status codes and Resend error names to user-friendly messages.
             // An invalid key comes back as 401 "validation_error"; an unverified domain as 403 "validation_error".
             $userMessage = match (true) {
-                $errorName === 'restricted_api_key', $statusCode === 401 && $errorName === null => 'Your Resend API key has restricted permissions. Please use an API key with Full Access permissions.',
-                $statusCode === 401, $statusCode === 403 && $errorName !== 'validation_error' => 'Invalid Resend API key. Please verify your API key in the Resend dashboard and update it in settings.',
-                in_array($statusCode, [400, 422], true), $errorName === 'validation_error' => 'Email validation failed: '.$e->getErrorMessage(),
-                $statusCode === 429 && in_array($errorName, [null, 'rate_limit_exceeded'], true) => 'Resend rate limit exceeded. Please try again in a few minutes.',
-                default => 'Failed to send email via Resend: '.$e->getErrorMessage(),
+                $errorName === 'restricted_api_key', $statusCode === 401 && $errorName === null => __('Your Resend API key has restricted permissions. Please use an API key with Full Access permissions.'),
+                $statusCode === 401, $statusCode === 403 && $errorName !== 'validation_error' => __('Invalid Resend API key. Please verify your API key in the Resend dashboard and update it in settings.'),
+                in_array($statusCode, [400, 422], true), $errorName === 'validation_error' => __('Email validation failed: :message', ['message' => $e->getErrorMessage()]),
+                $statusCode === 429 && in_array($errorName, [null, 'rate_limit_exceeded'], true) => __('Resend rate limit exceeded. Please try again in a few minutes.'),
+                default => __('Failed to send email via Resend: :message', ['message' => $e->getErrorMessage()]),
             };
 
             if (! $isTestNotification && $settings instanceof EmailNotificationSettings) {
@@ -166,7 +166,7 @@ class EmailChannel
         } catch (TransportExceptionInterface $e) {
             // SMTP 530/535: the SMTP server does not accept the username or password.
             if (! $isTestNotification && $settings instanceof EmailNotificationSettings && in_array($e->getCode(), [530, 535], true)) {
-                $settings->recordDeliveryFailure('SMTP authentication failed. Please verify the SMTP username and password.');
+                $settings->recordDeliveryFailure(__('SMTP authentication failed. Please verify the SMTP username and password.'));
 
                 return;
             }
@@ -174,7 +174,7 @@ class EmailChannel
             throw $e;
         } catch (TransporterException $e) {
             send_internal_notification('Resend Transport Error: '.remove_iip($e->getMessage()));
-            throw new Exception('Unable to connect to Resend API. Please check your internet connection and try again.');
+            throw new Exception(__('Unable to connect to Resend API. Please check your internet connection and try again.'));
         } catch (\Throwable $e) {
             // Check if this is a Resend domain verification error on cloud instances
             if (isCloud() && str_contains($e->getMessage(), 'domain is not verified')) {

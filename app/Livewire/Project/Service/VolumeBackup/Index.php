@@ -91,7 +91,7 @@ class Index extends Component
                 $this->authorize('manageBackups', $this->selectedDatabaseBackup->database);
                 if (! str($this->selectedDatabaseBackup->database->status)->startsWith('running')) {
                     $this->selectedDatabaseBackup = null;
-                    $this->dispatch('error', 'The database must be running to start a backup.');
+                    $this->dispatch('error', __('The database must be running to start a backup.'));
 
                     return;
                 }
@@ -106,7 +106,7 @@ class Index extends Component
 
             $this->selectedDatabaseBackup = null;
             $this->selectedVolumeBackup = null;
-            $this->dispatch('success', 'Backup queued.');
+            $this->dispatch('success', __('Backup queued.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }

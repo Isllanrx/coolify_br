@@ -41,13 +41,13 @@ class Show extends Component
     {
         $ownedPrivateKey = PrivateKey::where('team_id', $this->server->team_id)->find($privateKeyId);
         if (is_null($ownedPrivateKey)) {
-            $this->dispatch('error', 'You are not allowed to use this private key.');
+            $this->dispatch('error', __('You are not allowed to use this private key.'));
 
             return;
         }
         $this->authorize('update', $this->server);
         if ($this->server->isTransferredAway()) {
-            $this->dispatch('error', 'The private key of a transferred server cannot be changed.');
+            $this->dispatch('error', __('The private key of a transferred server cannot be changed.'));
 
             return;
         }
@@ -66,7 +66,7 @@ class Show extends Component
                 }
             });
             $this->loadPrivateKeys();
-            $this->dispatch('success', 'Private key updated successfully.');
+            $this->dispatch('success', __('Private key updated successfully.'));
             $this->dispatch('refreshServerShow');
         } catch (\Exception $e) {
             $this->server->refresh();
@@ -82,7 +82,7 @@ class Show extends Component
             $this->authorize('update', $this->server);
 
             if (! in_array($type, ['ed25519', 'rsa'], true)) {
-                $this->dispatch('error', 'Invalid private key type.');
+                $this->dispatch('error', __('Invalid private key type.'));
 
                 return;
             }
@@ -97,7 +97,7 @@ class Show extends Component
 
             $this->loadPrivateKeys();
             $this->dispatch('copyPublicKeyToClipboard', publicKey: $privateKey->public_key);
-            $this->dispatch('success', 'Private key created successfully.');
+            $this->dispatch('success', __('Private key created successfully.'));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }
@@ -110,11 +110,11 @@ class Show extends Component
             Server::throttleValidation($this->server->team_id, $this->server->ip);
             ['uptime' => $uptime, 'error' => $error] = $this->server->validateConnection();
             if ($uptime) {
-                $this->dispatch('success', 'Server is reachable.');
+                $this->dispatch('success', __('Server is reachable.'));
                 $this->dispatch('refreshServerShow');
             } else {
                 $sanitizedError = htmlspecialchars($error ?? '', ENT_QUOTES, 'UTF-8');
-                $this->dispatch('error', 'Server is not reachable.<br><br>Check this <a target="_blank" class="underline" href="https://coolify.io/docs/knowledge-base/server/openssh">documentation</a> for further help.<br><br>Error: '.$sanitizedError);
+                $this->dispatch('error', __('Server is not reachable.<br><br>Check this <a target="_blank" class="underline" href="https://coolify.io/docs/knowledge-base/server/openssh">documentation</a> for further help.<br><br>Error: :error', ['error' => $sanitizedError]));
 
                 return;
             }

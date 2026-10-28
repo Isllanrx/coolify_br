@@ -39,7 +39,7 @@ class ContainerRestarted extends CustomEmailNotification implements ThrottledNot
     public function toMail(): MailMessage
     {
         $mail = new MailMessage;
-        $mail->subject("Coolify: A resource ({$this->name}) has been restarted automatically on {$this->server->name}");
+        $mail->subject(__('Coolify: A resource (:name) has been restarted automatically on :server', ['name' => $this->name, 'server' => $this->server->name]));
         $mail->view('emails.container-restarted', [
             'containerName' => $this->name,
             'serverName' => $this->server->name,
@@ -52,13 +52,13 @@ class ContainerRestarted extends CustomEmailNotification implements ThrottledNot
     public function toDiscord(): DiscordMessage
     {
         $message = new DiscordMessage(
-            title: ':warning: Resource restarted',
-            description: "{$this->name} has been restarted automatically on {$this->server->name}.",
+            title: ':warning: '.__('Resource restarted'),
+            description: __(':name has been restarted automatically on :server.', ['name' => $this->name, 'server' => $this->server->name]),
             color: DiscordMessage::infoColor(),
         );
 
         if ($this->url) {
-            $message->addField('Resource', '[Link]('.$this->url.')');
+            $message->addField(__('Resource'), '['.__('Link').']('.$this->url.')');
         }
 
         return $message;
@@ -66,7 +66,7 @@ class ContainerRestarted extends CustomEmailNotification implements ThrottledNot
 
     public function toTelegram(): array
     {
-        $message = "Coolify: A resource ({$this->name}) has been restarted automatically on {$this->server->name}";
+        $message = __('Coolify: A resource (:name) has been restarted automatically on :server', ['name' => $this->name, 'server' => $this->server->name]);
         $payload = [
             'message' => $message,
         ];
@@ -74,7 +74,7 @@ class ContainerRestarted extends CustomEmailNotification implements ThrottledNot
             $payload['buttons'] = [
                 [
                     [
-                        'text' => 'Check Proxy in Coolify',
+                        'text' => __('Check Proxy in Coolify'),
                         'url' => $this->url,
                     ],
                 ],
@@ -89,26 +89,26 @@ class ContainerRestarted extends CustomEmailNotification implements ThrottledNot
         $buttons = [];
         if ($this->url) {
             $buttons[] = [
-                'text' => 'Check Proxy in Coolify',
+                'text' => __('Check Proxy in Coolify'),
                 'url' => $this->url,
             ];
         }
 
         return new PushoverMessage(
-            title: 'Resource restarted',
+            title: __('Resource restarted'),
             level: 'warning',
-            message: "A resource ({$this->name}) has been restarted automatically on {$this->server->name}",
+            message: __('A resource (:name) has been restarted automatically on :server', ['name' => $this->name, 'server' => $this->server->name]),
             buttons: $buttons,
         );
     }
 
     public function toSlack(): SlackMessage
     {
-        $title = 'Resource restarted';
-        $description = "A resource ({$this->name}) has been restarted automatically on {$this->server->name}";
+        $title = __('Resource restarted');
+        $description = __('A resource (:name) has been restarted automatically on :server', ['name' => $this->name, 'server' => $this->server->name]);
 
         if ($this->url) {
-            $description .= "\n*Resource URL:* {$this->url}";
+            $description .= "\n*".__('Resource URL:').'* '.$this->url;
         }
 
         return new SlackMessage(

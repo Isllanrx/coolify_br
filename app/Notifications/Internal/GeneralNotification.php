@@ -28,7 +28,7 @@ class GeneralNotification extends Notification implements ShouldQueue
     public function toDiscord(): DiscordMessage
     {
         return new DiscordMessage(
-            title: $this->success ? 'Coolify: General Notification' : 'Coolify: Action required',
+            title: $this->success ? __('Coolify: General Notification') : __('Coolify: Action required'),
             description: $this->message,
             color: $this->success ? DiscordMessage::infoColor() : DiscordMessage::errorColor(),
         );
@@ -44,7 +44,7 @@ class GeneralNotification extends Notification implements ShouldQueue
     public function toPushover(): PushoverMessage
     {
         return new PushoverMessage(
-            title: $this->success ? 'General Notification' : 'Action required',
+            title: $this->success ? __('General Notification') : __('Action required'),
             level: $this->success ? 'info' : 'error',
             message: $this->message,
         );
@@ -53,7 +53,7 @@ class GeneralNotification extends Notification implements ShouldQueue
     public function toSlack(): SlackMessage
     {
         return new SlackMessage(
-            title: $this->success ? 'Coolify: General Notification' : 'Coolify: Action required',
+            title: $this->success ? __('Coolify: General Notification') : __('Coolify: Action required'),
             description: $this->message,
             color: $this->success ? SlackMessage::infoColor() : SlackMessage::errorColor(),
         );

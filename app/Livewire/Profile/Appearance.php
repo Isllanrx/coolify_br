@@ -11,7 +11,7 @@ class Appearance extends Component
 
     public function mount(): void
     {
-        $this->locale = auth()->user()->locale ?? config('app.locale');
+        $this->locale = auth()->user()->preferredLocale() ?? config('app.fallback_locale');
     }
 
     public function updatedLocale(): void

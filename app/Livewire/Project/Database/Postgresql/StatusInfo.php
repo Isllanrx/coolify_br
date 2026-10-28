@@ -22,17 +22,17 @@ class StatusInfo extends Component
     protected function sslModeOptions(): array
     {
         return [
-            'allow' => ['title' => 'Allow insecure connections', 'label' => 'allow (insecure)'],
-            'prefer' => ['title' => 'Prefer secure connections', 'label' => 'prefer (secure)'],
-            'require' => ['title' => 'Require secure connections', 'label' => 'require (secure)'],
-            'verify-ca' => ['title' => 'Verify CA certificate', 'label' => 'verify-ca (secure)'],
-            'verify-full' => ['title' => 'Verify full certificate', 'label' => 'verify-full (secure)'],
+            'allow' => ['title' => __('Allow insecure connections'), 'label' => 'allow (insecure)'],
+            'prefer' => ['title' => __('Prefer secure connections'), 'label' => 'prefer (secure)'],
+            'require' => ['title' => __('Require secure connections'), 'label' => 'require (secure)'],
+            'verify-ca' => ['title' => __('Verify CA certificate'), 'label' => 'verify-ca (secure)'],
+            'verify-full' => ['title' => __('Verify full certificate'), 'label' => 'verify-full (secure)'],
         ];
     }
 
     protected function sslModeHelper(): string
     {
-        return 'Choose the SSL verification mode for PostgreSQL connections';
+        return __('Choose the SSL verification mode for PostgreSQL connections');
     }
 
     protected function afterRefresh(): void

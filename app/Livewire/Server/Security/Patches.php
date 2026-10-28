@@ -108,7 +108,7 @@ class Patches extends Component
             $this->authorize('update', $this->server);
             $savedPackages = collect(data_get($this->server->settings->patch_check_result, 'updates', []))->pluck('package');
             if (! $savedPackages->contains($package)) {
-                $this->dispatch('error', message: 'This package has no update in the last check.');
+                $this->dispatch('error', message: __('This package has no update in the last check.'));
 
                 return;
             }
@@ -130,7 +130,7 @@ class Patches extends Component
                 throw $e;
             }
             $this->auditPatchAction('reboot_requested', ['result' => 'started']);
-            $this->dispatch('success', 'Reboot started. The server is back in a few minutes, and Coolify then checks it again.');
+            $this->dispatch('success', __('Reboot started. The server is back in a few minutes, and Coolify then checks it again.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -144,11 +144,11 @@ class Patches extends Component
 
             $frequency = trim($this->patchCheckFrequency);
             if ($frequency !== '' && ! self::isValidPatchCheckFrequency($frequency)) {
-                throw new \Exception('Invalid check frequency. Use a cron expression or a preset (daily, weekly, monthly) that runs at most once per hour.');
+                throw new \Exception(__('Invalid check frequency. Use a cron expression or a preset (daily, weekly, monthly) that runs at most once per hour.'));
             }
             $time = trim($this->autoSecurityUpdatesTime);
             if (preg_match(ConfigureAutomaticSecurityUpdates::TIME_PATTERN, $time) !== 1) {
-                throw new \Exception('Invalid time. Use the 24-hour format HH:MM, for example 03:00.');
+                throw new \Exception(__('Invalid time. Use the 24-hour format HH:MM, for example 03:00.'));
             }
 
             if ($settings->is_auto_security_updates_enabled && $time !== $settings->auto_security_updates_time) {
@@ -163,7 +163,7 @@ class Patches extends Component
                 $this->auditPatchAction('patch_settings_updated', ['changed_fields' => $changedFields]);
             }
             $this->syncSettings();
-            $this->dispatch('success', 'Patch settings saved.');
+            $this->dispatch('success', __('Patch settings saved.'));
         } catch (\Throwable $e) {
             $this->server->settings->refresh();
             $this->syncSettings();
@@ -183,7 +183,7 @@ class Patches extends Component
             $enabled = ! $settings->is_auto_security_updates_enabled;
             $time = trim($this->autoSecurityUpdatesTime);
             if (preg_match(ConfigureAutomaticSecurityUpdates::TIME_PATTERN, $time) !== 1) {
-                throw new \Exception('Invalid time. Use the 24-hour format HH:MM, for example 03:00.');
+                throw new \Exception(__('Invalid time. Use the 24-hour format HH:MM, for example 03:00.'));
             }
 
             $this->applyAutomaticSecurityUpdates($enabled, $time);
@@ -191,7 +191,7 @@ class Patches extends Component
             $settings->auto_security_updates_time = $time;
             $settings->save();
             $this->syncSettings();
-            $this->dispatch('success', $enabled ? 'Automatic security updates turned on.' : 'Automatic security updates turned off.');
+            $this->dispatch('success', $enabled ? __('Automatic security updates turned on.') : __('Automatic security updates turned off.'));
         } catch (\Throwable $e) {
             $this->server->settings->refresh();
             $this->syncSettings();
@@ -205,7 +205,7 @@ class Patches extends Component
         $this->ensureManagedHere();
         $packageManager = data_get($this->server->settings->patch_check_result, 'package_manager');
         if (! ConfigureAutomaticSecurityUpdates::supportFor($packageManager)) {
-            throw new \Exception('Automatic security updates are supported only on Debian, Ubuntu, and RHEL-family servers. Run "Check for updates" first, so Coolify knows the package manager.');
+            throw new \Exception(__('Automatic security updates are supported only on Debian, Ubuntu, and RHEL-family servers. Run "Check for updates" first, so Coolify knows the package manager.'));
         }
 
         $auditContext = ['enabled' => $enabled, 'time' => $time, 'package_manager' => $packageManager];
@@ -256,7 +256,7 @@ class Patches extends Component
     private function ensureManagedHere(): void
     {
         if ($this->server->isTransferredAway()) {
-            throw new \RuntimeException('This server is managed by another Coolify instance.');
+            throw new \RuntimeException(__('This server is managed by another Coolify instance.'));
         }
     }
 
@@ -267,14 +267,14 @@ class Patches extends Component
         $packageManager = data_get($savedResult, 'package_manager');
         $osId = data_get($savedResult, 'osId');
         if (! $packageManager || ! $osId) {
-            $this->dispatch('error', message: 'Run "Check for updates" first.');
+            $this->dispatch('error', message: __('Run "Check for updates" first.'));
 
             return;
         }
 
         $activity = UpdatePackage::run(server: $this->server, osId: $osId, package: $package, packageManager: $packageManager, all: $all);
         if (is_array($activity)) {
-            $this->dispatch('error', message: $activity['error'] ?? 'Something went wrong.');
+            $this->dispatch('error', message: $activity['error'] ?? __('Something went wrong.'));
 
             return;
         }
@@ -290,7 +290,7 @@ class Patches extends Component
     public function sendTestEmail()
     {
         if (! isDev()) {
-            $this->dispatch('error', message: 'Test email functionality is only available in development mode.');
+            $this->dispatch('error', message: __('Test email functionality is only available in development mode.'));
 
             return;
         }
@@ -298,9 +298,9 @@ class Patches extends Component
         try {
             $this->server->team->notify(new ServerPatchCheck($this->server, $this->createTestPatchData()));
 
-            $this->dispatch('success', 'Test email sent successfully! Check your email inbox.');
+            $this->dispatch('success', __('Test email sent successfully! Check your email inbox.'));
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Failed to send test email: '.$e->getMessage());
+            $this->dispatch('error', message: __('Failed to send test email: :error', ['error' => $e->getMessage()]));
         }
     }
 

@@ -68,7 +68,7 @@ class Show extends Component
             $isValid = validate_cron_expression($this->frequency);
             if (! $isValid) {
                 $this->frequency = $this->task->frequency;
-                throw new \Exception('Invalid Cron / Human expression.');
+                throw new \Exception(__('Invalid Cron / Human expression.'));
             }
             $this->task->enabled = $this->isEnabled;
             $this->task->name = str($this->name)->trim()->value();
@@ -102,7 +102,7 @@ class Show extends Component
             $changedFields = auditChangedFields($this->task);
             $this->task->save();
             $this->auditTaskUpdated($changedFields);
-            $this->dispatch('success', $this->isEnabled ? 'Scheduled task enabled.' : 'Scheduled task disabled.');
+            $this->dispatch('success', $this->isEnabled ? __('Scheduled task enabled.') : __('Scheduled task disabled.'));
         } catch (\Exception $e) {
             return handleError($e);
         }
@@ -114,7 +114,7 @@ class Show extends Component
             $this->authorize('update', $this->resource);
             $this->authorize('update', $this->task);
             $this->auditTaskUpdated($this->syncData(true));
-            $this->dispatch('success', 'Scheduled task updated.');
+            $this->dispatch('success', __('Scheduled task updated.'));
             $this->refreshTasks();
         } catch (\Exception $e) {
             return handleError($e);
@@ -127,7 +127,7 @@ class Show extends Component
             $this->authorize('update', $this->resource);
             $this->authorize('update', $this->task);
             $this->auditTaskUpdated($this->syncData(true));
-            $this->dispatch('success', 'Scheduled task updated.');
+            $this->dispatch('success', __('Scheduled task updated.'));
         } catch (\Exception $e) {
             return handleError($e, $this);
         }
@@ -149,7 +149,7 @@ class Show extends Component
             $this->authorize('delete', $this->task);
             $this->task->delete();
             auditLog('ui.scheduled_task.deleted', $this->taskAuditContext());
-            $this->dispatch('success', 'Scheduled task deleted.');
+            $this->dispatch('success', __('Scheduled task deleted.'));
             $this->dispatch('scheduledTaskDeleted')->to(All::class);
 
             // Without true, the confirmation modal refreshes this deleted task.
@@ -172,7 +172,7 @@ class Show extends Component
                 'scheduled_task_uuid' => $this->task->uuid,
                 'scheduled_task_name' => $this->task->name,
             ]);
-            $this->dispatch('success', 'Scheduled task executed.');
+            $this->dispatch('success', __('Scheduled task executed.'));
         } catch (\Exception $e) {
             return handleError($e);
         }

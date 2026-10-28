@@ -128,8 +128,8 @@ class ByHostinger extends Component
     protected function messages(): array
     {
         return [
-            'selected_token_id.required' => 'Please select a Hostinger token.',
-            'selected_token_id.exists' => 'Selected token not found.',
+            'selected_token_id.required' => __('Please select a Hostinger token.'),
+            'selected_token_id.exists' => __('Selected token not found.'),
         ];
     }
 
@@ -194,7 +194,7 @@ class ByHostinger extends Component
 
         if (! $token) {
             $this->loading_data = false;
-            $this->dispatch('error', 'Please select a valid Hostinger token.');
+            $this->dispatch('error', __('Please select a valid Hostinger token.'));
 
             return;
         }
@@ -314,7 +314,7 @@ class ByHostinger extends Component
             $this->authorize('create', Server::class);
 
             if (Team::serverLimitReached()) {
-                return $this->dispatch('error', 'You have reached the server limit for your subscription.');
+                return $this->dispatch('error', __('You have reached the server limit for your subscription.'));
             }
 
             $privateKey = PrivateKey::ownedByCurrentTeam()->findOrFail($this->private_key_id);
@@ -389,7 +389,7 @@ class ByHostinger extends Component
                     'team_id' => currentTeam()->id,
                     'hostinger_virtual_machine_id' => $virtualMachineId,
                 ]);
-                $this->dispatch('error', "Hostinger VPS {$virtualMachineId} was purchased but could not be saved in Coolify. Manage it in hPanel.");
+                $this->dispatch('error', __('Hostinger VPS :id was purchased but could not be saved in Coolify. Manage it in hPanel.', ['id' => $virtualMachineId]));
             }
 
             return handleError($e, $this);
@@ -485,23 +485,23 @@ class ByHostinger extends Component
         $postInstallScriptIds = collect($this->selected_post_install_script_id ? $hostingerService->getPostInstallScripts() : [])->pluck('id')->map(fn ($id) => (int) $id);
 
         if (! $priceIds->contains($this->selected_price_id)) {
-            $this->addError('selected_price_id', 'The selected Hostinger plan or billing period is no longer available.');
+            $this->addError('selected_price_id', __('The selected Hostinger plan or billing period is no longer available.'));
         }
 
         if (! $dataCenterIds->contains($this->selected_data_center_id)) {
-            $this->addError('selected_data_center_id', 'The selected Hostinger data center is no longer available.');
+            $this->addError('selected_data_center_id', __('The selected Hostinger data center is no longer available.'));
         }
 
         if (! $templateIds->contains($this->selected_template_id)) {
-            $this->addError('selected_template_id', 'The selected Hostinger operating system is no longer available.');
+            $this->addError('selected_template_id', __('The selected Hostinger operating system is no longer available.'));
         }
 
         if (collect($this->selected_public_key_ids)->contains(fn ($id) => ! $publicKeyIds->contains((int) $id))) {
-            $this->addError('selected_public_key_ids', 'One or more selected Hostinger SSH keys are no longer available.');
+            $this->addError('selected_public_key_ids', __('One or more selected Hostinger SSH keys are no longer available.'));
         }
 
         if ($this->selected_post_install_script_id && ! $postInstallScriptIds->contains($this->selected_post_install_script_id)) {
-            $this->addError('selected_post_install_script_id', 'The selected Hostinger post-install script is no longer available.');
+            $this->addError('selected_post_install_script_id', __('The selected Hostinger post-install script is no longer available.'));
         }
 
         return ! $this->getErrorBag()->isNotEmpty();

@@ -105,7 +105,7 @@ class Index extends Component
         $this->settings->dev_helper_version = $this->dev_helper_version;
         if ($isSave) {
             $this->saveAndAudit();
-            $this->dispatch('success', 'Settings updated!');
+            $this->dispatch('success', __('Settings updated!'));
         }
     }
 
@@ -146,13 +146,13 @@ class Index extends Component
 
             if (! validate_timezone($this->instance_timezone)) {
                 $this->instance_timezone = config('app.timezone');
-                throw new \Exception('Invalid timezone.');
+                throw new \Exception(__('Invalid timezone.'));
             } else {
                 $this->settings->instance_timezone = $this->instance_timezone;
             }
 
             if ($this->settings->public_port_min > $this->settings->public_port_max) {
-                $this->addError('settings.public_port_min', 'The minimum port must be lower than the maximum port.');
+                $this->addError('settings.public_port_min', __('The minimum port must be lower than the maximum port.'));
 
                 return;
             }
@@ -168,7 +168,7 @@ class Index extends Component
                 if (! validateDNSEntry($this->fqdn, $this->server)) {
                     $target = serverDnsTargetIp($this->server) ?? $this->server->ip;
                     $guidance = dnsMismatchGuidanceMessage($target, $target);
-                    $this->dispatch('error', "Validating DNS failed.<br><br>{$guidance}<br><br>Check this <a target='_blank' class='underline dark:text-white' href='https://coolify.io/docs/knowledge-base/dns-configuration'>documentation</a> for further help.");
+                    $this->dispatch('error', __('Validating DNS failed.<br><br>:guidance<br><br>Check this <a target=\'_blank\' class=\'underline dark:text-white\' href=\'https://coolify.io/docs/knowledge-base/dns-configuration\'>documentation</a> for further help.', ['guidance' => $guidance]));
                     $error_show = true;
                 }
             }
@@ -194,7 +194,7 @@ class Index extends Component
                 $this->server->setupDynamicProxyConfiguration();
             }
             if (! $error_show) {
-                $this->dispatch('success', 'Instance settings updated successfully!');
+                $this->dispatch('success', __('Instance settings updated successfully!'));
             }
         } catch (\Exception $e) {
             return handleError($e, $this);
@@ -211,7 +211,7 @@ class Index extends Component
 
             $detected = detect_public_ips();
             if ($detected === []) {
-                $this->dispatch('error', 'Could not detect a public IP address.');
+                $this->dispatch('error', __('Could not detect a public IP address.'));
 
                 return;
             }
@@ -220,7 +220,7 @@ class Index extends Component
             $this->saveAndAudit();
             $this->public_ipv4 = $this->settings->public_ipv4;
             $this->public_ipv6 = $this->settings->public_ipv6;
-            $this->dispatch('success', 'Detected '.implode(' and ', $detected).'.');
+            $this->dispatch('success', __('Detected :addresses.', ['addresses' => implode(' and ', $detected)]));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -231,13 +231,13 @@ class Index extends Component
         try {
             $this->authorize('update', $this->settings);
             if (! isDev()) {
-                $this->dispatch('error', 'Building helper image is only available in development mode.');
+                $this->dispatch('error', __('Building helper image is only available in development mode.'));
 
                 return;
             }
 
             if (! $this->server) {
-                $this->dispatch('error', 'Server not available.');
+                $this->dispatch('error', __('Server not available.'));
 
                 return;
             }
@@ -246,13 +246,13 @@ class Index extends Component
 
             $version = $this->dev_helper_version ?: config('constants.coolify.helper_version');
             if (empty($version)) {
-                $this->dispatch('error', 'Please specify a version to build.');
+                $this->dispatch('error', __('Please specify a version to build.'));
 
                 return;
             }
 
             if (! preg_match('/^[A-Za-z0-9_][A-Za-z0-9_.-]{0,127}$/', (string) $version)) {
-                $this->dispatch('error', 'Invalid helper version format.');
+                $this->dispatch('error', __('Invalid helper version format.'));
 
                 return;
             }
@@ -269,7 +269,7 @@ class Index extends Component
             $this->buildActivityId = $activity->id;
             $this->dispatch('activityMonitor', $activity->id);
 
-            $this->dispatch('success', "Building coolify-helper:{$version}...");
+            $this->dispatch('success', __('Building coolify-helper::version...', ['version' => $version]));
         } catch (\Exception $e) {
             return handleError($e, $this);
         }

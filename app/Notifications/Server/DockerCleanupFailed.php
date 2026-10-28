@@ -24,7 +24,7 @@ class DockerCleanupFailed extends CustomEmailNotification
     public function toMail(): MailMessage
     {
         $mail = new MailMessage;
-        $mail->subject("Coolify: [ACTION REQUIRED] Docker cleanup job failed on {$this->server->name}");
+        $mail->subject(__('Coolify: [ACTION REQUIRED] Docker cleanup job failed on :name', ['name' => $this->server->name]));
         $mail->view('emails.docker-cleanup-failed', [
             'name' => $this->server->name,
             'text' => $this->message,
@@ -36,7 +36,7 @@ class DockerCleanupFailed extends CustomEmailNotification
     public function toDiscord(): DiscordMessage
     {
         return new DiscordMessage(
-            title: ':cross_mark: Coolify: [ACTION REQUIRED] Docker cleanup job failed on '.$this->server->name,
+            title: ':cross_mark: '.__('Coolify: [ACTION REQUIRED] Docker cleanup job failed on :name', ['name' => $this->server->name]),
             description: $this->message,
             color: DiscordMessage::errorColor(),
         );
@@ -45,24 +45,24 @@ class DockerCleanupFailed extends CustomEmailNotification
     public function toTelegram(): array
     {
         return [
-            'message' => "Coolify: [ACTION REQUIRED] Docker cleanup job failed on {$this->server->name}!\n\n{$this->message}",
+            'message' => __('Coolify: [ACTION REQUIRED] Docker cleanup job failed on :name!', ['name' => $this->server->name])."\n\n".$this->message,
         ];
     }
 
     public function toPushover(): PushoverMessage
     {
         return new PushoverMessage(
-            title: 'Docker cleanup job failed',
+            title: __('Docker cleanup job failed'),
             level: 'error',
-            message: "[ACTION REQUIRED] Docker cleanup job failed on {$this->server->name}!\n\n{$this->message}",
+            message: __('[ACTION REQUIRED] Docker cleanup job failed on :name!', ['name' => $this->server->name])."\n\n".$this->message,
         );
     }
 
     public function toSlack(): SlackMessage
     {
         return new SlackMessage(
-            title: 'Coolify: [ACTION REQUIRED] Docker cleanup job failed',
-            description: "Docker cleanup job failed on '{$this->server->name}'!\n\n{$this->message}",
+            title: __('Coolify: [ACTION REQUIRED] Docker cleanup job failed'),
+            description: __("Docker cleanup job failed on ':name'!", ['name' => $this->server->name])."\n\n".$this->message,
             color: SlackMessage::errorColor()
         );
     }

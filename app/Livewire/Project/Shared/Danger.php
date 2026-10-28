@@ -93,15 +93,15 @@ class Danger extends Component
     public function delete($password, $selectedActions = [])
     {
         if (! verifyPasswordConfirmation($password, $this)) {
-            return 'The provided password is incorrect.';
+            return __('The provided password is incorrect.');
         }
 
         if (! $this->resource) {
-            return 'Resource not found.';
+            return __('Resource not found.');
         }
 
         if ($this->resource instanceof StandaloneSqlite && $this->resource->hasConnectedApplications()) {
-            $this->dispatch('error', 'This database volume is mounted by '.$this->resource->connectedApplicationNames()->implode(', ').'. Remove those mounts before deleting the database.');
+            $this->dispatch('error', __('This database volume is mounted by :applications. Remove those mounts before deleting the database.', ['applications' => $this->resource->connectedApplicationNames()->implode(', ')]));
 
             return;
         }
@@ -140,7 +140,7 @@ class Danger extends Component
             $this->authorize('manage', $this->resource);
 
             if (! verifyPasswordConfirmation($password, $this)) {
-                return 'The provided password is incorrect.';
+                return __('The provided password is incorrect.');
             }
 
             FlushDatabase::run($this->resource);
@@ -149,7 +149,7 @@ class Danger extends Component
                 'database_uuid' => $this->resource->uuid,
                 'database_name' => $this->resource->name,
             ]);
-            $this->dispatch('success', 'Database flushed.');
+            $this->dispatch('success', __('Database flushed.'));
 
             return true;
         } catch (\Throwable $e) {

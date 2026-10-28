@@ -189,7 +189,7 @@ class ExecuteContainerCommand extends Component
             $server = $this->servers->first();
             $this->authorize('view', $server);
             if ($server->isForceDisabled()) {
-                throw new \RuntimeException('Server is disabled.');
+                throw new \RuntimeException(__('Server is disabled.'));
             }
             $this->dispatch(
                 'send-terminal-command',
@@ -225,19 +225,19 @@ class ExecuteContainerCommand extends Component
             // Verify container exists in our allowed list
             $container = $this->containers->first(fn ($candidate) => $this->containerTarget($candidate) === $this->selected_container);
             if (is_null($container)) {
-                throw new \RuntimeException('Container not found.');
+                throw new \RuntimeException(__('Container not found.'));
             }
 
             // Verify server ownership and status
             $server = data_get($container, 'server');
             if (! $server || ! $server instanceof Server) {
-                throw new \RuntimeException('Invalid server configuration.');
+                throw new \RuntimeException(__('Invalid server configuration.'));
             }
 
             $this->authorize('view', $server);
 
             if ($server->isForceDisabled()) {
-                throw new \RuntimeException('Server is disabled.');
+                throw new \RuntimeException(__('Server is disabled.'));
             }
 
             // Additional ownership verification based on resource type
@@ -245,11 +245,11 @@ class ExecuteContainerCommand extends Component
                 'application' => $this->resource->destination->server,
                 'database' => $this->resource->destination->server,
                 'service' => $this->resource->server,
-                default => throw new \RuntimeException('Invalid resource type.')
+                default => throw new \RuntimeException(__('Invalid resource type.'))
             };
 
             if ($server->id !== $resourceServer->id && ! $this->resource->additional_servers->contains('id', $server->id)) {
-                throw new \RuntimeException('Server ownership verification failed.');
+                throw new \RuntimeException(__('Server ownership verification failed.'));
             }
 
             $this->dispatch(

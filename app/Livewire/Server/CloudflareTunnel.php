@@ -102,9 +102,9 @@ class CloudflareTunnel extends Component
             auditLog('ui.server.cloudflare_tunnel.disabled', $this->auditContext());
             if ($this->server->ip_previous) {
                 $this->server->update(['ip' => $this->server->ip_previous]);
-                $this->dispatch('success', 'Cloudflare Tunnel disabled.<br><br>Manually updated the server IP address to its previous IP address.');
+                $this->dispatch('success', __('Cloudflare Tunnel disabled.<br><br>Manually updated the server IP address to its previous IP address.'));
             } else {
-                $this->dispatch('warning', 'Cloudflare Tunnel disabled. Action required: Update the server IP address to its real IP address in the Advanced settings.');
+                $this->dispatch('warning', __('Cloudflare Tunnel disabled. Action required: Update the server IP address to its real IP address in the Advanced settings.'));
             }
         } catch (\Throwable $e) {
             return handleError($e, $this);
@@ -121,7 +121,7 @@ class CloudflareTunnel extends Component
             $this->server->settings->save();
             auditLog('ui.server.cloudflare_tunnel.enabled', $this->auditContext());
             $this->server->refresh();
-            $this->dispatch('success', 'Cloudflare Tunnel enabled.');
+            $this->dispatch('success', __('Cloudflare Tunnel enabled.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -167,7 +167,7 @@ class CloudflareTunnel extends Component
 
         $token = $this->tunnelTokens()->firstWhere('id', $this->cloudflare_integration_token_id);
         if ($token === null) {
-            $this->addError('cloudflare_integration_token_id', 'Select a Cloudflare token of this server team with the Cloudflare Tunnel capability.');
+            $this->addError('cloudflare_integration_token_id', __('Select a Cloudflare token of this server team with the Cloudflare Tunnel capability.'));
 
             return;
         }
@@ -183,7 +183,7 @@ class CloudflareTunnel extends Component
         $token = $conflict === null ? null : $this->tunnelTokens()->firstWhere('id', $conflict['token_id']);
         if ($conflict === null || $token === null) {
             $this->dnsConflict = null;
-            $this->dispatch('error', 'The DNS conflict is no longer available. Set up the tunnel again.');
+            $this->dispatch('error', __('The DNS conflict is no longer available. Set up the tunnel again.'));
 
             return;
         }
@@ -242,7 +242,7 @@ class CloudflareTunnel extends Component
                 'token_id' => $token->id,
             ];
         } catch (LockTimeoutException) {
-            $this->dispatch('error', "Another DNS change for {$hostname} is in progress. Try again in a few seconds.");
+            $this->dispatch('error', __('Another DNS change for :hostname is in progress. Try again in a few seconds.', ['hostname' => $hostname]));
         } catch (\Throwable $e) {
             handleError($e, $this);
         }

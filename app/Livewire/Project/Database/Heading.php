@@ -73,7 +73,7 @@ class Heading extends Component
         if ($this->database->destination->server->isFunctional()) {
             GetContainersStatus::dispatch($this->database->destination->server);
         } else {
-            $this->dispatch('error', 'Server is not functional.');
+            $this->dispatch('error', __('Server is not functional.'));
         }
     }
 
@@ -105,7 +105,7 @@ class Heading extends Component
             $this->dispatch('activityMonitor', $this->runningActivityId, ServiceStatusChanged::class);
             $this->js("window.dispatchEvent(new CustomEvent('startdatabase'))");
         } else {
-            $this->dispatch('info', 'No operation is currently running.');
+            $this->dispatch('info', __('No operation is currently running.'));
         }
     }
 
@@ -138,7 +138,7 @@ class Heading extends Component
         try {
             $this->authorize('manage', $this->database);
 
-            $this->dispatch('info', 'Gracefully stopping database.');
+            $this->dispatch('info', __('Gracefully stopping database.'));
             StopDatabase::dispatch($this->database, false, $this->docker_cleanup);
             $this->auditDatabaseAction('ui.database.stopped');
         } catch (\Exception $e) {
@@ -158,7 +158,7 @@ class Heading extends Component
                 return;
             }
             $this->auditDatabaseAction('ui.database.restarted');
-            $this->dispatch('info', 'Restarting database.');
+            $this->dispatch('info', __('Restarting database.'));
             $this->markDeploymentRunning($activity);
             $this->js("window.dispatchEvent(new CustomEvent('startdatabase'))");
             $this->dispatch('activityMonitor', $activity->id, ServiceStatusChanged::class);

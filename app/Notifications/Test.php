@@ -60,7 +60,7 @@ class Test extends Notification implements ShouldQueue
     public function toMail(): MailMessage
     {
         $mail = new MailMessage;
-        $mail->subject('Coolify: Test Email');
+        $mail->subject(__('Coolify: Test Email'));
         $mail->view('emails.test');
 
         return $mail;
@@ -69,13 +69,13 @@ class Test extends Notification implements ShouldQueue
     public function toDiscord(): DiscordMessage
     {
         $message = new DiscordMessage(
-            title: ':white_check_mark: Test Success',
-            description: 'This is a test Discord notification from Coolify. :cross_mark: :warning: :information_source:',
+            title: ':white_check_mark: '.__('Test Success'),
+            description: __('This is a test Discord notification from Coolify.').' :cross_mark: :warning: :information_source:',
             color: DiscordMessage::successColor(),
             isCritical: $this->ping,
         );
 
-        $message->addField(name: 'Dashboard', value: '[Link]('.base_url().')', inline: true);
+        $message->addField(name: __('Dashboard'), value: '['.__('Link').']('.base_url().')', inline: true);
 
         return $message;
     }
@@ -83,10 +83,10 @@ class Test extends Notification implements ShouldQueue
     public function toTelegram(): array
     {
         return [
-            'message' => 'Coolify: This is a test Telegram notification from Coolify.',
+            'message' => __('Coolify: This is a test Telegram notification from Coolify.'),
             'buttons' => [
                 [
-                    'text' => 'Go to your dashboard',
+                    'text' => __('Go to your dashboard'),
                     'url' => isDev() ? 'https://staging-but-dev.coolify.io' : base_url(),
                 ],
             ],
@@ -96,11 +96,11 @@ class Test extends Notification implements ShouldQueue
     public function toPushover(): PushoverMessage
     {
         return new PushoverMessage(
-            title: 'Test Pushover Notification',
-            message: 'This is a test Pushover notification from Coolify.',
+            title: __('Test Pushover Notification'),
+            message: __('This is a test Pushover notification from Coolify.'),
             buttons: [
                 [
-                    'text' => 'Go to your dashboard',
+                    'text' => __('Go to your dashboard'),
                     'url' => base_url(),
                 ],
             ],
@@ -110,8 +110,8 @@ class Test extends Notification implements ShouldQueue
     public function toSlack(): SlackMessage
     {
         return new SlackMessage(
-            title: 'Test Slack Notification',
-            description: 'This is a test Slack notification from Coolify.'
+            title: __('Test Slack Notification'),
+            description: __('This is a test Slack notification from Coolify.')
         );
     }
 

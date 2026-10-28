@@ -74,7 +74,7 @@ class Updates extends Component
                     'changed_fields' => $changedFields,
                 ]);
             }
-            $this->dispatch('success', 'Settings updated!');
+            $this->dispatch('success', __('Settings updated!'));
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
@@ -95,7 +95,7 @@ class Updates extends Component
                 'error' => $e->getMessage(),
             ]);
 
-            throw new \RuntimeException('Failed to sync REGISTRY_URL to .env. Settings were not saved.', previous: $e);
+            throw new \RuntimeException(__('Failed to sync REGISTRY_URL to .env. Settings were not saved.'), previous: $e);
         }
     }
 
@@ -128,7 +128,7 @@ class Updates extends Component
             $this->validate();
 
             if ($this->is_auto_update_enabled && ! validate_cron_expression($this->auto_update_frequency)) {
-                $this->dispatch('error', 'Invalid Cron / Human expression for Auto Update Frequency.');
+                $this->dispatch('error', __('Invalid Cron / Human expression for Auto Update Frequency.'));
                 if (empty($this->auto_update_frequency)) {
                     $this->auto_update_frequency = InstanceSettings::randomAutoUpdateFrequency();
                 }
@@ -137,7 +137,7 @@ class Updates extends Component
             }
 
             if (! validate_cron_expression($this->update_check_frequency)) {
-                $this->dispatch('error', 'Invalid Cron / Human expression for Update Check Frequency.');
+                $this->dispatch('error', __('Invalid Cron / Human expression for Update Check Frequency.'));
                 if (empty($this->update_check_frequency)) {
                     $this->update_check_frequency = '0 * * * *';
                 }
@@ -162,14 +162,14 @@ class Updates extends Component
         $checked = (new CheckForUpdatesJob(cdnTries: 1))->handle();
         $this->dispatch('updateAvailable');
         if (! $checked) {
-            $this->dispatch('error', 'Could not check for updates. Try again later.');
+            $this->dispatch('error', __('Could not check for updates. Try again later.'));
 
             return;
         }
         if (instanceSettings()->new_version_available) {
-            $this->dispatch('success', 'New version available!');
+            $this->dispatch('success', __('New version available!'));
         } else {
-            $this->dispatch('success', 'No new version available.');
+            $this->dispatch('success', __('No new version available.'));
         }
     }
 

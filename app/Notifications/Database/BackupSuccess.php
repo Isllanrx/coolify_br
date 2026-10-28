@@ -31,7 +31,7 @@ class BackupSuccess extends CustomEmailNotification
     public function toMail(): MailMessage
     {
         $mail = new MailMessage;
-        $mail->subject("Coolify: Backup successfully done for {$this->database->name}");
+        $mail->subject(__('Coolify: Backup successfully done for :name', ['name' => $this->database->name]));
         $mail->view('emails.backup-success', [
             'name' => $this->name,
             'database_name' => $this->database_name,
@@ -44,19 +44,19 @@ class BackupSuccess extends CustomEmailNotification
     public function toDiscord(): DiscordMessage
     {
         $message = new DiscordMessage(
-            title: ':white_check_mark: Database backup successful',
-            description: "Database backup for {$this->name} (db:{$this->database_name}) was successful.",
+            title: ':white_check_mark: '.__('Database backup successful'),
+            description: __('Database backup for :name (db::db) was successful.', ['name' => $this->name, 'db' => $this->database_name]),
             color: DiscordMessage::successColor(),
         );
 
-        $message->addField('Frequency', $this->frequency, true);
+        $message->addField(__('Frequency'), $this->frequency, true);
 
         return $message;
     }
 
     public function toTelegram(): array
     {
-        $message = "Coolify: Database backup for {$this->name} (db:{$this->database_name}) with frequency of {$this->frequency} was successful.";
+        $message = __('Coolify: Database backup for :name (db::db) with frequency of :frequency was successful.', ['name' => $this->name, 'db' => $this->database_name, 'frequency' => $this->frequency]);
 
         return [
             'message' => $message,
@@ -66,18 +66,18 @@ class BackupSuccess extends CustomEmailNotification
     public function toPushover(): PushoverMessage
     {
         return new PushoverMessage(
-            title: 'Database backup successful',
+            title: __('Database backup successful'),
             level: 'success',
-            message: "Database backup for {$this->name} (db:{$this->database_name}) was successful.<br/><br/><b>Frequency:</b> {$this->frequency}.",
+            message: __('Database backup for :name (db::db) was successful.', ['name' => $this->name, 'db' => $this->database_name]).'<br/><br/><b>'.__('Frequency:').'</b> '.$this->frequency.'.',
         );
     }
 
     public function toSlack(): SlackMessage
     {
-        $title = 'Database backup successful';
-        $description = "Database backup for {$this->name} (db:{$this->database_name}) was successful.";
+        $title = __('Database backup successful');
+        $description = __('Database backup for :name (db::db) was successful.', ['name' => $this->name, 'db' => $this->database_name]);
 
-        $description .= "\n\n*Frequency:* {$this->frequency}";
+        $description .= "\n\n*".__('Frequency:').'* '.$this->frequency;
 
         return new SlackMessage(
             title: $title,

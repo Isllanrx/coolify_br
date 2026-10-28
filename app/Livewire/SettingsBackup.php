@@ -134,7 +134,7 @@ class SettingsBackup extends Component
                     'changed_fields' => $changedFields,
                 ]);
             }
-            $this->dispatch('success', 'Backup updated.');
+            $this->dispatch('success', __('Backup updated.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
@@ -150,7 +150,7 @@ class SettingsBackup extends Component
             $this->database->update([
                 'description' => $this->description,
             ]);
-            $this->dispatch('success', 'Backup updated.');
+            $this->dispatch('success', __('Backup updated.'));
         } catch (\Throwable $e) {
             return handleError($e, $this);
         }
