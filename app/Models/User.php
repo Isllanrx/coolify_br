@@ -308,7 +308,9 @@ class User extends Authenticatable implements HasLocalePreference, PasskeyUser, 
 
     public function preferredLocale(): ?string
     {
-        return $this->locale;
+        return $this->locale && isset(config('app.available_locales')[$this->locale])
+            ? $this->locale
+            : null;
     }
 
     public function sendVerificationEmail()

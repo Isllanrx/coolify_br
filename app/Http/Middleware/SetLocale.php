@@ -12,9 +12,11 @@ class SetLocale
     {
         $locale = $request->user()?->locale;
 
-        if ($locale && isset(config('app.available_locales')[$locale])) {
-            app()->setLocale($locale);
-        }
+        app()->setLocale(
+            $locale && isset(config('app.available_locales')[$locale])
+                ? $locale
+                : config('app.fallback_locale')
+        );
 
         return $next($request);
     }

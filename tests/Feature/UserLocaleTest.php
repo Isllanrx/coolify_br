@@ -14,7 +14,7 @@ uses(RefreshDatabase::class);
 beforeEach(function () {
     InstanceSettings::forceCreate(['id' => 0]);
 
-    Route::middleware(SetLocale::class)->get('/__test/locale', fn () => app()->getLocale());
+    Route::middleware(SetLocale::class)->get('/', fn () => app()->getLocale());
 });
 
 it('resolves the interface language in the web middleware group', function () {
@@ -48,21 +48,44 @@ it('rejects interface languages that are not available', function (string $local
 it('applies the language of the authenticated user to web requests', function () {
     $user = User::factory()->create(['locale' => 'pt-br']);
 
-    $this->actingAs($user)->get('/__test/locale')->assertContent('pt-br');
+    $this->actingAs($user)->get('/')->assertContent('pt-br');
 });
 
 it('keeps the default language for guests and unknown stored values', function () {
-    $this->get('/__test/locale')->assertContent('en');
+    $this->get('/')->assertContent('en');
 
     $user = User::factory()->create(['locale' => 'xx']);
 
-    $this->actingAs($user)->get('/__test/locale')->assertContent('en');
+    $this->actingAs($user)->get('/')->assertContent('en');
+});
+
+it('resets the request language when a user has no supported preference', function (?string $locale) {
+    $user = User::factory()->create(['locale' => $locale]);
+    app()->setLocale('fr');
+
+    $this->actingAs($user)->get('/')->assertContent('en');
+})->with([null, 'xx', '../en']);
+
+it('resets the request language for guests after a translated request', function () {
+    app()->setLocale('fr');
+
+    $this->get('/')->assertContent('en');
+});
+
+it('opens the appearance settings with a supported language for legacy preferences', function () {
+    $this->actingAs(User::factory()->create(['locale' => 'xx']));
+
+    Livewire::test(Appearance::class)->assertSet('locale', 'en');
 });
 
 it('uses the language of the user for notifications', function () {
     expect(User::factory()->make(['locale' => 'zh-cn'])->preferredLocale())->toBe('zh-cn')
         ->and(User::factory()->make()->preferredLocale())->toBeNull();
 });
+
+it('ignores unsupported notification language preferences', function (string $locale) {
+    expect(User::factory()->make(['locale' => $locale])->preferredLocale())->toBeNull();
+})->with(['xx', '../en']);
 
 it('ships every english translation key for each available language', function () {
     $english = json_decode(file_get_contents(lang_path('en.json')), true, flags: JSON_THROW_ON_ERROR);
