@@ -66,7 +66,7 @@ it('uses the current cloud provider UI and Hostinger affiliate link', function (
     Livewire::test(ByHostinger::class)
         ->assertSee('Hostinger account')
         ->assertSee('https://www.hostinger.com/vps/coolify-hosting?ref=coolify.io', false)
-        ->assertSee("through Coolify's affiliate link.", false);
+        ->assertSee("through Coolify's affiliate link.");
 
     Livewire::test(ByHostinger::class, ['selectedTokenUuid' => $this->token->uuid])
         ->set('loading_data', false)

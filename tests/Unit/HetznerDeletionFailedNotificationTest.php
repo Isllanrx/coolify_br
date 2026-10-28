@@ -1,6 +1,9 @@
 <?php
 
 use App\Notifications\Server\HetznerDeletionFailed;
+use Tests\TestCase;
+
+uses(TestCase::class);
 
 afterEach(function () {
     Mockery::close();

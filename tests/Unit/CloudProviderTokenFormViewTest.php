@@ -4,7 +4,7 @@ it('allows selecting Vultr in cloud provider token forms', function () {
     $view = file_get_contents(__DIR__.'/../../resources/views/livewire/security/cloud-provider-token-form.blade.php');
     $component = file_get_contents(__DIR__.'/../../app/Livewire/Security/CloudProviderTokenForm.php');
 
-    expect($view)->toContain('<x-forms.listbox required id="provider" label="Provider"')
+    expect($view)->toContain("<x-forms.listbox required id=\"provider\" :label=\"__('Provider')\"")
         ->and($view)->toContain("['value' => 'vultr', 'label' => 'Vultr']")
         ->and($view)->toContain("['value' => 'digitalocean', 'label' => 'DigitalOcean']")
         ->and($view)->toContain("['value' => 'hostinger', 'label' => 'Hostinger']")
@@ -32,7 +32,7 @@ it('uses the shared modal form on the cloud provider tokens page', function () {
     $view = file_get_contents(__DIR__.'/../../resources/views/livewire/security/cloud-provider-tokens.blade.php');
 
     expect($view)->toContain('New token')
-        ->and($view)->toContain('<x-application.settings-section title="Cloud tokens"')
+        ->and($view)->toContain("<x-application.settings-section :title=\"__('Cloud tokens')\"")
         ->and($view)->toContain('<livewire:security.cloud-provider-token-form :modal_mode="true"')
         ->and($view)->toContain("\$savedToken->provider === 'digitalocean' ? 'DigitalOcean' : ucfirst(\$savedToken->provider)")
         ->and($view)->not->toContain('<h3>New Token</h3>')
